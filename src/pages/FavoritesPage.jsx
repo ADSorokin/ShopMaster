@@ -1,7 +1,7 @@
 // src/pages/FavoritesPage.jsx
 import ProductCard from '../components/ProductCard';
 
-const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, language, currency, formatPrice, toggleFavorite }) => {
+const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, language, currency, formatPrice, toggleFavorite, addToCart, toggleCompare, compareList }) => {
   const translations = {
     ru: {
       home: 'Главная',

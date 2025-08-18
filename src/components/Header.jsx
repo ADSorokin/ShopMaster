@@ -262,7 +262,7 @@ const Header = ({
             </button>
             
             <button
-              onClick={() => setShowCart(!showCart)}
+              onClick={() => setShowCart(prev => !prev)}
               className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
             >
               <svg

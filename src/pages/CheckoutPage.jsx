@@ -1,4 +1,5 @@
 // src/pages/CheckoutPage.jsx
+import { pickupPoints } from '../data/pickupPoints';
 import ProductCard from '../components/ProductCard';
 
 const CheckoutPage = ({ cart, orderForm, setOrderForm, appliedCoupon, completeOrder, setCurrentPage, language, currency, formatPrice, getCartTotals }) => {

@@ -408,7 +408,6 @@ const ProductPage = ({
               <button
                 onClick={() => {
                   addToCart(currentProduct);
-                  setShowCart(true);
                 }}
                 className="px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
               >
@@ -442,7 +441,7 @@ const ProductPage = ({
                 onClick={() => toggleCompare(currentProduct)}
                 className={`flex-1 py-2 rounded-lg border transition-colors ${
                   compareList.includes(currentProduct.id)
-                    ? 'border-indigo-500 text-indigo-500 bg-indigo-50'
+                    ? 'border-indigo-500 text-indio-500 bg-indigo-50'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
