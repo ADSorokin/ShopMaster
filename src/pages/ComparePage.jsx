@@ -1,7 +1,22 @@
 // src/pages/ComparePage.jsx
+import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 
-const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, language, currency, formatPrice, toggleCompare }) => {
+const ComparePage = ({ 
+  compareList, 
+  products, 
+  toggleCompare, 
+  addToCart, 
+  toggleFavorite, 
+  favorites, 
+  setCurrentPage, 
+  setCurrentProduct, 
+  language, 
+  currency, 
+  formatPrice 
+}) => {
+  const [activeTab, setActiveTab] = useState('specifications');
+
   const translations = {
     ru: {
       home: 'Главная',
@@ -71,8 +86,6 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
       hours: 'Часы работы',
       monFri: 'Пн-Пт: 9:00 - 21:00',
       satSun: 'Сб-Вс: 10:00 - 18:00',
-      favorites: 'Избранное',
-      compare: 'Сравнение',
       partNumber: 'Артикул',
       manufacturer: 'Производитель',
       warrantyPeriod: 'Гарантийный срок',
@@ -88,7 +101,13 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
       specification: 'Характеристика',
       value: 'Значение',
       clearFavorites: 'Очистить избранное',
-      clearCompare: 'Очистить сравнение'
+      clearCompare: 'Очистить сравнение',
+      compare: 'Сравнение',
+      clearComparison: 'Очистить сравнение',
+      addToCart: 'В корзину',
+      product: 'Товар',
+      specifications: 'Характеристики',
+      description: 'Описание'
     },
     en: {
       home: 'Home',
@@ -158,8 +177,6 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
       hours: 'Working hours',
       monFri: 'Mon-Fri: 9:00 - 21:00',
       satSun: 'Sat-Sun: 10:00 - 18:00',
-      favorites: 'Favorites',
-      compare: 'Comparison',
       partNumber: 'Part Number',
       manufacturer: 'Manufacturer',
       warrantyPeriod: 'Warranty Period',
@@ -175,7 +192,13 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
       specification: 'Specification',
       value: 'Value',
       clearFavorites: 'Clear favorites',
-      clearCompare: 'Clear comparison'
+      clearCompare: 'Clear comparison',
+      compare: 'Comparison',
+      clearComparison: 'Clear comparison',
+      addToCart: 'Add to cart',
+      product: 'Product',
+      specifications: 'Specifications',
+      description: 'Description'
     }
   };
 
@@ -183,10 +206,31 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
     return translations[language][key] || key;
   };
 
-  const compareProducts = products.filter(p => compareList.includes(p.id));
+  const comparedProducts = products.filter(p => compareList.includes(p.id));
 
-  const clearCompare = () => {
-    setCompareList([]);
+  const clearComparison = () => {
+    comparedProducts.forEach(product => {
+      if (toggleCompare) {
+        toggleCompare(product);
+      }
+    });
+  };
+
+  const getSpecifications = (product) => {
+    return product.specifications?.[language] || {};
+  };
+
+  const getAllSpecifications = () => {
+    const allSpecs = new Set();
+    comparedProducts.forEach(product => {
+      const specs = getSpecifications(product);
+      Object.keys(specs).forEach(key => {
+        allSpecs.add(key);
+      });
+    });
+    return Array.from(allSpecs).filter(key => 
+      !['partNumber', 'manufacturer', 'warrantyPeriod', 'color'].includes(key)
+    );
   };
 
   return (
@@ -195,10 +239,10 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
         <h1 className="text-3xl font-bold">{getTranslation('compare')}</h1>
         <div className="flex space-x-4">
           <button
-            onClick={clearCompare}
+            onClick={clearComparison}
             className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
           >
-            {getTranslation('clearAll')}
+            {getTranslation('clearComparison')}
           </button>
           <button
             onClick={() => setCurrentPage('home')}
@@ -209,7 +253,7 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
         </div>
       </div>
 
-      {compareProducts.length === 0 ? (
+      {comparedProducts.length === 0 ? (
         <div className="text-center py-12">
           <svg
             className="mx-auto h-12 w-12 text-gray-400"
@@ -233,55 +277,124 @@ const ComparePage = ({ compareList, setCompareList, setCurrentPage, products, la
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                  {getTranslation('specification')}
-                </th>
-                {compareProducts.map(product => (
-                  <th key={product.id} className="px-6 py-4 text-center">
-                    <div className="flex flex-col items-center space-y-2">
-                      <img
-                        src={product.images[0]}
-                        alt={typeof product.name === 'object' ? product.name[language] : product.name}
-                        className="w-20 h-20 object-cover rounded"
-                      />
-                      <div className="text-center">
-                        <div className="font-medium text-gray-900">
-                          {typeof product.name === 'object' ? product.name[language] : product.name}
-                        </div>
-                        <div className="text-sm text-indigo-600 font-bold">
-                          {formatPrice(product.discount ? product.price * (1 - product.discount / 100) : product.price)}
-                        </div>
-                        <button
-                          onClick={() => toggleCompare(product)}
-                          className="mt-2 text-red-600 hover:text-red-800 text-sm"
-                        >
-                          {getTranslation('remove')}
-                        </button>
-                      </div>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {Object.entries(compareProducts[0].specifications[language]).map(([key, value]) => (
-                <tr key={key} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {key}
-                  </td>
-                  {compareProducts.map(product => (
-                    <td key={product.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                      {product.specifications[language][key] || '-'}
-                    </td>
-                  ))}
-                </tr>
+        <div>
+          {/* Product Cards */}
+          <div className="mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {comparedProducts.map(product => (
+                <div key={product.id} className="relative">
+                  <ProductCard 
+                    product={product} 
+                    addToCart={addToCart}
+                    toggleFavorite={toggleFavorite}
+                    toggleCompare={toggleCompare}
+                    favorites={favorites}
+                    compareList={compareList}
+                    language={language}
+                    currency={currency}
+                    formatPrice={formatPrice}
+                    setCurrentPage={setCurrentPage}
+                    setCurrentProduct={setCurrentProduct}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (toggleCompare) {
+                        toggleCompare(product);
+                      }
+                    }}
+                    className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
+                  >
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="border-b">
+              <nav className="flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('specifications')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'specifications'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {getTranslation('specifications')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('description')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'description'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {getTranslation('description')}
+                </button>
+              </nav>
+            </div>
+
+            {activeTab === 'specifications' && (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {getTranslation('specification')}
+                      </th>
+                      {comparedProducts.map(product => (
+                        <th key={product.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          {typeof product.name === 'object' ? product.name[language] : product.name}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {getAllSpecifications().map(specKey => (
+                      <tr key={specKey}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {specKey}
+                        </td>
+                        {comparedProducts.map(product => {
+                          const specs = getSpecifications(product);
+                          return (
+                            <td key={product.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {specs[specKey] || '-'}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === 'description' && (
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {comparedProducts.map(product => {
+                    const currentDescription = typeof product.description === 'object' ? product.description[language] : product.description;
+                    return (
+                      <div key={product.id} className="p-4 border rounded-lg">
+                        <h3 className="font-semibold mb-2">
+                          {typeof product.name === 'object' ? product.name[language] : product.name}
+                        </h3>
+                        <p className="text-gray-700">{currentDescription}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

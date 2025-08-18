@@ -1,7 +1,23 @@
 // src/pages/FavoritesPage.jsx
+import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 
-const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, language, currency, formatPrice, toggleFavorite, addToCart, toggleCompare, compareList }) => {
+const FavoritesPage = ({ 
+  favorites, 
+  setFavorites, 
+  setCurrentPage, 
+  setCurrentProduct,
+  products, 
+  language, 
+  currency, 
+  formatPrice, 
+  addToCart, 
+  toggleFavorite, 
+  toggleCompare, 
+  compareList 
+}) => {
+  const [activeTab, setActiveTab] = useState('products');
+
   const translations = {
     ru: {
       home: 'Главная',
@@ -88,7 +104,10 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
       specification: 'Характеристика',
       value: 'Значение',
       clearFavorites: 'Очистить избранное',
-      clearCompare: 'Очистить сравнение'
+      clearCompare: 'Очистить сравнение',
+      products: 'Товары',
+      emptyFavorites: 'Ваши избранные товары пусты',
+      emptyCompare: 'Список сравнения пуст'
     },
     en: {
       home: 'Home',
@@ -158,8 +177,6 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
       hours: 'Working hours',
       monFri: 'Mon-Fri: 9:00 - 21:00',
       satSun: 'Sat-Sun: 10:00 - 18:00',
-      favorites: 'Favorites',
-      compare: 'Comparison',
       partNumber: 'Part Number',
       manufacturer: 'Manufacturer',
       warrantyPeriod: 'Warranty Period',
@@ -175,7 +192,10 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
       specification: 'Specification',
       value: 'Value',
       clearFavorites: 'Clear favorites',
-      clearCompare: 'Clear comparison'
+      clearCompare: 'Clear comparison',
+      products: 'Products',
+      emptyFavorites: 'Your favorites list is empty',
+      emptyCompare: 'Comparison list is empty'
     }
   };
 
@@ -186,7 +206,9 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
   const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
   const clearFavorites = () => {
-    setFavorites([]);
+    if (setFavorites) {
+      setFavorites([]);
+    }
   };
 
   return (
@@ -224,7 +246,7 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
             />
           </svg>
-          <p className="mt-2 text-gray-500">{getTranslation('noFavorites')}</p>
+          <p className="mt-2 text-gray-500">{getTranslation('emptyFavorites')}</p>
           <button
             onClick={() => setCurrentPage('home')}
             className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
@@ -246,11 +268,15 @@ const FavoritesPage = ({ favorites, setFavorites, setCurrentPage, products, lang
                 language={language}
                 currency={currency}
                 formatPrice={formatPrice}
+                setCurrentPage={setCurrentPage}
+                setCurrentProduct={setCurrentProduct}
               />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleFavorite(product);
+                  if (toggleFavorite) {
+                    toggleFavorite(product);
+                  }
                 }}
                 className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
               >

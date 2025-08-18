@@ -15,7 +15,9 @@ const Header = ({
   setCurrency,
   login,
   logout,
-  formatPrice
+  formatPrice,
+  compareList,
+  favorites
 }) => {
   const [showVoiceSearch, setShowVoiceSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -254,7 +256,7 @@ const Header = ({
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2h-4l-4 4z" />
               </svg>
-              {notifications.filter(n => !n.read).length > 0 && (
+              {notifications?.filter(n => !n.read).length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {notifications.filter(n => !n.read).length}
                 </span>
@@ -278,9 +280,37 @@ const Header = ({
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9"
                 />
               </svg>
-              {cart.length > 0 && (
+              {cart?.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setCurrentPage('compare')}
+              className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              {compareList?.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {compareList.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setCurrentPage('favorites')}
+              className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {favorites?.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {favorites.length}
                 </span>
               )}
             </button>

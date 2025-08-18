@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard';
 const ProductPage = ({ 
   currentProduct, 
   setCurrentPage,
+  setCurrentProduct,
   addToCart,
   toggleFavorite,
   toggleCompare,
@@ -400,13 +401,17 @@ const ProductPage = ({
 
             <div className="flex space-x-4 mb-4">
               <button
-                onClick={() => addToCart(currentProduct)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(currentProduct);
+                }}
                 className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
               >
                 {getTranslation('addToCart')}
               </button>
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   addToCart(currentProduct);
                 }}
                 className="px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
@@ -428,7 +433,10 @@ const ProductPage = ({
 
             <div className="flex space-x-2 mb-6">
               <button
-                onClick={() => toggleFavorite(currentProduct)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(currentProduct);
+                }}
                 className={`flex-1 py-2 rounded-lg border transition-colors ${
                   favorites.includes(currentProduct.id)
                     ? 'border-red-500 text-red-500 bg-red-50'
@@ -438,10 +446,13 @@ const ProductPage = ({
                 {favorites.includes(currentProduct.id) ? getTranslation('removeFromFavorites') : getTranslation('addToFavorites')}
               </button>
               <button
-                onClick={() => toggleCompare(currentProduct)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCompare(currentProduct);
+                }}
                 className={`flex-1 py-2 rounded-lg border transition-colors ${
                   compareList.includes(currentProduct.id)
-                    ? 'border-indigo-500 text-indio-500 bg-indigo-50'
+                    ? 'border-indigo-500 text-indigo-500 bg-indigo-50'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
@@ -565,6 +576,8 @@ const ProductPage = ({
                     language={language}
                     currency={currency}
                     formatPrice={formatPrice}
+                    setCurrentPage={setCurrentPage}
+                    setCurrentProduct={setCurrentProduct}
                   />
                   <button
                     onClick={(e) => {
@@ -600,6 +613,8 @@ const ProductPage = ({
                     language={language}
                     currency={currency}
                     formatPrice={formatPrice}
+                    setCurrentPage={setCurrentPage}
+                    setCurrentProduct={setCurrentProduct}
                   />
                   <button
                     onClick={(e) => {
