@@ -1,0 +1,263 @@
+// src/components/Footer.jsx
+const Footer = ({ language }) => {
+  const translations = {
+    ru: {
+      home: 'Главная',
+      products: 'Товары',
+      cart: 'Корзина',
+      orders: 'Заказы',
+      login: 'Войти',
+      logout: 'Выйти',
+      search: 'Поиск товаров...',
+      currency: 'Валюта',
+      language: 'Язык',
+      addToCart: 'В корзину',
+      buyNow: 'Купить сейчас',
+      description: 'Описание',
+      specifications: 'Характеристики',
+      reviews: 'Отзывы',
+      relatedProducts: 'С этим товаром покупают',
+      dontForget: 'Не забудьте приобрести',
+      youViewed: 'Вы недавно смотрели',
+      recommended: 'Рекомендуем',
+      price: 'Цена',
+      stock: 'В наличии',
+      rating: 'Оценка',
+      addToFavorites: 'В избранное',
+      removeFromFavorites: 'Удалить из избранного',
+      addToCompare: 'Сравнить',
+      removeFromCompare: 'Убрать из сравнения',
+      share: 'Поделиться',
+      delivery: 'Доставка',
+      payment: 'Оплата',
+      confirm: 'Подтвердить',
+      subtotal: 'Сумма товаров',
+      discount: 'Скидка',
+      shipping: 'Доставка',
+      total: 'Итого',
+      coupon: 'Промокод',
+      apply: 'Применить',
+      completeOrder: 'Оформить заказ',
+      back: 'Назад',
+      next: 'Далее',
+      orderConfirmed: 'Заказ оформлен!',
+      thankYou: 'Спасибо за покупку!',
+      continueShopping: 'Продолжить покупки',
+      myOrders: 'Мои заказы',
+      loyaltyProgram: 'Программа лояльности',
+      points: 'баллов',
+      level: 'Уровень',
+      tryAR: 'Попробовать в AR',
+      voiceSearch: 'Говорите...',
+      contactUs: 'Свяжитесь с нами',
+      about: 'О нас',
+      support: 'Поддержка',
+      privacy: 'Конфиденциальность',
+      terms: 'Условия использования',
+      newsletter: 'Подписка на новости',
+      subscribe: 'Подписаться',
+      footerText: '© 2024 ShopMaster. Все права защищены.',
+      paymentMethods: 'Способы оплаты',
+      deliveryInfo: 'Информация о доставке',
+      returns: 'Возврат и обмен',
+      warranty: 'Гарантия',
+      contact: 'Контакты',
+      address: 'Адрес',
+      phone: 'Телефон',
+      email: 'Электронная почта',
+      social: 'Мы в социальных сетях',
+      hours: 'Часы работы',
+      monFri: 'Пн-Пт: 9:00 - 21:00',
+      satSun: 'Сб-Вс: 10:00 - 18:00'
+    },
+    en: {
+      home: 'Home',
+      products: 'Products',
+      cart: 'Cart',
+      orders: 'Orders',
+      login: 'Login',
+      logout: 'Logout',
+      search: 'Search products...',
+      currency: 'Currency',
+      language: 'Language',
+      addToCart: 'Add to cart',
+      buyNow: 'Buy now',
+      description: 'Description',
+      specifications: 'Specifications',
+      reviews: 'Reviews',
+      relatedProducts: 'Frequently bought together',
+      dontForget: 'Don\'t forget to buy',
+      youViewed: 'You recently viewed',
+      recommended: 'Recommended',
+      price: 'Price',
+      stock: 'In stock',
+      rating: 'Rating',
+      addToFavorites: 'Add to favorites',
+      removeFromFavorites: 'Remove from favorites',
+      addToCompare: 'Compare',
+      removeFromCompare: 'Remove from comparison',
+      share: 'Share',
+      delivery: 'Delivery',
+      payment: 'Payment',
+      confirm: 'Confirm',
+      subtotal: 'Subtotal',
+      discount: 'Discount',
+      shipping: 'Shipping',
+      total: 'Total',
+      coupon: 'Coupon code',
+      apply: 'Apply',
+      completeOrder: 'Complete order',
+      back: 'Back',
+      next: 'Next',
+      orderConfirmed: 'Order confirmed!',
+      thankYou: 'Thank you for your purchase!',
+      continueShopping: 'Continue shopping',
+      myOrders: 'My orders',
+      loyaltyProgram: 'Loyalty program',
+      points: 'points',
+      level: 'Level',
+      tryAR: 'Try in AR',
+      voiceSearch: 'Speak...',
+      contactUs: 'Contact us',
+      about: 'About',
+      support: 'Support',
+      privacy: 'Privacy',
+      terms: 'Terms of use',
+      newsletter: 'Newsletter',
+      subscribe: 'Subscribe',
+      footerText: '© 2024 ShopMaster. All rights reserved.',
+      paymentMethods: 'Payment methods',
+      deliveryInfo: 'Delivery information',
+      returns: 'Returns and exchanges',
+      warranty: 'Warranty',
+      contact: 'Contact',
+      address: 'Address',
+      phone: 'Phone',
+      email: 'Email',
+      social: 'Follow us',
+      hours: 'Working hours',
+      monFri: 'Mon-Fri: 9:00 - 21:00',
+      satSun: 'Sat-Sun: 10:00 - 18:00'
+    }
+  };
+
+  const getTranslation = (key) => {
+    return translations[language][key] || key;
+  };
+
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div>
+            <h3 className="text-xl font-bold mb-4">ShopMaster</h3>
+            <p className="text-gray-300 mb-4">
+              {language === 'ru' ? 'Лучший интернет-магазин электроники и товаров для дома. Качественные товары по лучшим ценам с доставкой по всей России.' : 
+               'The best online store for electronics and home goods. Quality products at the best prices with delivery throughout Russia.'}
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.983h-1.5c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344a3.097 3.097 0 00.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+                </svg>
+              </a>
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10.912 5.478c-.39-.094-.802-.144-1.23-.144-3.584 0-6.486 2.865-6.486 6.402 0 3.538 2.902 6.402 6.486 6.402 3.585 0 6.487-2.864 6.487-6.402 0-1.458-.48-2.795-1.276-3.876-.104-.14-.158-.347-.137-.545.023-.197.12-.37.265-.485.146-.114.328-.16.508-.122.18.037.335.15.434.313.97 1.554 1.466 3.365 1.466 5.252 0 4.57-3.718 8.237-8.346 8.237-4.63 0-8.347-3.667-8.347-8.237 0-4.57 3.717-8.237 8.347-8.237.86 0 1.687.136 2.45.39.16.055.33.04.478-.04.147-.08.25-.22.28-.386.03-.165-.015-.335-.12-.464-.106-.13-.258-.205-.42-.205z"/>
+                  <path d="M17.788 4.27a.896.896 0 011.267 0l2.253 2.253a.896.896 0 010 1.267l-2.253 2.253a.896.896 0 01-1.267-1.267l1.25-1.25-1.25-1.25a.896.896 0 010-1.267z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">{getTranslation('about')}</h4>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{getTranslation('contactUs')}</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{getTranslation('support')}</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{getTranslation('privacy')}</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{getTranslation('terms')}</a></li>
+            </ul>
+          </div>
+
+          {/* Customer Service */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">{getTranslation('contact')}</h4>
+            <ul className="space-y-2 text-gray-300">
+              <li className="flex items-start space-x-2">
+                <svg className="h-5 w-5 mt-1 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>{language === 'ru' ? 'ул. Ленина, 15, Москва' : 'Lenina St, 15, Moscow'}</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <svg className="h-5 w-5 mt-1 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>+7 (999) 999-99-99</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <svg className="h-5 w-5 mt-1 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>info@shopmaster.ru</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">{getTranslation('newsletter')}</h4>
+            <p className="text-gray-300 mb-4">
+              {language === 'ru' ? 'Подпишитесь на нашу рассылку, чтобы получать новости и специальные предложения.' : 
+               'Subscribe to our newsletter to receive news and special offers.'}
+            </p>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder={language === 'ru' ? 'Ваш email' : 'Your email'}
+                className="flex-1 px-4 py-2 rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+              <button className="bg-indigo-600 text-white px-4 py-2 rounded-r-lg hover:bg-indigo-700 transition-colors">
+                {getTranslation('subscribe')}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 text-sm">
+            {getTranslation('footerText')}
+          </p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <span className="text-gray-400 text-sm">{getTranslation('paymentMethods')}:</span>
+            <div className="flex space-x-2">
+              <svg className="h-6 w-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M21.898 7.009H21V6.009c0-.9-.7-1.6-1.6-1.6h-2.8c-.9 0-1.6.7-1.6 1.6v1.009h-3.7c-.9 0-1.6-.7-1.6-1.6V4.8c0-.9.7-1.6 1.6-1.6h3.7c.9 0 1.6.7 1.6 1.6v.609h2.8c2.2 0 4 1.8 4 4.009v7.8c0 2.2-1.8 4-4 4h-14c-2.2 0-4-1.8-4-4v-7.8c0-2.2 1.8-4 4-4h1.8v-.609c0-1.7 1.3-3.009 3-3.009h5.2c1.7 0 3 1.309 3 3.009v.609h1.8c.9 0 1.6.7 1.6 1.6v1.009h.898c.5 0 .9.4.9.9v1.009c0 .5-.4.9-.9.9zM9.8 8.809H6.8c-.5 0-1 .4-1 .9v.8c0 .5.5.9 1 .9h3c.5 0 1-.4 1-.9v-.8c0-.5-.5-.9-1-.9zm9.2 7.5c.5 0 1-.4 1-.9v-1.5c0-.5-.5-.9-1-.9h-7c-.5 0-1 .4-1 .9v1.5c0 .5.5.9 1 .9h7z"/>
+              </svg>
+              <svg className="h-6 w-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.09-.193-7.719-2.158-10.148-5.146-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.115 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/>
+              </svg>
+              <svg className="h-6 w-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.48 15.995c-1.334.948-3.022 1.505-5.478 1.505-4.418 0-8-3.582-8-6.432 0-3.555 2.882-6.432 6.438-6.432 3.555 0 6.437 2.877 6.437 6.432 0 3.555-2.882 6.432-6.437 6.432zM4.345 20.921c-.59.85-1.269 1.655-1.854 2.061.932.56 2.019.857 3.154.857 6.627 0 12-5.373 12-12 0-.246-.014-.49-.04-.731 1.134-.834 1.854-1.99 2.156-3.302-.732.324-1.526.53-2.358.612-.853-.81-1.97-1.31-3.194-1.31-2.414 0-4.396 1.979-4.396 4.402 0 .345.038.682.11.999-3.642-.173-6.874-1.92-9.089-4.59-.379.649-.59 1.395-.59 2.18 0 1.523.774 2.858 1.938 3.64-.71-.022-1.37-.214-1.958-.532v.053c0 2.12 1.513 3.894 3.534 4.29-.368.1-.758.158-1.166.158-.286 0-.57-.03-.85-.087.57 1.79 2.26 3.09 4.26 3.12-1.56.97-3.53 1.55-5.65 1.55-.37 0-.738-.022-1.103-.065 2.06 1.303 4.49 2.05 7.07 2.05 8.47 0 13.1-7.01 13.1-13.1 0-.2-.004-.4-.01-.605.9-.65 1.67-1.48 2.25-2.43z"/>
+              </svg>
+              <svg className="h-6 w-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.066 9.645c-3.556 0-6.438-2.877-6.438-6.432 0-3.555 2.882-6.432 6.438-6.432 3.555 0 6.437 2.877 6.437 6.432 0 3.555-2.882 6.432-6.437 6.432zM4.345 20.921c-.59.85-1.269 1.655-1.854 2.061.932.56 2.019.857 3.154.857 6.627 0 12-5.373 12-12 0-.246-.014-.49-.04-.731 1.134-.834 1.854-1.99 2.156-3.302-.732.324-1.526.53-2.358.612-.853-.81-1.97-1.31-3.194-1.31-2.414 0-4.396 1.979-4.396 4.402 0 .345.038.682.11.999-3.642-.173-6.874-1.92-9.089-4.59-.379.649-.59 1.395-.59 2.18 0 1.523.774 2.858 1.938 3.64-.71-.022-1.37-.214-1.958-.532v.053c0 2.12 1.513 3.894 3.534 4.29-.368.1-.758.158-1.166.158-.286 0-.57-.03-.85-.087.57 1.79 2.26 3.09 4.26 3.12-1.56.97-3.53 1.55-5.65 1.55-.37 0-.738-.022-1.103-.065 2.06 1.303 4.49 2.05 7.07 2.05 8.47 0 13.1-7.01 13.1-13.1 0-.2-.004-.4-.01-.605.9-.65 1.67-1.48 2.25-2.43z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

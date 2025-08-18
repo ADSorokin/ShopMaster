@@ -1,0 +1,649 @@
+// src/pages/ProductPage.jsx
+import { useState } from 'react';
+import ProductCard from '../components/ProductCard';
+
+const ProductPage = ({ 
+  currentProduct, 
+  setCurrentPage,
+  addToCart,
+  toggleFavorite,
+  toggleCompare,
+  favorites,
+  compareList,
+  products,
+  language,
+  currency,
+  formatPrice
+}) => {
+  const [activeTab, setActiveTab] = useState('description');
+
+  if (!currentProduct) return null;
+
+  const translations = {
+    ru: {
+      home: 'Главная',
+      products: 'Товары',
+      cart: 'Корзина',
+      orders: 'Заказы',
+      login: 'Войти',
+      logout: 'Выйти',
+      search: 'Поиск товаров...',
+      currency: 'Валюта',
+      language: 'Язык',
+      addToCart: 'В корзину',
+      buyNow: 'Купить сейчас',
+      description: 'Описание',
+      specifications: 'Характеристики',
+      reviews: 'Отзывы',
+      relatedProducts: 'С этим товаром покупают',
+      dontForget: 'Не забудьте приобрести',
+      youViewed: 'Вы недавно смотрели',
+      recommended: 'Рекомендуем',
+      price: 'Цена',
+      stock: 'В наличии',
+      rating: 'Оценка',
+      addToFavorites: 'В избранное',
+      removeFromFavorites: 'Удалить из избранного',
+      addToCompare: 'Сравнить',
+      removeFromCompare: 'Убрать из сравнения',
+      share: 'Поделиться',
+      delivery: 'Доставка',
+      payment: 'Оплата',
+      confirm: 'Подтвердить',
+      subtotal: 'Сумма товаров',
+      discount: 'Скидка',
+      shipping: 'Доставка',
+      total: 'Итого',
+      coupon: 'Промокод',
+      apply: 'Применить',
+      completeOrder: 'Оформить заказ',
+      back: 'Назад',
+      next: 'Далее',
+      orderConfirmed: 'Заказ оформлен!',
+      thankYou: 'Спасибо за покупку!',
+      continueShopping: 'Продолжить покупки',
+      myOrders: 'Мои заказы',
+      loyaltyProgram: 'Программа лояльности',
+      points: 'баллов',
+      level: 'Уровень',
+      tryAR: 'Попробовать в AR',
+      voiceSearch: 'Говорите...',
+      contactUs: 'Свяжитесь с нами',
+      about: 'О нас',
+      support: 'Поддержка',
+      privacy: 'Конфиденциальность',
+      terms: 'Условия использования',
+      newsletter: 'Подписка на новости',
+      subscribe: 'Подписаться',
+      footerText: '© 2024 ShopMaster. Все права защищены.',
+      paymentMethods: 'Способы оплаты',
+      deliveryInfo: 'Информация о доставке',
+      returns: 'Возврат и обмен',
+      warranty: 'Гарантия',
+      contact: 'Контакты',
+      address: 'Адрес',
+      phone: 'Телефон',
+      email: 'Электронная почта',
+      social: 'Мы в социальных сетях',
+      hours: 'Часы работы',
+      monFri: 'Пн-Пт: 9:00 - 21:00',
+      satSun: 'Сб-Вс: 10:00 - 18:00',
+      partNumber: 'Артикул',
+      manufacturer: 'Производитель',
+      warrantyPeriod: 'Гарантийный срок',
+      color: 'Цвет',
+      size: 'Размер',
+      material: 'Материал',
+      weight: 'Вес',
+      dimensions: 'Габариты',
+      noFavorites: 'У вас пока нет избранных товаров',
+      noCompare: 'Добавьте товары для сравнения',
+      remove: 'Удалить',
+      clearAll: 'Очистить все',
+      specification: 'Характеристика',
+      value: 'Значение',
+      clearFavorites: 'Очистить избранное',
+      clearCompare: 'Очистить сравнение'
+    },
+    en: {
+      home: 'Home',
+      products: 'Products',
+      cart: 'Cart',
+      orders: 'Orders',
+      login: 'Login',
+      logout: 'Logout',
+      search: 'Search products...',
+      currency: 'Currency',
+      language: 'Language',
+      addToCart: 'Add to cart',
+      buyNow: 'Buy now',
+      description: 'Description',
+      specifications: 'Specifications',
+      reviews: 'Reviews',
+      relatedProducts: 'Frequently bought together',
+      dontForget: 'Don\'t forget to buy',
+      youViewed: 'You recently viewed',
+      recommended: 'Recommended',
+      price: 'Price',
+      stock: 'In stock',
+      rating: 'Rating',
+      addToFavorites: 'Add to favorites',
+      removeFromFavorites: 'Remove from favorites',
+      addToCompare: 'Compare',
+      removeFromCompare: 'Remove from comparison',
+      share: 'Share',
+      delivery: 'Delivery',
+      payment: 'Payment',
+      confirm: 'Confirm',
+      subtotal: 'Subtotal',
+      discount: 'Discount',
+      shipping: 'Shipping',
+      total: 'Total',
+      coupon: 'Coupon code',
+      apply: 'Apply',
+      completeOrder: 'Complete order',
+      back: 'Back',
+      next: 'Next',
+      orderConfirmed: 'Order confirmed!',
+      thankYou: 'Thank you for your purchase!',
+      continueShopping: 'Continue shopping',
+      myOrders: 'My orders',
+      loyaltyProgram: 'Loyalty program',
+      points: 'points',
+      level: 'Level',
+      tryAR: 'Try in AR',
+      voiceSearch: 'Speak...',
+      contactUs: 'Contact us',
+      about: 'About',
+      support: 'Support',
+      privacy: 'Privacy',
+      terms: 'Terms of use',
+      newsletter: 'Newsletter',
+      subscribe: 'Subscribe',
+      footerText: '© 2024 ShopMaster. All rights reserved.',
+      paymentMethods: 'Payment methods',
+      deliveryInfo: 'Delivery information',
+      returns: 'Returns and exchanges',
+      warranty: 'Warranty',
+      contact: 'Contact',
+      address: 'Address',
+      phone: 'Phone',
+      email: 'Email',
+      social: 'Follow us',
+      hours: 'Working hours',
+      monFri: 'Mon-Fri: 9:00 - 21:00',
+      satSun: 'Sat-Sun: 10:00 - 18:00',
+      partNumber: 'Part Number',
+      manufacturer: 'Manufacturer',
+      warrantyPeriod: 'Warranty Period',
+      color: 'Color',
+      size: 'Size',
+      material: 'Material',
+      weight: 'Weight',
+      dimensions: 'Dimensions',
+      noFavorites: 'You don\'t have any favorite products yet',
+      noCompare: 'Add products to compare',
+      remove: 'Remove',
+      clearAll: 'Clear all',
+      specification: 'Specification',
+      value: 'Value',
+      clearFavorites: 'Clear favorites',
+      clearCompare: 'Clear comparison'
+    }
+  };
+
+  const getTranslation = (key) => {
+    return translations[language][key] || key;
+  };
+
+  const currentName = typeof currentProduct.name === 'object' ? currentProduct.name[language] : currentProduct.name;
+  const currentDescription = typeof currentProduct.description === 'object' ? currentProduct.description[language] : currentProduct.description;
+  const currentSpecifications = currentProduct.specifications[language];
+
+  const getRelatedProducts = (product) => {
+    // Products frequently bought together
+    const related = [];
+    
+    // Add accessories for electronics
+    if (product.category === 'electronics') {
+      related.push(...products.filter(p => p.category === 'accessories' && p.stock > 0).slice(0, 2));
+    }
+    
+    // Add chargers for devices
+    if (['electronics', 'clothing'].includes(product.category)) {
+      related.push(...products.filter(p => p.name[language].toLowerCase().includes('заряд') || 
+                                       p.name[language].toLowerCase().includes('charger')).slice(0, 1));
+    }
+    
+    // Add cases for phones
+    if (product.name[language].toLowerCase().includes('смартфон') || 
+        product.name[language].toLowerCase().includes('phone')) {
+      related.push(...products.filter(p => p.name[language].toLowerCase().includes('чехол') || 
+                                       p.name[language].toLowerCase().includes('case')).slice(0, 1));
+    }
+    
+    return [...new Set(related)].slice(0, 3);
+  };
+
+  const getDontForgetProducts = (product) => {
+    // Products that are often forgotten
+    const dontForget = [];
+    
+    // Add cables for electronics
+    if (product.category === 'electronics') {
+      dontForget.push(...products.filter(p => p.name[language].toLowerCase().includes('кабель') || 
+                                        p.name[language].toLowerCase().includes('cable')).slice(0, 2));
+    }
+    
+    // Add memory cards for cameras/phones
+    if (product.name[language].toLowerCase().includes('камера') || 
+        product.name[language].toLowerCase().includes('camera') ||
+        product.name[language].toLowerCase().includes('смартфон') ||
+        product.name[language].toLowerCase().includes('phone')) {
+      dontForget.push(...products.filter(p => p.name[language].toLowerCase().includes('карта памяти') || 
+                                         p.name[language].toLowerCase().includes('memory card')).slice(0, 1));
+    }
+    
+    // Add screen protectors for phones/tablets
+    if (product.name[language].toLowerCase().includes('смартфон') || 
+        product.name[language].toLowerCase().includes('phone') ||
+        product.name[language].toLowerCase().includes('планшет') ||
+        product.name[language].toLowerCase().includes('tablet')) {
+      dontForget.push(...products.filter(p => p.name[language].toLowerCase().includes('защитное стекло') || 
+                                         p.name[language].toLowerCase().includes('screen protector')).slice(0, 1));
+    }
+    
+    return [...new Set(dontForget)].slice(0, 3);
+  };
+
+  const relatedProducts = getRelatedProducts(currentProduct);
+  const dontForgetProducts = getDontForgetProducts(currentProduct);
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" itemScope itemType="https://schema.org/Product">
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+          {/* Image Gallery */}
+          <div>
+            <div className="mb-4">
+              <img
+                src={currentProduct.images[0]}
+                alt={currentName}
+                className="w-full h-96 object-cover rounded-lg"
+                itemProp="image"
+              />
+            </div>
+            <div className="flex space-x-2">
+              {currentProduct.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`${currentName} ${index + 1}`}
+                  className="w-20 h-20 object-cover rounded cursor-pointer border-2 border-transparent hover:border-indigo-500"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Product Info */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-3xl font-bold text-gray-900" itemProp="name">{currentName}</h1>
+              <button
+                onClick={() => setCurrentPage('home')}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="flex items-center space-x-1" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg
+                    key={star}
+                    className={`w-4 h-4 ${star <= currentProduct.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+                <span className="text-sm text-gray-600 ml-1" itemProp="ratingValue">({currentProduct.rating})</span>
+                <meta itemProp="bestRating" content="5" />
+                <meta itemProp="ratingCount" content={currentProduct.reviews.length} />
+              </div>
+              <span className="text-gray-600">{currentProduct.reviews.length} {language === 'ru' ? 'отзывов' : 'reviews'}</span>
+              <span className="text-gray-600" itemProp="availability">{currentProduct.stock} {getTranslation('stock')}</span>
+            </div>
+
+            <div className="flex items-center space-x-3 mb-6">
+              <span className="text-3xl font-bold text-indigo-600" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                <span itemProp="price">{formatPrice(currentProduct.discount ? currentProduct.price * (1 - currentProduct.discount / 100) : currentProduct.price)}</span>
+                <meta itemProp="priceCurrency" content={currency} />
+                <meta itemProp="availability" content="https://schema.org/InStock" />
+              </span>
+              {currentProduct.discount > 0 && (
+                <>
+                  <span className="text-xl text-gray-500 line-through">
+                    {formatPrice(currentProduct.price)}
+                  </span>
+                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-bold">
+                    -{currentProduct.discount}%
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Part Number */}
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <strong className="text-gray-700">{getTranslation('partNumber')}:</strong>
+                  <span className="ml-2 font-mono">{currentSpecifications.partNumber}</span>
+                </div>
+                <div>
+                  <strong className="text-gray-700">{getTranslation('manufacturer')}:</strong>
+                  <span className="ml-2">{currentSpecifications.manufacturer}</span>
+                </div>
+                <div>
+                  <strong className="text-gray-700">{getTranslation('warrantyPeriod')}:</strong>
+                  <span className="ml-2">{currentSpecifications.warrantyPeriod}</span>
+                </div>
+                <div>
+                  <strong className="text-gray-700">{getTranslation('color')}:</strong>
+                  <span className="ml-2">{currentSpecifications.color}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Options Selection */}
+            <div className="space-y-4 mb-6">
+              {currentProduct.colors && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {language === 'ru' ? 'Цвет' : 'Color'}
+                  </label>
+                  <div className="flex space-x-2">
+                    {currentProduct.colors.map((color) => (
+                      <button
+                        key={color}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        {color}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {currentProduct.sizes && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {language === 'ru' ? 'Размер' : 'Size'}
+                  </label>
+                  <div className="flex space-x-2">
+                    {currentProduct.sizes.map((size) => (
+                      <button
+                        key={size}
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex space-x-4 mb-4">
+              <button
+                onClick={() => addToCart(currentProduct)}
+                className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
+              >
+                {getTranslation('addToCart')}
+              </button>
+              <button
+                onClick={() => {
+                  addToCart(currentProduct);
+                  setShowCart(true);
+                }}
+                className="px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
+              >
+                {getTranslation('buyNow')}
+              </button>
+            </div>
+
+            {/* AR Try-On */}
+            {currentProduct.arModel && (
+              <button className="w-full flex items-center justify-center space-x-2 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mb-4">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>{getTranslation('tryAR')}</span>
+              </button>
+            )}
+
+            <div className="flex space-x-2 mb-6">
+              <button
+                onClick={() => toggleFavorite(currentProduct)}
+                className={`flex-1 py-2 rounded-lg border transition-colors ${
+                  favorites.includes(currentProduct.id)
+                    ? 'border-red-500 text-red-500 bg-red-50'
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                {favorites.includes(currentProduct.id) ? getTranslation('removeFromFavorites') : getTranslation('addToFavorites')}
+              </button>
+              <button
+                onClick={() => toggleCompare(currentProduct)}
+                className={`flex-1 py-2 rounded-lg border transition-colors ${
+                  compareList.includes(currentProduct.id)
+                    ? 'border-indigo-500 text-indigo-500 bg-indigo-50'
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                {compareList.includes(currentProduct.id) ? getTranslation('removeFromCompare') : getTranslation('addToCompare')}
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className="border-b mb-6">
+              <nav className="flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('description')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'description'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {getTranslation('description')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('specifications')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'specifications'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {getTranslation('specifications')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('reviews')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'reviews'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {getTranslation('reviews')}
+                </button>
+              </nav>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'description' && (
+              <div className="mb-6">
+                <p className="text-gray-700 leading-relaxed">{currentDescription}</p>
+              </div>
+            )}
+
+            {activeTab === 'specifications' && (
+              <div className="space-y-4">
+                <h3 className="font-semibold mb-2">{getTranslation('specifications')}:</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {Object.entries(currentSpecifications).filter(([key]) => 
+                    !['partNumber', 'manufacturer', 'warrantyPeriod', 'color'].includes(key)
+                  ).map(([key, value]) => (
+                    <div key={key} className="flex justify-between py-2 border-b border-gray-200">
+                      <span className="font-medium text-gray-700">{key}:</span>
+                      <span className="text-gray-900">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'reviews' && (
+              <div className="space-y-4">
+                <div className="mb-6">
+                  <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                    {language === 'ru' ? 'Оставить отзыв' : 'Write a review'}
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {currentProduct.reviews.map((review) => (
+                    <div key={review.id} className="border-b pb-4" itemScope itemType="https://schema.org/Review">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <span className="font-semibold" itemProp="author">{review.user}</span>
+                          <div className="flex items-center space-x-1" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <svg
+                                key={star}
+                                className={`w-4 h-4 ${star <= review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                            <meta itemProp="ratingValue" content={review.rating} />
+                            <meta itemProp="bestRating" content="5" />
+                          </div>
+                        </div>
+                        <span className="text-sm text-gray-500" itemProp="datePublished">{review.date}</span>
+                      </div>
+                      <p className="text-gray-700" itemProp="reviewBody">{review.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <div className="border-t p-8">
+            <h3 className="text-2xl font-bold mb-6">{getTranslation('relatedProducts')}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {relatedProducts.map(product => (
+                <div key={product.id} className="relative">
+                  <ProductCard 
+                    product={product} 
+                    addToCart={addToCart}
+                    toggleFavorite={toggleFavorite}
+                    toggleCompare={toggleCompare}
+                    favorites={favorites}
+                    compareList={compareList}
+                    language={language}
+                    currency={currency}
+                    formatPrice={formatPrice}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(product);
+                    }}
+                    className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
+                  >
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Don't Forget Products */}
+        {dontForgetProducts.length > 0 && (
+          <div className="border-t p-8">
+            <h3 className="text-2xl font-bold mb-6">{getTranslation('dontForget')}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {dontForgetProducts.map(product => (
+                <div key={product.id} className="relative">
+                  <ProductCard 
+                    product={product} 
+                    addToCart={addToCart}
+                    toggleFavorite={toggleFavorite}
+                    toggleCompare={toggleCompare}
+                    favorites={favorites}
+                    compareList={compareList}
+                    language={language}
+                    currency={currency}
+                    formatPrice={formatPrice}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(product);
+                    }}
+                    className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
+                  >
+                    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Social Sharing */}
+        <div className="border-t p-8">
+          <h3 className="text-lg font-semibold mb-4">{getTranslation('share')}</h3>
+          <div className="flex space-x-2">
+            <button className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.983h-1.5c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </button>
+            <button className="bg-pink-600 text-white p-2 rounded hover:bg-pink-700">
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344a3.097 3.097 0 00.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+              </svg>
+            </button>
+            <button className="bg-green-600 text-white p-2 rounded hover:bg-green-700">
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10.912 5.478c-.39-.094-.802-.144-1.23-.144-3.584 0-6.486 2.865-6.486 6.402 0 3.538 2.902 6.402 6.486 6.402 3.585 0 6.487-2.864 6.487-6.402 0-1.458-.48-2.795-1.276-3.876-.104-.14-.158-.347-.137-.545.023-.197.12-.37.265-.485.146-.114.328-.16.508-.122.18.037.335.15.434.313.97 1.554 1.466 3.365 1.466 5.252 0 4.57-3.718 8.237-8.346 8.237-4.63 0-8.347-3.667-8.347-8.237 0-4.57 3.717-8.237 8.347-8.237.86 0 1.687.136 2.45.39.16.055.33.04.478-.04.147-.08.25-.22.28-.386.03-.165-.015-.335-.12-.464-.106-.13-.258-.205-.42-.205z"/>
+                <path d="M17.788 4.27a.896.896 0 011.267 0l2.253 2.253a.896.896 0 010 1.267l-2.253 2.253a.896.896 0 01-1.267-1.267l1.25-1.25-1.25-1.25a.896.896 0 010-1.267z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductPage;
