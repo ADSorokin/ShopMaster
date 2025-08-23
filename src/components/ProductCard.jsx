@@ -1,6 +1,29 @@
 // src/components/ProductCard.jsx
 import { useState } from 'react';
 
+/**
+ * Компонент карточки товара
+ * 
+ * Отображает карточку с информацией о товаре, включая изображение, название,
+ * описание, рейтинг, цену и кнопки действий (добавить в корзину, избранное, сравнение).
+ * 
+ * При клике на карточку (не на кнопки) происходит переход к странице товара.
+ * 
+ * @param {Object} props - Свойства компонента
+ * @param {Object} props.product - Объект товара с информацией
+ * @param {Function} props.addToCart - Функция для добавления товара в корзину
+ * @param {Function} props.toggleFavorite - Функция для добавления/удаления из избранного
+ * @param {Function} props.toggleCompare - Функция для добавления/удаления из сравнения
+ * @param {Array} props.favorites - Массив ID избранных товаров
+ * @param {Array} props.compareList - Массив ID товаров для сравнения
+ * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en')
+ * @param {string} props.currency - Текущая валюта ('RUB', 'USD', 'EUR')
+ * @param {Function} props.formatPrice - Функция форматирования цен
+ * @param {Function} props.setCurrentPage - Функция для изменения текущей страницы
+ * @param {Function} props.setCurrentProduct - Функция для установки текущего товара
+ * 
+ * @returns {JSX.Element} Отрендеренный компонент карточки товара
+ */
 const ProductCard = ({ 
   product, 
   addToCart, 
@@ -14,40 +37,150 @@ const ProductCard = ({
   setCurrentPage,
   setCurrentProduct
 }) => {
+  // Локальное состояние для анимации при наведении
   const [isHovered, setIsHovered] = useState(false);
 
+  // Получаем название товара в зависимости от языка
   const currentName = typeof product.name === 'object' ? product.name[language] : product.name;
+  // Получаем описание товара в зависимости от языка
   const currentDescription = typeof product.description === 'object' ? product.description[language] : product.description;
 
+  /**
+   * Обработчик клика по карточке товара
+   * Проверяет, был ли клик по кнопке или иконке, и если нет - переходит к странице товара
+   * 
+   * @param {Object} e - Объект события клика
+   */
   const handleCardClick = (e) => {
-    // Only navigate if the click wasn't on a button or the favorite/compare icons
-    if (e.target.closest('button') || e.target.closest('.no-navigate')) {
+    console.log('=== PRODUCT CARD CLICK DEBUG ===');
+    console.log('Click event:', e);
+    console.log('Event target:', e.target);
+    console.log('Closest button:', e.target.closest('button'));
+    console.log('Closest svg:', e.target.closest('svg'));
+    console.log('Closest path:', e.target.closest('path'));
+    console.log('Product data:', product);
+    console.log('Available functions:', { setCurrentProduct, setCurrentPage });
+    
+    // Проверяем, был ли клик по кнопке, иконке или другому интерактивному элементу
+    if (e.target.closest('button') || 
+        e.target.closest('svg') || 
+        e.target.closest('path') || 
+        e.target.closest('.no-navigate')) {
+      console.log('Click was on interactive element, navigation prevented');
       return;
     }
+    
+    // Проверяем наличие необходимых функций
     if (setCurrentProduct && setCurrentPage) {
-      setCurrentProduct(product);
-      setCurrentPage('product');
+      console.log('Navigating to product page:', product);
+      try {
+        setCurrentProduct(product);
+        console.log('Current product set successfully');
+        
+        setCurrentPage('product');
+        console.log('Page changed to product');
+      } catch (error) {
+        console.error('Error during navigation:', error);
+      }
+    } else {
+      console.warn('Navigation functions are not available');
+      console.warn('setCurrentProduct:', setCurrentProduct);
+      console.warn('setCurrentPage:', setCurrentPage);
+      
+      // Дополнительная диагностика - проверяем все пропсы
+      console.log('All props received:', { 
+        product, 
+        addToCart, 
+        toggleFavorite, 
+        toggleCompare, 
+        favorites, 
+        compareList, 
+        language,
+        currency,
+        formatPrice,
+        setCurrentPage,
+        setCurrentProduct
+      });
     }
   };
 
+  /**
+   * Обработчик добавления товара в корзину
+   * Останавливает всплытие события, чтобы не сработал переход к странице товара
+   * 
+   * @param {Object} e - Объект события клика
+   */
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Prevent card click when adding to cart
+    console.log('=== ADD TO CART DEBUG ===');
+    console.log('Adding to cart:', product);
+    console.log('Event:', e);
+    
+    // Останавливаем всплытие события
+    e.stopPropagation();
+    
     if (addToCart) {
-      addToCart(product);
+      try {
+        addToCart(product);
+        console.log('Product added to cart successfully');
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+      }
+    } else {
+      console.warn('addToCart function is not available');
     }
   };
 
+  /**
+   * Обработчик добавления/удаления товара из избранного
+   * Останавливает всплытие события
+   * 
+   * @param {Object} e - Объект события клика
+   */
   const handleToggleFavorite = (e) => {
-    e.stopPropagation(); // Prevent card click when toggling favorite
+    console.log('=== TOGGLE FAVORITE DEBUG ===');
+    console.log('Toggling favorite for:', product);
+    console.log('Current favorites:', favorites);
+    console.log('Event:', e);
+    
+    // Останавливаем всплытие события
+    e.stopPropagation();
+    
     if (toggleFavorite) {
-      toggleFavorite(product);
+      try {
+        toggleFavorite(product);
+        console.log('Favorite toggle successful');
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+      }
+    } else {
+      console.warn('toggleFavorite function is not available');
     }
   };
 
+  /**
+   * Обработчик добавления/удаления товара из сравнения
+   * Останавливает всплытие события
+   * 
+   * @param {Object} e - Объект события клика
+   */
   const handleToggleCompare = (e) => {
-    e.stopPropagation(); // Prevent card click when toggling compare
+    console.log('=== TOGGLE COMPARE DEBUG ===');
+    console.log('Toggling compare for:', product);
+    console.log('Current compare list:', compareList);
+    console.log('Event:', e);
+    
+    // Останавливаем всплытие события
+    e.stopPropagation();
+    
     if (toggleCompare) {
-      toggleCompare(product);
+      try {
+        toggleCompare(product);
+        console.log('Compare toggle successful');
+      } catch (error) {
+        console.error('Error toggling compare:', error);
+      }
+    } else {
+      console.warn('toggleCompare function is not available');
     }
   };
 
@@ -80,6 +213,7 @@ const ProductCard = ({
                 ? 'bg-red-100 text-red-600'
                 : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
+            aria-label={favorites?.includes(product.id) ? 'Remove from favorites' : 'Add to favorites'}
           >
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
@@ -93,6 +227,7 @@ const ProductCard = ({
                 ? 'bg-indigo-100 text-indigo-600'
                 : 'bg-white text-gray-600 hover:bg-gray-100'
             }`}
+            aria-label={compareList?.includes(product.id) ? 'Remove from compare' : 'Add to compare'}
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />

@@ -1,6 +1,34 @@
 // src/pages/HomePage.jsx
 import ProductCard from '../components/ProductCard';
 
+/**
+ * Главная страница приложения
+ * 
+ * Отображает главную страницу с героями, фильтрами категорий, поиском и сеткой товаров.
+ * Является центральной точкой для навигации по приложению.
+ * 
+ * @param {Object} props - Свойства компонента
+ * @param {Array} props.products - Массив всех продуктов для отображения
+ * @param {Array} props.categories - Массив категорий для фильтрации
+ * @param {string} props.selectedCategory - ID выбранной категории
+ * @param {Function} props.setSelectedCategory - Функция для установки выбранной категории
+ * @param {string} props.searchTerm - Текущий поисковый запрос
+ * @param {Function} props.setSearchTerm - Функция для установки поискового запроса
+ * @param {Object} props.filters - Объект с текущими фильтрами (бренд, рейтинг, диапазон цен)
+ * @param {Function} props.setFilters - Функция для установки фильтров
+ * @param {Function} props.addToCart - Функция для добавления товара в корзину
+ * @param {Function} props.toggleFavorite - Функция для добавления/удаления из избранного
+ * @param {Function} props.toggleCompare - Функция для добавления/удаления из сравнения
+ * @param {Array} props.favorites - Массив ID избранных товаров
+ * @param {Array} props.compareList - Массив ID товаров для сравнения
+ * @param {Function} props.setCurrentPage - Функция для изменения текущей страницы
+ * @param {Function} props.setCurrentProduct - Функция для установки текущего товара
+ * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en')
+ * @param {string} props.currency - Текущая валюта ('RUB', 'USD', 'EUR')
+ * @param {Function} props.formatPrice - Функция форматирования цен
+ * 
+ * @returns {JSX.Element} Отрендеренный компонент главной страницы
+ */
 const HomePage = ({ 
   products, 
   categories, 
@@ -21,6 +49,7 @@ const HomePage = ({
   currency,
   formatPrice
 }) => {
+  // Объект с переводами для интернационализации
   const translations = {
     ru: {
       home: 'Главная',
@@ -162,9 +191,31 @@ const HomePage = ({
     }
   };
 
+  /**
+   * Функция получения перевода для заданного ключа
+   * @param {string} key - Ключ перевода
+   * @returns {string} Переведенный текст или исходный ключ, если перевод не найден
+   */
   const getTranslation = (key) => {
     return translations[language][key] || key;
   };
+
+  // Добавим логирование для диагностики передачи пропсов
+  console.log('=== HOME PAGE DEBUG ===');
+  console.log('setCurrentPage function:', setCurrentPage);
+  console.log('setCurrentProduct function:', setCurrentProduct);
+  console.log('addToCart function:', addToCart);
+  console.log('toggleFavorite function:', toggleFavorite);
+  console.log('toggleCompare function:', toggleCompare);
+  console.log('favorites:', favorites);
+  console.log('compareList:', compareList);
+  console.log('products count:', products?.length);
+  console.log('categories:', categories);
+  console.log('selectedCategory:', selectedCategory);
+  console.log('searchTerm:', searchTerm);
+  console.log('filters:', filters);
+  console.log('language:', language);
+  console.log('currency:', currency);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -285,6 +336,8 @@ const HomePage = ({
             language={language}
             currency={currency}
             formatPrice={formatPrice}
+            setCurrentPage={setCurrentPage}
+            setCurrentProduct={setCurrentProduct}
           />
         ))}
       </div>

@@ -1,36 +1,69 @@
 // src/components/Header.jsx
 import { useState } from 'react';
 
+/**
+ * Компонент шапки приложения
+ * 
+ * @param {Object} props - Свойства компонента
+ * @param {Array} props.cart - Массив товаров в корзине
+ * @param {Array} props.notifications - Массив уведомлений
+ * @param {Array} props.favorites - Массив ID избранных товаров
+ * @param {Array} [props.compareList] - Массив ID товаров для сравнения (опционально)
+ * @param {Object|null} props.user - Данные пользователя или null если не авторизован
+ * @param {string} props.currentPage - Текущая страница приложения
+ * @param {Function} props.setCurrentPage - Функция для изменения текущей страницы
+ * @param {Function} props.setShowCart - Функция для отображения/скрытия корзины
+ * @param {Function} props.setShowChat - Функция для отображения/скрытия чата
+ * @param {Function} [props.setShowCompare] - Функция для отображения/скрытия окна сравнения (опционально)
+ * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en')
+ * @param {Function} props.setLanguage - Функция для изменения языка
+ * @param {string} props.currency - Текущая валюта ('RUB', 'USD', 'EUR')
+ * @param {Function} props.setCurrency - Функция для изменения валюты
+ * @param {Function} props.login - Функция входа в систему
+ * @param {Function} props.logout - Функция выхода из системы
+ * @param {Function} props.formatPrice - Функция форматирования цен
+ * 
+ * @returns {JSX.Element} Отрендеренный компонент шапки
+ */
 const Header = ({ 
   cart, 
   notifications, 
+  favorites,
+  compareList = [],
   user, 
   currentPage,
   setCurrentPage,
   setShowCart,
   setShowChat,
+  setShowCompare,
   language,
   setLanguage,
   currency,
   setCurrency,
   login,
   logout,
-  formatPrice,
-  compareList,
-  favorites
+  formatPrice
 }) => {
+  // Локальное состояние для голосового поиска
   const [showVoiceSearch, setShowVoiceSearch] = useState(false);
+  // Локальное состояние для поискового запроса
   const [searchTerm, setSearchTerm] = useState('');
 
+  /**
+   * Функция запуска голосового поиска
+   * Имитирует распознавание речи и устанавливает результат поиска
+   */
   const startVoiceSearch = () => {
     setShowVoiceSearch(true);
-    // Simulate voice recognition
+    // Имитация распознавания речи
     setTimeout(() => {
+      // Устанавливаем пример поискового запроса в зависимости от языка
       setSearchTerm(language === 'ru' ? 'смартфон' : 'smartphone');
       setShowVoiceSearch(false);
     }, 2000);
   };
 
+  // Объект с переводами для интернационализации
   const translations = {
     ru: {
       home: 'Главная',
@@ -99,7 +132,9 @@ const Header = ({
       social: 'Мы в социальных сетях',
       hours: 'Часы работы',
       monFri: 'Пн-Пт: 9:00 - 21:00',
-      satSun: 'Сб-Вс: 10:00 - 18:00'
+      satSun: 'Сб-Вс: 10:00 - 18:00',
+      favorites: 'Избранное',
+      compare: 'Сравнение'
     },
     en: {
       home: 'Home',
@@ -168,18 +203,70 @@ const Header = ({
       social: 'Follow us',
       hours: 'Working hours',
       monFri: 'Mon-Fri: 9:00 - 21:00',
-      satSun: 'Sat-Sun: 10:00 - 18:00'
+      satSun: 'Sat-Sun: 10:00 - 18:00',
+      favorites: 'Favorites',
+      compare: 'Comparison'
     }
   };
 
+  /**
+   * Функция получения перевода для заданного ключа
+   * @param {string} key - Ключ перевода
+   * @returns {string} Переведенный текст или исходный ключ, если перевод не найден
+   */
   const getTranslation = (key) => {
     return translations[language][key] || key;
+  };
+
+  // Безопасное вычисление количества товаров в корзине
+  const cartCount = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (item.quantity || 1), 0) : 0;
+  
+  // Безопасное вычисление количества избранных товаров
+  const favoritesCount = Array.isArray(favorites) ? favorites.length : 0;
+  
+  // Безопасное вычисление количества товаров для сравнения
+  const compareCount = Array.isArray(compareList) ? compareList.length : 0;
+
+  // Подсчет непрочитанных уведомлений
+  const unreadNotifications = Array.isArray(notifications) 
+    ? notifications.filter(n => !n.read).length 
+    : 0;
+
+  /**
+   * Обработчик клика по иконке корзины
+   */
+  const handleCartClick = (e) => {
+    console.log('=== CART CLICK DEBUG ===');
+    console.log('Event:', e);
+    console.log('setShowCart:', setShowCart);
+    console.log('Current cart:', cart);
+    console.log('Cart count:', cartCount);
+    
+    // Попробуем вызвать функцию напрямую
+    try {
+      if (typeof setShowCart === 'function') {
+        console.log('Calling setShowCart(true)');
+        setShowCart(true);
+        console.log('setShowCart called successfully');
+        
+        // Добавим небольшую задержку для проверки
+        setTimeout(() => {
+          console.log('State should be updated by now');
+        }, 100);
+      } else {
+        console.log('setShowCart is not a function, navigating to cart page');
+        setCurrentPage('cart');
+      }
+    } catch (error) {
+      console.error('Error in handleCartClick:', error);
+    }
   };
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Логотип и навигация */}
           <div className="flex items-center">
             <button
               onClick={() => setCurrentPage('home')}
@@ -189,6 +276,7 @@ const Header = ({
             </button>
           </div>
           
+          {/* Поисковая строка */}
           <div className="flex-1 max-w-lg mx-8">
             <div className="relative">
               <input
@@ -220,6 +308,7 @@ const Header = ({
                 </svg>
               </button>
             </div>
+            {/* Индикатор голосового поиска */}
             {showVoiceSearch && (
               <div className="absolute top-full left-0 w-full mt-1 bg-indigo-600 text-white p-2 rounded-lg text-center animate-pulse">
                 {getTranslation('voiceSearch')}
@@ -227,7 +316,9 @@ const Header = ({
             )}
           </div>
 
+          {/* Правая часть шапки с иконками */}
           <div className="flex items-center space-x-4">
+            {/* Выбор языка и валюты */}
             <div className="flex items-center space-x-2">
               <select
                 value={language}
@@ -249,6 +340,7 @@ const Header = ({
               </select>
             </div>
             
+            {/* Иконка уведомлений */}
             <button
               onClick={() => setCurrentPage('orders')}
               className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
@@ -256,16 +348,57 @@ const Header = ({
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2h-4l-4 4z" />
               </svg>
-              {notifications?.filter(n => !n.read).length > 0 && (
+              {/* Индикатор новых уведомлений */}
+              {unreadNotifications > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {notifications.filter(n => !n.read).length}
+                  {unreadNotifications}
                 </span>
               )}
             </button>
             
+            {/* Иконка избранного */}
             <button
-              onClick={() => setShowCart(prev => !prev)}
+              onClick={() => setCurrentPage('favorites')}
+              className="relative p-2 text-gray-600 hover:text-red-600 transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {/* Индикатор количества избранных товаров */}
+              {favoritesCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {favoritesCount}
+                </span>
+              )}
+            </button>
+            
+            {/* Иконка сравнения */}
+            <button
+              onClick={() => {
+                if (typeof setShowCompare === 'function') {
+                  setShowCompare(true);
+                } else {
+                  setCurrentPage('compare');
+                }
+              }}
               className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {/* Индикатор количества товаров в сравнении */}
+              {compareCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-indigo-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {compareCount}
+                </span>
+              )}
+            </button>
+            
+            {/* Иконка корзины */}
+            <button
+              onClick={handleCartClick}
+              className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
+              aria-label={`${getTranslation('cart')} (${cartCount} items)`}
             >
               <svg
                 className="h-6 w-6"
@@ -280,41 +413,15 @@ const Header = ({
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9"
                 />
               </svg>
-              {cart?.length > 0 && (
+              {/* Индикатор количества товаров в корзине */}
+              {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                  {cartCount}
                 </span>
               )}
             </button>
 
-            <button
-              onClick={() => setCurrentPage('compare')}
-              className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              {compareList?.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {compareList.length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setCurrentPage('favorites')}
-              className="relative p-2 text-gray-600 hover:text-indigo-600 transition-colors"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              {favorites?.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {favorites.length}
-                </span>
-              )}
-            </button>
-
+            {/* Блок пользователя (авторизован/не авторизован) */}
             {user ? (
               <div className="flex items-center space-x-2">
                 <button

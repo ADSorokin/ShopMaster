@@ -2,6 +2,28 @@
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 
+/**
+ * Страница товара
+ * 
+ * Отображает подробную информацию о выбранном товаре, включая изображения,
+ * описание, характеристики, отзывы и связанные товары.
+ * 
+ * @param {Object} props - Свойства компонента
+ * @param {Object} props.currentProduct - Текущий выбранный товар
+ * @param {Function} props.setCurrentPage - Функция для изменения текущей страницы
+ * @param {Function} props.setCurrentProduct - Функция для установки текущего товара
+ * @param {Function} props.addToCart - Функция для добавления товара в корзину
+ * @param {Function} props.toggleFavorite - Функция для добавления/удаления из избранного
+ * @param {Function} props.toggleCompare - Функция для добавления/удаления из сравнения
+ * @param {Array} props.favorites - Массив ID избранных товаров
+ * @param {Array} props.compareList - Массив ID товаров для сравнения
+ * @param {Array} props.products - Массив всех товаров для отображения связанных товаров
+ * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en')
+ * @param {string} props.currency - Текущая валюта ('RUB', 'USD', 'EUR')
+ * @param {Function} props.formatPrice - Функция форматирования цен
+ * 
+ * @returns {JSX.Element} Отрендеренный компонент страницы товара
+ */
 const ProductPage = ({ 
   currentProduct, 
   setCurrentPage,
@@ -16,10 +38,25 @@ const ProductPage = ({
   currency,
   formatPrice
 }) => {
+  // Локальное состояние для активной вкладки (описание, характеристики, отзывы)
   const [activeTab, setActiveTab] = useState('description');
 
-  if (!currentProduct) return null;
+  // Проверка наличия текущего товара
+  if (!currentProduct) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+        <h1 className="text-3xl font-bold mb-4">Товар не найден</h1>
+        <button
+          onClick={() => setCurrentPage('home')}
+          className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Вернуться на главную
+        </button>
+      </div>
+    );
+  }
 
+  // Объект с переводами для интернационализации
   const translations = {
     ru: {
       home: 'Главная',
@@ -193,30 +230,50 @@ const ProductPage = ({
     }
   };
 
+  /**
+   * Функция получения перевода для заданного ключа
+   * @param {string} key - Ключ перевода
+   * @returns {string} Переведенный текст или исходный ключ, если перевод не найден
+   */
   const getTranslation = (key) => {
     return translations[language][key] || key;
   };
 
+  /**
+   * Получение названия товара в зависимости от языка
+   * @type {string}
+   */
   const currentName = typeof currentProduct.name === 'object' ? currentProduct.name[language] : currentProduct.name;
+  
+  /**
+   * Получение описания товара в зависимости от языка
+   * @type {string}
+   */
   const currentDescription = typeof currentProduct.description === 'object' ? currentProduct.description[language] : currentProduct.description;
-  const currentSpecifications = currentProduct.specifications[language];
+  
+  /**
+   * Получение характеристик товара в зависимости от языка
+   * @type {Object}
+   */
+  const currentSpecifications = currentProduct.specifications?.[language] || {};
 
+  /**
+   * Получение связанных товаров
+   * @param {Object} product - Текущий товар
+   * @returns {Array} Массив связанных товаров
+   */
   const getRelatedProducts = (product) => {
-    // Products frequently bought together
     const related = [];
     
-    // Add accessories for electronics
     if (product.category === 'electronics') {
       related.push(...products.filter(p => p.category === 'accessories' && p.stock > 0).slice(0, 2));
     }
     
-    // Add chargers for devices
     if (['electronics', 'clothing'].includes(product.category)) {
       related.push(...products.filter(p => p.name[language].toLowerCase().includes('заряд') || 
                                        p.name[language].toLowerCase().includes('charger')).slice(0, 1));
     }
     
-    // Add cases for phones
     if (product.name[language].toLowerCase().includes('смартфон') || 
         product.name[language].toLowerCase().includes('phone')) {
       related.push(...products.filter(p => p.name[language].toLowerCase().includes('чехол') || 
@@ -226,17 +283,19 @@ const ProductPage = ({
     return [...new Set(related)].slice(0, 3);
   };
 
+  /**
+   * Получение товаров, которые пользователь может забыть купить
+   * @param {Object} product - Текущий товар
+   * @returns {Array} Массив товаров, которые пользователь может забыть купить
+   */
   const getDontForgetProducts = (product) => {
-    // Products that are often forgotten
     const dontForget = [];
     
-    // Add cables for electronics
     if (product.category === 'electronics') {
       dontForget.push(...products.filter(p => p.name[language].toLowerCase().includes('кабель') || 
                                         p.name[language].toLowerCase().includes('cable')).slice(0, 2));
     }
     
-    // Add memory cards for cameras/phones
     if (product.name[language].toLowerCase().includes('камера') || 
         product.name[language].toLowerCase().includes('camera') ||
         product.name[language].toLowerCase().includes('смартфон') ||
@@ -245,7 +304,6 @@ const ProductPage = ({
                                          p.name[language].toLowerCase().includes('memory card')).slice(0, 1));
     }
     
-    // Add screen protectors for phones/tablets
     if (product.name[language].toLowerCase().includes('смартфон') || 
         product.name[language].toLowerCase().includes('phone') ||
         product.name[language].toLowerCase().includes('планшет') ||
@@ -257,25 +315,41 @@ const ProductPage = ({
     return [...new Set(dontForget)].slice(0, 3);
   };
 
+  // Получение связанных товаров
   const relatedProducts = getRelatedProducts(currentProduct);
+  // Получение товаров, которые пользователь может забыть купить
   const dontForgetProducts = getDontForgetProducts(currentProduct);
+
+  // Добавим логирование для проверки передачи пропсов
+  console.log('=== PRODUCT PAGE DEBUG ===');
+  console.log('currentProduct:', currentProduct);
+  console.log('setCurrentPage function:', setCurrentPage);
+  console.log('setCurrentProduct function:', setCurrentProduct);
+  console.log('addToCart function:', addToCart);
+  console.log('toggleFavorite function:', toggleFavorite);
+  console.log('toggleCompare function:', toggleCompare);
+  console.log('favorites:', favorites);
+  console.log('compareList:', compareList);
+  console.log('products count:', products?.length);
+  console.log('language:', language);
+  console.log('currency:', currency);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" itemScope itemType="https://schema.org/Product">
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
-          {/* Image Gallery */}
+          {/* Галерея изображений */}
           <div>
             <div className="mb-4">
               <img
-                src={currentProduct.images[0]}
+                src={currentProduct.images?.[0] || 'https://placehold.co/600x600/ddd/333?text=No+Image'}
                 alt={currentName}
                 className="w-full h-96 object-cover rounded-lg"
                 itemProp="image"
               />
             </div>
             <div className="flex space-x-2">
-              {currentProduct.images.map((image, index) => (
+              {currentProduct.images?.map((image, index) => (
                 <img
                   key={index}
                   src={image}
@@ -286,7 +360,7 @@ const ProductPage = ({
             </div>
           </div>
 
-          {/* Product Info */}
+          {/* Информация о товаре */}
           <div>
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-3xl font-bold text-gray-900" itemProp="name">{currentName}</h1>
@@ -314,22 +388,22 @@ const ProductPage = ({
                 ))}
                 <span className="text-sm text-gray-600 ml-1" itemProp="ratingValue">({currentProduct.rating})</span>
                 <meta itemProp="bestRating" content="5" />
-                <meta itemProp="ratingCount" content={currentProduct.reviews.length} />
+                <meta itemProp="ratingCount" content={currentProduct.reviews?.length || 0} />
               </div>
-              <span className="text-gray-600">{currentProduct.reviews.length} {language === 'ru' ? 'отзывов' : 'reviews'}</span>
+              <span className="text-gray-600">{currentProduct.reviews?.length || 0} {language === 'ru' ? 'отзывов' : 'reviews'}</span>
               <span className="text-gray-600" itemProp="availability">{currentProduct.stock} {getTranslation('stock')}</span>
             </div>
 
             <div className="flex items-center space-x-3 mb-6">
               <span className="text-3xl font-bold text-indigo-600" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                <span itemProp="price">{formatPrice(currentProduct.discount ? currentProduct.price * (1 - currentProduct.discount / 100) : currentProduct.price)}</span>
+                <span itemProp="price">{formatPrice ? formatPrice(currentProduct.discount ? currentProduct.price * (1 - currentProduct.discount / 100) : currentProduct.price) : `${currentProduct.price} ${currency}`}</span>
                 <meta itemProp="priceCurrency" content={currency} />
                 <meta itemProp="availability" content="https://schema.org/InStock" />
               </span>
               {currentProduct.discount > 0 && (
                 <>
                   <span className="text-xl text-gray-500 line-through">
-                    {formatPrice(currentProduct.price)}
+                    {formatPrice ? formatPrice(currentProduct.price) : `${currentProduct.price} ${currency}`}
                   </span>
                   <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-bold">
                     -{currentProduct.discount}%
@@ -338,7 +412,7 @@ const ProductPage = ({
               )}
             </div>
 
-            {/* Part Number */}
+            {/* Артикул */}
             <div className="mb-6 p-4 bg-gray-50 rounded-lg">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -360,7 +434,7 @@ const ProductPage = ({
               </div>
             </div>
 
-            {/* Options Selection */}
+            {/* Выбор опций */}
             <div className="space-y-4 mb-6">
               {currentProduct.colors && (
                 <div>
@@ -403,7 +477,9 @@ const ProductPage = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart(currentProduct);
+                  if (addToCart) {
+                    addToCart(currentProduct);
+                  }
                 }}
                 className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
               >
@@ -412,7 +488,10 @@ const ProductPage = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart(currentProduct);
+                  if (addToCart) {
+                    addToCart(currentProduct);
+                    setCurrentPage('checkout');
+                  }
                 }}
                 className="px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors font-semibold"
               >
@@ -420,7 +499,7 @@ const ProductPage = ({
               </button>
             </div>
 
-            {/* AR Try-On */}
+            {/* Попробовать в AR */}
             {currentProduct.arModel && (
               <button className="w-full flex items-center justify-center space-x-2 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mb-4">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -435,32 +514,36 @@ const ProductPage = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleFavorite(currentProduct);
+                  if (toggleFavorite) {
+                    toggleFavorite(currentProduct);
+                  }
                 }}
                 className={`flex-1 py-2 rounded-lg border transition-colors ${
-                  favorites.includes(currentProduct.id)
+                  favorites?.includes(currentProduct.id)
                     ? 'border-red-500 text-red-500 bg-red-50'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                {favorites.includes(currentProduct.id) ? getTranslation('removeFromFavorites') : getTranslation('addToFavorites')}
+                {favorites?.includes(currentProduct.id) ? getTranslation('removeFromFavorites') : getTranslation('addToFavorites')}
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleCompare(currentProduct);
+                  if (toggleCompare) {
+                    toggleCompare(currentProduct);
+                  }
                 }}
                 className={`flex-1 py-2 rounded-lg border transition-colors ${
-                  compareList.includes(currentProduct.id)
+                  compareList?.includes(currentProduct.id)
                     ? 'border-indigo-500 text-indigo-500 bg-indigo-50'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                {compareList.includes(currentProduct.id) ? getTranslation('removeFromCompare') : getTranslation('addToCompare')}
+                {compareList?.includes(currentProduct.id) ? getTranslation('removeFromCompare') : getTranslation('addToCompare')}
               </button>
             </div>
 
-            {/* Tabs */}
+            {/* Вкладки */}
             <div className="border-b mb-6">
               <nav className="flex space-x-8">
                 <button
@@ -496,7 +579,7 @@ const ProductPage = ({
               </nav>
             </div>
 
-            {/* Tab Content */}
+            {/* Содержимое вкладок */}
             {activeTab === 'description' && (
               <div className="mb-6">
                 <p className="text-gray-700 leading-relaxed">{currentDescription}</p>
@@ -528,7 +611,7 @@ const ProductPage = ({
                 </div>
 
                 <div className="space-y-4">
-                  {currentProduct.reviews.map((review) => (
+                  {currentProduct.reviews?.map((review) => (
                     <div key={review.id} className="border-b pb-4" itemScope itemType="https://schema.org/Review">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
@@ -559,7 +642,7 @@ const ProductPage = ({
           </div>
         </div>
 
-        {/* Related Products */}
+        {/* Связанные товары */}
         {relatedProducts.length > 0 && (
           <div className="border-t p-8">
             <h3 className="text-2xl font-bold mb-6">{getTranslation('relatedProducts')}</h3>
@@ -582,7 +665,9 @@ const ProductPage = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleFavorite(product);
+                      if (toggleFavorite) {
+                        toggleFavorite(product);
+                      }
                     }}
                     className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
                   >
@@ -596,7 +681,7 @@ const ProductPage = ({
           </div>
         )}
 
-        {/* Don't Forget Products */}
+        {/* Товары, которые можно забыть купить */}
         {dontForgetProducts.length > 0 && (
           <div className="border-t p-8">
             <h3 className="text-2xl font-bold mb-6">{getTranslation('dontForget')}</h3>
@@ -619,7 +704,9 @@ const ProductPage = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleFavorite(product);
+                      if (toggleFavorite) {
+                        toggleFavorite(product);
+                      }
                     }}
                     className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
                   >
@@ -633,7 +720,7 @@ const ProductPage = ({
           </div>
         )}
 
-        {/* Social Sharing */}
+        {/* Социальные сети */}
         <div className="border-t p-8">
           <h3 className="text-lg font-semibold mb-4">{getTranslation('share')}</h3>
           <div className="flex space-x-2">
@@ -644,7 +731,7 @@ const ProductPage = ({
             </button>
             <button className="bg-pink-600 text-white p-2 rounded hover:bg-pink-700">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344a3.097 3.097 0 00.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+                <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344a3.097 3.097 0 00.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
               </svg>
             </button>
             <button className="bg-green-600 text-white p-2 rounded hover:bg-green-700">
