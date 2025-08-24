@@ -104,10 +104,8 @@ const ComparePage = ({
       clearCompare: 'Очистить сравнение',
       compare: 'Сравнение',
       clearComparison: 'Очистить сравнение',
-      addToCart: 'В корзину',
-      product: 'Товар',
-      specifications: 'Характеристики',
-      description: 'Описание'
+      product: 'Товар'
+
     },
     en: {
       home: 'Home',
@@ -195,10 +193,7 @@ const ComparePage = ({
       clearCompare: 'Clear comparison',
       compare: 'Comparison',
       clearComparison: 'Clear comparison',
-      addToCart: 'Add to cart',
-      product: 'Product',
-      specifications: 'Specifications',
-      description: 'Description'
+      product: 'Product'
     }
   };
 

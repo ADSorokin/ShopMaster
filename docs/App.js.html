@@ -1,9 +1,37 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Главный компонент приложения "ShopMaster" — управляет состоянием, навигацией и рендерингом страниц.
  *
  * @component
  * @example
- * return <App />;
+ * return &lt;App />;
  *
  * @description
  * Этот компонент:
@@ -79,19 +107,19 @@ const App = () => {
     /** @type {Array} Последние просмотренные товары (до 5) */
     const [viewedProducts, setViewedProducts] = useState([]);
 
-    /** @type {Array<number>} ID избранных товаров */
+    /** @type {Array&lt;number>} ID избранных товаров */
     const [favorites, setFavorites] = useState([]);
 
-    /** @type {Array<number>} ID товаров для сравнения */
+    /** @type {Array&lt;number>} ID товаров для сравнения */
     const [compareList, setCompareList] = useState([]);
 
-    /** @type {Array<Object>} Уведомления пользователя */
+    /** @type {Array&lt;Object>} Уведомления пользователя */
     const [notifications, setNotifications] = useState([
         { id: 1, type: 'sale', message: 'Скидка 20% на электронику!', time: '10 мин назад', read: false },
         { id: 2, type: 'order', message: 'Ваш заказ №12345 отправлен!', time: '1 час назад', read: false }
     ]);
 
-    /** @type {Array<Object>} Сообщения в чате */
+    /** @type {Array&lt;Object>} Сообщения в чате */
     const [chatMessages, setChatMessages] = useState([
         { id: 1, sender: 'bot', text: 'Здравствуйте! Чем могу помочь?', time: '10:30' }
     ]);
@@ -125,7 +153,7 @@ const App = () => {
     /** @type {Object|null} Применённый промокод */
     const [appliedCoupon, setAppliedCoupon] = useState(null);
 
-    /** @type {Array<Object>} Доступные промокоды */
+    /** @type {Array&lt;Object>} Доступные промокоды */
     const [coupons] = useState([
         { code: 'WELCOME10', discount: 10, valid: true },
         { code: 'SUMMER20', discount: 20, valid: true },
@@ -144,7 +172,7 @@ const App = () => {
      * Фильтрует товары по категориям, поиску, цене, бренду и рейтингу.
      * Учитывает мультиязычные названия и описания.
      *
-     * @returns {Array<Object>} Отфильтрованный список товаров
+     * @returns {Array&lt;Object>} Отфильтрованный список товаров
      */
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
@@ -156,11 +184,11 @@ const App = () => {
             currentDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
             product.brand.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
+        const matchesPrice = product.price >= filters.priceRange[0] &amp;&amp; product.price &lt;= filters.priceRange[1];
         const matchesBrand = !filters.brand || product.brand.toLowerCase().includes(filters.brand.toLowerCase());
         const matchesRating = product.rating >= filters.rating;
 
-        return matchesCategory && matchesSearch && matchesPrice && matchesBrand && matchesRating;
+        return matchesCategory &amp;&amp; matchesSearch &amp;&amp; matchesPrice &amp;&amp; matchesBrand &amp;&amp; matchesRating;
     });
 
     // === Функции управления состоянием ===
@@ -174,13 +202,13 @@ const App = () => {
     const addToCart = (product, selectedOptions = {}) => {
         setCart(prev => {
             const existing = prev.find(item =>
-                item.id === product.id &&
+                item.id === product.id &amp;&amp;
                 JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
             );
 
             if (existing) {
                 return prev.map(item =>
-                    item.id === product.id &&
+                    item.id === product.id &amp;&amp;
                     JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
@@ -217,7 +245,7 @@ const App = () => {
                 return prev.filter(item => item.id !== productId);
             }
             return prev.filter(item =>
-                !(item.id === productId &&
+                !(item.id === productId &amp;&amp;
                     JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
             );
         });
@@ -238,7 +266,7 @@ const App = () => {
 
         setCart(prev =>
             prev.map(item =>
-                item.id === productId &&
+                item.id === productId &amp;&amp;
                 (selectedOptions === null || JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
                     ? { ...item, quantity }
                     : item
@@ -279,7 +307,7 @@ const App = () => {
      * @returns {boolean} Успешно ли применён
      */
     const applyCouponCode = (code) => {
-        const coupon = coupons.find(c => c.code === code && c.valid);
+        const coupon = coupons.find(c => c.code === code &amp;&amp; c.valid);
         if (coupon) {
             setAppliedCoupon(coupon);
             addNotification('coupon', `Промокод ${code} применен!`, 'success');
@@ -420,7 +448,7 @@ const App = () => {
     const renderPage = () => {
         switch (currentPage) {
             case 'product':
-                return <ProductPage
+                return &lt;ProductPage
                     currentProduct={currentProduct}
                     setCurrentPage={setCurrentPage}
                     addToCart={addToCart}
@@ -434,7 +462,7 @@ const App = () => {
                     formatPrice={formatPrice}
                 />;
             case 'cart':
-                return <CartPage
+                return &lt;CartPage
                     cart={cart}
                     setCart={setCart}
                     appliedCoupon={appliedCoupon}
@@ -446,7 +474,7 @@ const App = () => {
                     getCartTotals={getCartTotals}
                 />;
             case 'checkout':
-                return <CheckoutPage
+                return &lt;CheckoutPage
                     cart={cart}
                     orderForm={orderForm}
                     setOrderForm={setOrderForm}
@@ -459,7 +487,7 @@ const App = () => {
                     getCartTotals={getCartTotals}
                 />;
             case 'orders':
-                return <OrdersPage
+                return &lt;OrdersPage
                     user={user}
                     orders={orders}
                     setCurrentPage={setCurrentPage}
@@ -468,13 +496,13 @@ const App = () => {
                     formatPrice={formatPrice}
                 />;
             case 'login':
-                return <LoginPage
+                return &lt;LoginPage
                     login={login}
                     setCurrentPage={setCurrentPage}
                     language={language}
                 />;
             case 'favorites':
-                return <FavoritesPage
+                return &lt;FavoritesPage
                     favorites={favorites}
                     setFavorites={setFavorites}
                     setCurrentPage={setCurrentPage}
@@ -485,7 +513,7 @@ const App = () => {
                     toggleFavorite={toggleFavorite}
                 />;
             case 'compare':
-                return <ComparePage
+                return &lt;ComparePage
                     compareList={compareList}
                     setCompareList={setCompareList}
                     setCurrentPage={setCurrentPage}
@@ -496,7 +524,7 @@ const App = () => {
                     toggleCompare={toggleCompare}
                 />;
             default:
-                return <HomePage
+                return &lt;HomePage
                     products={filteredProducts}
                     categories={categories}
                     selectedCategory={selectedCategory}
@@ -522,9 +550,9 @@ const App = () => {
     // === Рендер UI ===
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        &lt;div className="min-h-screen bg-gray-50">
             {/* Шапка сайта */}
-            <Header
+            &lt;Header
                 cart={cart}
                 notifications={notifications}
                 user={user}
@@ -541,7 +569,7 @@ const App = () => {
             />
 
             {/* Хлебные крошки */}
-            <Breadcrumb
+            &lt;Breadcrumb
                 currentPage={currentPage}
                 currentProduct={currentProduct}
                 setCurrentPage={setCurrentPage}
@@ -552,7 +580,7 @@ const App = () => {
             {renderPage()}
 
             {/* Виджет чата */}
-            <ChatWidget
+            &lt;ChatWidget
                 showChat={showChat}
                 setShowChat={setShowChat}
                 chatMessages={chatMessages}
@@ -564,10 +592,10 @@ const App = () => {
             />
 
             {/* Анимация добавления в корзину */}
-            <AddToCartAnimation showAddAnimation={showAddAnimation} language={language} />
+            &lt;AddToCartAnimation showAddAnimation={showAddAnimation} language={language} />
 
             {/* Модальное окно подтверждения заказа */}
-            <OrderModal
+            &lt;OrderModal
                 showOrderModal={showOrderModal}
                 setShowOrderModal={setShowOrderModal}
                 setCurrentPage={setCurrentPage}
@@ -575,9 +603,31 @@ const App = () => {
             />
 
             {/* Футер */}
-            <Footer language={language} />
-        </div>
+            &lt;Footer language={language} />
+        &lt;/div>
     );
 };
 
-export default App;
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Aug 24 2025 19:21:18 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

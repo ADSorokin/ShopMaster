@@ -105,7 +105,6 @@ const FavoritesPage = ({
       value: 'Значение',
       clearFavorites: 'Очистить избранное',
       clearCompare: 'Очистить сравнение',
-      products: 'Товары',
       emptyFavorites: 'Ваши избранные товары пусты',
       emptyCompare: 'Список сравнения пуст'
     },
@@ -193,7 +192,6 @@ const FavoritesPage = ({
       value: 'Value',
       clearFavorites: 'Clear favorites',
       clearCompare: 'Clear comparison',
-      products: 'Products',
       emptyFavorites: 'Your favorites list is empty',
       emptyCompare: 'Comparison list is empty'
     }

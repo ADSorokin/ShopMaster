@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/HomePage.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/HomePage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// src/pages/HomePage.jsx
+import ProductCard from '../components/ProductCard';
+
+/**
+ * Главная страница приложения
+ * 
+ * Отображает главную страницу с героями, фильтрами категорий, поиском и сеткой товаров.
+ * Является центральной точкой для навигации по приложению.
+ * 
+ * @param {Object} props - Свойства компонента
+ * @param {Array} props.products - Массив всех продуктов для отображения
+ * @param {Array} props.categories - Массив категорий для фильтрации
+ * @param {string} props.selectedCategory - ID выбранной категории
+ * @param {Function} props.setSelectedCategory - Функция для установки выбранной категории
+ * @param {string} props.searchTerm - Текущий поисковый запрос
+ * @param {Function} props.setSearchTerm - Функция для установки поискового запроса
+ * @param {Object} props.filters - Объект с текущими фильтрами (бренд, рейтинг, диапазон цен)
+ * @param {Function} props.setFilters - Функция для установки фильтров
+ * @param {Function} props.addToCart - Функция для добавления товара в корзину
+ * @param {Function} props.toggleFavorite - Функция для добавления/удаления из избранного
+ * @param {Function} props.toggleCompare - Функция для добавления/удаления из сравнения
+ * @param {Array} props.favorites - Массив ID избранных товаров
+ * @param {Array} props.compareList - Массив ID товаров для сравнения
+ * @param {Function} props.setCurrentPage - Функция для изменения текущей страницы
+ * @param {Function} props.setCurrentProduct - Функция для установки текущего товара
+ * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en')
+ * @param {string} props.currency - Текущая валюта ('RUB', 'USD', 'EUR')
+ * @param {Function} props.formatPrice - Функция форматирования цен
+ * 
+ * @returns {JSX.Element} Отрендеренный компонент главной страницы
+ */
+const HomePage = ({ 
+  products, 
+  categories, 
+  selectedCategory, 
+  setSelectedCategory,
+  searchTerm,
+  setSearchTerm,
+  filters,
+  setFilters,
+  addToCart,
+  toggleFavorite,
+  toggleCompare,
+  favorites,
+  compareList,
+  setCurrentPage,
+  setCurrentProduct,
+  language,
+  currency,
+  formatPrice
+}) => {
+  // Объект с переводами для интернационализации
+  const translations = {
+    ru: {
+      home: 'Главная',
+      products: 'Товары',
+      cart: 'Корзина',
+      orders: 'Заказы',
+      login: 'Войти',
+      logout: 'Выйти',
+      search: 'Поиск товаров...',
+      currency: 'Валюта',
+      language: 'Язык',
+      addToCart: 'В корзину',
+      buyNow: 'Купить сейчас',
+      description: 'Описание',
+      specifications: 'Характеристики',
+      reviews: 'Отзывы',
+      relatedProducts: 'С этим товаром покупают',
+      dontForget: 'Не забудьте приобрести',
+      youViewed: 'Вы недавно смотрели',
+      recommended: 'Рекомендуем',
+      price: 'Цена',
+      stock: 'В наличии',
+      rating: 'Оценка',
+      addToFavorites: 'В избранное',
+      removeFromFavorites: 'Удалить из избранного',
+      addToCompare: 'Сравнить',
+      removeFromCompare: 'Убрать из сравнения',
+      share: 'Поделиться',
+      delivery: 'Доставка',
+      payment: 'Оплата',
+      confirm: 'Подтвердить',
+      subtotal: 'Сумма товаров',
+      discount: 'Скидка',
+      shipping: 'Доставка',
+      total: 'Итого',
+      coupon: 'Промокод',
+      apply: 'Применить',
+      completeOrder: 'Оформить заказ',
+      back: 'Назад',
+      next: 'Далее',
+      orderConfirmed: 'Заказ оформлен!',
+      thankYou: 'Спасибо за покупку!',
+      continueShopping: 'Продолжить покупки',
+      myOrders: 'Мои заказы',
+      loyaltyProgram: 'Программа лояльности',
+      points: 'баллов',
+      level: 'Уровень',
+      tryAR: 'Попробовать в AR',
+      voiceSearch: 'Говорите...',
+      contactUs: 'Свяжитесь с нами',
+      about: 'О нас',
+      support: 'Поддержка',
+      privacy: 'Конфиденциальность',
+      terms: 'Условия использования',
+      newsletter: 'Подписка на новости',
+      subscribe: 'Подписаться',
+      footerText: '© 2024 ShopMaster. Все права защищены.',
+      paymentMethods: 'Способы оплаты',
+      deliveryInfo: 'Информация о доставке',
+      returns: 'Возврат и обмен',
+      warranty: 'Гарантия',
+      contact: 'Контакты',
+      address: 'Адрес',
+      phone: 'Телефон',
+      email: 'Электронная почта',
+      social: 'Мы в социальных сетях',
+      hours: 'Часы работы',
+      monFri: 'Пн-Пт: 9:00 - 21:00',
+      satSun: 'Сб-Вс: 10:00 - 18:00'
+    },
+    en: {
+      home: 'Home',
+      products: 'Products',
+      cart: 'Cart',
+      orders: 'Orders',
+      login: 'Login',
+      logout: 'Logout',
+      search: 'Search products...',
+      currency: 'Currency',
+      language: 'Language',
+      addToCart: 'Add to cart',
+      buyNow: 'Buy now',
+      description: 'Description',
+      specifications: 'Specifications',
+      reviews: 'Reviews',
+      relatedProducts: 'Frequently bought together',
+      dontForget: 'Don\'t forget to buy',
+      youViewed: 'You recently viewed',
+      recommended: 'Recommended',
+      price: 'Price',
+      stock: 'In stock',
+      rating: 'Rating',
+      addToFavorites: 'Add to favorites',
+      removeFromFavorites: 'Remove from favorites',
+      addToCompare: 'Compare',
+      removeFromCompare: 'Remove from comparison',
+      share: 'Share',
+      delivery: 'Delivery',
+      payment: 'Payment',
+      confirm: 'Confirm',
+      subtotal: 'Subtotal',
+      discount: 'Discount',
+      shipping: 'Shipping',
+      total: 'Total',
+      coupon: 'Coupon code',
+      apply: 'Apply',
+      completeOrder: 'Complete order',
+      back: 'Back',
+      next: 'Next',
+      orderConfirmed: 'Order confirmed!',
+      thankYou: 'Thank you for your purchase!',
+      continueShopping: 'Continue shopping',
+      myOrders: 'My orders',
+      loyaltyProgram: 'Loyalty program',
+      points: 'points',
+      level: 'Level',
+      tryAR: 'Try in AR',
+      voiceSearch: 'Speak...',
+      contactUs: 'Contact us',
+      about: 'About',
+      support: 'Support',
+      privacy: 'Privacy',
+      terms: 'Terms of use',
+      newsletter: 'Newsletter',
+      subscribe: 'Subscribe',
+      footerText: '© 2024 ShopMaster. All rights reserved.',
+      paymentMethods: 'Payment methods',
+      deliveryInfo: 'Delivery information',
+      returns: 'Returns and exchanges',
+      warranty: 'Warranty',
+      contact: 'Contact',
+      address: 'Address',
+      phone: 'Phone',
+      email: 'Email',
+      social: 'Follow us',
+      hours: 'Working hours',
+      monFri: 'Mon-Fri: 9:00 - 21:00',
+      satSun: 'Sat-Sun: 10:00 - 18:00'
+    }
+  };
+
+  /**
+   * Функция получения перевода для заданного ключа
+   * @param {string} key - Ключ перевода
+   * @returns {string} Переведенный текст или исходный ключ, если перевод не найден
+   */
+  const getTranslation = (key) => {
+    return translations[language][key] || key;
+  };
+
+  // Добавим логирование для диагностики передачи пропсов
+  console.log('=== HOME PAGE DEBUG ===');
+  console.log('setCurrentPage function:', setCurrentPage);
+  console.log('setCurrentProduct function:', setCurrentProduct);
+  console.log('addToCart function:', addToCart);
+  console.log('toggleFavorite function:', toggleFavorite);
+  console.log('toggleCompare function:', toggleCompare);
+  console.log('favorites:', favorites);
+  console.log('compareList:', compareList);
+  console.log('products count:', products?.length);
+  console.log('categories:', categories);
+  console.log('selectedCategory:', selectedCategory);
+  console.log('searchTerm:', searchTerm);
+  console.log('filters:', filters);
+  console.log('language:', language);
+  console.log('currency:', currency);
+
+  return (
+    &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Hero Section */}
+      &lt;div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 mb-8 text-white">
+        &lt;div className="max-w-3xl">
+          &lt;h1 className="text-4xl font-bold mb-4" itemProp="headline">
+            {language === 'ru' ? 'Современные технологии для вашего дома' : 'Modern technology for your home'}
+          &lt;/h1>
+          &lt;p className="text-xl mb-6 opacity-90" itemProp="description">
+            {language === 'ru' ? 'Найдите лучшие товары по специальным ценам' : 'Find the best products at special prices'}
+          &lt;/p>
+          &lt;button
+            onClick={() => setCurrentPage('electronics')}
+            className="bg-white text-indigo-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            {language === 'ru' ? 'Перейти к покупкам' : 'Go shopping'}
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+
+      {/* Category Filter */}
+      &lt;div className="mb-8">
+        &lt;div className="flex flex-wrap gap-3">
+          {categories.map((category) => (
+            &lt;button
+              key={category.id}
+              onClick={() => {
+                setSelectedCategory(category.id);
+                setCurrentPage(category.id === 'all' ? 'home' : category.id);
+              }}
+              className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
+                selectedCategory === category.id
+                  ? 'bg-indigo-600 text-white shadow-lg transform scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+              }`}
+            >
+              &lt;span>{category.icon}&lt;/span>
+              &lt;span>{category.name[language]}&lt;/span>
+            &lt;/button>
+          ))}
+        &lt;/div>
+      &lt;/div>
+
+      {/* Search and Filters */}
+      &lt;div className="mb-6 flex flex-col sm:flex-row gap-4">
+        &lt;div className="flex-1">
+          &lt;input
+            type="text"
+            placeholder={getTranslation('search')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        &lt;/div>
+        &lt;div className="flex gap-2">
+          &lt;select
+            value={filters.brand}
+            onChange={(e) => setFilters(prev => ({ ...prev, brand: e.target.value }))}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+          >
+            &lt;option value="">{language === 'ru' ? 'Все бренды' : 'All brands'}&lt;/option>
+            {Array.from(new Set(products.map(p => p.brand))).map(brand => (
+              &lt;option key={brand} value={brand}>{brand}&lt;/option>
+            ))}
+          &lt;/select>
+          &lt;select
+            value={filters.rating}
+            onChange={(e) => setFilters(prev => ({ ...prev, rating: parseInt(e.target.value) }))}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+          >
+            &lt;option value={0}>{language === 'ru' ? 'Все оценки' : 'All ratings'}&lt;/option>
+            &lt;option value={4}>4+ ⭐&lt;/option>
+            &lt;option value={4.5}>4.5+ ⭐&lt;/option>
+            &lt;option value={4.8}>4.8+ ⭐&lt;/option>
+          &lt;/select>
+        &lt;/div>
+      &lt;/div>
+
+      {/* Price Range Filter */}
+      &lt;div className="mb-8">
+        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
+          {getTranslation('price')}: {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
+        &lt;/label>
+        &lt;div className="flex items-center space-x-4">
+          &lt;input
+            type="range"
+            min="0"
+            max="200000"
+            step="1000"
+            value={filters.priceRange[0]}
+            onChange={(e) => setFilters(prev => ({ ...prev, priceRange: [parseInt(e.target.value), prev.priceRange[1]] }))}
+            className="flex-1"
+          />
+          &lt;input
+            type="range"
+            min="0"
+            max="200000"
+            step="1000"
+            value={filters.priceRange[1]}
+            onChange={(e) => setFilters(prev => ({ ...prev, priceRange: [prev.priceRange[0], parseInt(e.target.value)] }))}
+            className="flex-1"
+          />
+        &lt;/div>
+      &lt;/div>
+
+      {/* Products Grid */}
+      &lt;div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product) => (
+          &lt;ProductCard 
+            key={product.id} 
+            product={product} 
+            addToCart={addToCart}
+            toggleFavorite={toggleFavorite}
+            toggleCompare={toggleCompare}
+            favorites={favorites}
+            compareList={compareList}
+            language={language}
+            currency={currency}
+            formatPrice={formatPrice}
+            setCurrentPage={setCurrentPage}
+            setCurrentProduct={setCurrentProduct}
+          />
+        ))}
+      &lt;/div>
+
+      {products.length === 0 &amp;&amp; (
+        &lt;div className="text-center py-12">
+          &lt;svg
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            &lt;path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          &lt;/svg>
+          &lt;h3 className="mt-2 text-sm font-medium text-gray-900">
+            {language === 'ru' ? 'Товары не найдены' : 'Products not found'}
+          &lt;/h3>
+          &lt;p className="mt-1 text-sm text-gray-500">
+            {language === 'ru' ? 'Попробуйте изменить параметры поиска или выбрать другую категорию.' : 
+             'Try changing search parameters or selecting another category.'}
+          &lt;/p>
+        &lt;/div>
+      )}
+    &lt;/div>
+  );
+};
+
+export default HomePage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Aug 24 2025 19:21:18 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

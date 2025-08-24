@@ -1,0 +1,27 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": ["src"],
+    "includePattern": "\\.(js|jsx)$",
+    "excludePattern": "(node_modules/|\\.test\\.jsx?$)"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "templates": {
+      "cleverLinks": false,
+      "monospaceLinks": true
+    },
+    "readme": "README.md"
+  },
+  "templates": {
+    "copyright": "© 2025 ShopMaster. Все права защищены.",
+    "theme": "minimal"
+  }
+}
