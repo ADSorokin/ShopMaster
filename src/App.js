@@ -28,7 +28,6 @@ const App = () => {
   const [orders, setOrders] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showCart, setShowCart] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [user, setUser] = useState(null);
@@ -366,7 +365,6 @@ const App = () => {
         user={user}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        setShowCart={setShowCart}
         setShowChat={setShowChat}
         language={language}
         setLanguage={setLanguage}
