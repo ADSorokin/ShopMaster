@@ -35,6 +35,9 @@
  * @param {Function} props.setShowOrderModal - Функция для скрытия модального окна
  * @param {Function} props.setCurrentPage - Функция навигации (например, переход к "orders" или "home")
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
+ * @param {Array&lt;Object>} props.cart - Текущая корзина с товарами
+ * @param {Function} props.getCartTotals - Утилита подсчёта итогов (сумма, скидка, доставка)
+ * @param {Function} props.formatPrice - Функция форматирования цен (например, "1 999 ₽")
  *
  * @example
  * &lt;OrderModal
@@ -42,19 +45,31 @@
  *   setShowOrderModal={setShowOrderModal}
  *   setCurrentPage={setCurrentPage}
  *   language="ru"
+ *   cart={cart}
+ *   getCartTotals={getCartTotals}
+ *   formatPrice={formatPrice}
  * />
  *
  * @description
  * Поведение:
  * - Отображается как модальное всплывающее окно с анимацией фона
- * - Показывает иконку успеха, текст подтверждения и номер заказа
+ * - Показывает иконку успеха, текст подтверждения, номер заказа
+ * - Отображает **итоговую сумму** и **количество товаров**
  * - Содержит два действия: "Мои заказы" и "Продолжить покупки"
  * - Закрывается по клику на подложку или кнопку
  * - Поддерживает мультиязычный интерфейс
  *
  * Примечание: номер заказа генерируется как последние 6 цифр `Date.now()`.
  */
-const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, language }) => {
+const OrderModal = ({
+                        showOrderModal,
+                        setShowOrderModal,
+                        setCurrentPage,
+                        language,
+                        cart,
+                        getCartTotals,
+                        formatPrice
+                    }) => {
     // === Локализация ===
 
     /**
@@ -214,11 +229,13 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
     };
 
     // === Условный рендер: не отображать, если модальное окно скрыто ===
-
     if (!showOrderModal) return null;
 
-    // === Рендер ===
+    // === Подсчёт итогов и количества товаров ===
+    const totals = getCartTotals(cart); // ← Получаем итоги
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); // ← Общее количество
 
+    // === Рендер ===
     return (
         &lt;div
             className="fixed inset-0 z-50 overflow-y-auto"
@@ -227,7 +244,7 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
             aria-labelledby="order-modal-title"
         >
             &lt;div className="flex items-center justify-center min-h-screen p-4">
-                {/* Подложка (фон затемнён) */}
+                {/* Подложка */}
                 &lt;div
                     className="fixed inset-0 bg-black bg-opacity-50"
                     onClick={() => setShowOrderModal(false)}
@@ -251,14 +268,11 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
                         &lt;/div>
 
                         {/* Заголовок */}
-                        &lt;h3
-                            id="order-modal-title"
-                            className="text-2xl font-bold mb-2"
-                        >
+                        &lt;h3 id="order-modal-title" className="text-2xl font-bold mb-2">
                             {getTranslation('orderConfirmed')}
                         &lt;/h3>
 
-                        {/* Основной текст */}
+                        {/* Номер заказа */}
                         &lt;p className="text-gray-600 mb-6">
                             {getTranslation('thankYou')}{' '}
                             {language === 'ru'
@@ -267,15 +281,15 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
                             &lt;strong>#{Date.now().toString().slice(-6)}&lt;/strong>
                         &lt;/p>
 
-                        {/* Блок с информацией о заказе (заглушка) */}
+                        {/* Блок с информацией о заказе — теперь с реальными данными */}
                         &lt;div className="bg-gray-50 rounded-lg p-4 mb-6">
                             &lt;div className="flex justify-between mb-2">
                                 &lt;span>{language === 'ru' ? 'Сумма заказа:' : 'Order amount:'}&lt;/span>
-                                &lt;span className="font-semibold">0 ₽&lt;/span>
+                                &lt;span className="font-semibold">{formatPrice(totals.total)}&lt;/span>
                             &lt;/div>
                             &lt;div className="flex justify-between text-sm text-gray-600">
                                 &lt;span>{language === 'ru' ? 'Товаров:' : 'Products:'}&lt;/span>
-                                &lt;span>0 шт.&lt;/span>
+                                &lt;span>{totalItems} шт.&lt;/span>
                             &lt;/div>
                         &lt;/div>
 
@@ -323,7 +337,7 @@ export default OrderModal;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 18:54:15 GMT+0300 (Москва, стандартное время)
 </footer>
 
 <script> prettyPrint(); </script>

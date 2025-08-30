@@ -609,7 +609,7 @@ const CheckoutPage = ({
                                         <div className="border-t pt-2 font-bold">
                                             <div className="flex justify-between">
                                                 <span>{language === 'ru' ? 'Итого к оплате' : 'Total to pay'}</span>
-                                                <span>{formatPrice(totals.grandTotal)}</span>
+                                                <span>{formatPrice(totals.total)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -670,7 +670,7 @@ const CheckoutPage = ({
                             <div className="border-t pt-2 font-bold">
                                 <div className="flex justify-between">
                                     <span>{getTranslation('total')}</span>
-                                    <span>{formatPrice(totals.grandTotal)}</span>
+                                    <span>{formatPrice(totals.total)}</span>
                                 </div>
                             </div>
                         </div>

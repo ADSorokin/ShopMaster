@@ -1,12 +1,16 @@
 /**
- * Модальное окно подтверждения заказа — отображается после оформления.
+ * Модальное окно подтверждения заказа — отображает детали оформленного заказа.
  *
  * @component
- * @param {Object} props - Входные параметры компонента
+ * @param {Object} props - Входные параметры
  * @param {boolean} props.showOrderModal - Управляет видимостью модального окна
- * @param {Function} props.setShowOrderModal - Функция для скрытия модального окна
- * @param {Function} props.setCurrentPage - Функция навигации (например, переход к "orders" или "home")
+ * @param {Function} props.setShowOrderModal - Функция закрытия модального окна
+ * @param {Function} props.setCurrentPage - Функция навигации (например, переход к "orders")
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
+ * @param {Array<Object>} props.cart - Товары, включённые в заказ (сохранённая копия)
+ * @param {Object} props.totals - Предварительно посчитанные итоги: subtotal, discount, shipping, total
+ * @param {number} props.orderNumber - ID заказа (используется для отображения номера)
+ * @param {Function} props.formatPrice - Функция форматирования цен (например, "1 999 ₽")
  *
  * @example
  * <OrderModal
@@ -14,19 +18,30 @@
  *   setShowOrderModal={setShowOrderModal}
  *   setCurrentPage={setCurrentPage}
  *   language="ru"
+ *   cart={orderCart}
+ *   totals={orderTotals}
+ *   orderNumber={123456}
+ *   formatPrice={formatPrice}
  * />
  *
  * @description
- * Поведение:
- * - Отображается как модальное всплывающее окно с анимацией фона
- * - Показывает иконку успеха, текст подтверждения и номер заказа
- * - Содержит два действия: "Мои заказы" и "Продолжить покупки"
- * - Закрывается по клику на подложку или кнопку
+ * Особенности:
+ * - Отображает итоговую сумму и количество товаров из сохранённых данных
+ * - Не зависит от текущего состояния корзины (которая уже может быть пустой)
+ * - Показывает номер заказа (последние 6 цифр)
  * - Поддерживает мультиязычный интерфейс
- *
- * Примечание: номер заказа генерируется как последние 6 цифр `Date.now()`.
+ * - Закрывается по клику на фон или кнопку
  */
-const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, language }) => {
+const OrderModal = ({
+                        showOrderModal,
+                        setShowOrderModal,
+                        setCurrentPage,
+                        language,
+                        cart,
+                        totals,
+                        orderNumber,
+                        formatPrice
+                    }) => {
     // === Локализация ===
 
     /**
@@ -176,21 +191,20 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
 
     /**
      * Возвращает перевод строки по ключу.
-     * Если перевод отсутствует — возвращает ключ.
-     *
-     * @param {string} key - Ключ локализации (например, 'orderConfirmed', 'myOrders')
+     * @param {string} key - Ключ локализации
      * @returns {string} Переведённая строка
      */
     const getTranslation = (key) => {
         return translations[language]?.[key] || key;
     };
 
-    // === Условный рендер: не отображать, если модальное окно скрыто ===
-
+    // === Условный рендер: не показывать, если скрыто ===
     if (!showOrderModal) return null;
 
-    // === Рендер ===
+    // === Вычисление количества товаров ===
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+    // === Рендер ===
     return (
         <div
             className="fixed inset-0 z-50 overflow-y-auto"
@@ -199,7 +213,7 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
             aria-labelledby="order-modal-title"
         >
             <div className="flex items-center justify-center min-h-screen p-4">
-                {/* Подложка (фон затемнён) */}
+                {/* Подложка */}
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50"
                     onClick={() => setShowOrderModal(false)}
@@ -223,31 +237,26 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
                         </div>
 
                         {/* Заголовок */}
-                        <h3
-                            id="order-modal-title"
-                            className="text-2xl font-bold mb-2"
-                        >
+                        <h3 id="order-modal-title" className="text-2xl font-bold mb-2">
                             {getTranslation('orderConfirmed')}
                         </h3>
 
-                        {/* Основной текст */}
+                        {/* Номер заказа */}
                         <p className="text-gray-600 mb-6">
                             {getTranslation('thankYou')}{' '}
-                            {language === 'ru'
-                                ? 'Номер вашего заказа:'
-                                : 'Your order number:'}{' '}
-                            <strong>#{Date.now().toString().slice(-6)}</strong>
+                            {language === 'ru' ? 'Номер вашего заказа:' : 'Your order number:'}{' '}
+                            <strong>#{orderNumber?.toString().slice(-6) || '—'}</strong>
                         </p>
 
-                        {/* Блок с информацией о заказе (заглушка) */}
+                        {/* Блок с итогами */}
                         <div className="bg-gray-50 rounded-lg p-4 mb-6">
                             <div className="flex justify-between mb-2">
                                 <span>{language === 'ru' ? 'Сумма заказа:' : 'Order amount:'}</span>
-                                <span className="font-semibold">0 ₽</span>
+                                <span className="font-semibold">{formatPrice(totals?.total || 0)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-gray-600">
                                 <span>{language === 'ru' ? 'Товаров:' : 'Products:'}</span>
-                                <span>0 шт.</span>
+                                <span>{totalItems} шт.</span>
                             </div>
                         </div>
 

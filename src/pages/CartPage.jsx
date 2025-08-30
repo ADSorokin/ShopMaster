@@ -399,7 +399,7 @@ const CartPage = ({
                             <div className="border-t pt-2 font-bold">
                                 <div className="flex justify-between">
                                     <span>{getTranslation('total')}</span>
-                                    <span>{formatPrice(totals.grandTotal)}</span>
+                                    <span>{formatPrice(totals.total)}</span>
                                 </div>
                             </div>
                         </div>

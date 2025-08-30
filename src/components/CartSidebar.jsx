@@ -437,7 +437,7 @@ const CartSidebar = ({
                                             <p>{getTranslation('total')}</p>
                                             <p>
                                                 {formatPrice
-                                                    ? formatPrice(totals.grandTotal)
+                                                    ? formatPrice(totals.total)
                                                     : `${totals.grandTotal} ${currency}`}
                                             </p>
                                         </div>

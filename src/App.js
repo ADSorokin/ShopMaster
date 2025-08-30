@@ -12,9 +12,14 @@
  * - Обрабатывает взаимодействия (добавление в корзину, вход, заказ и др.)
  * - Рендерит основные UI-элементы: хедер, футер, виджет чата, модальные окна
  *
- * Поддерживает мультиязычность (ru) и мультивалютность (RUB).
+ * Особое внимание уделено:
+ * - Корректному отображению итогов в `OrderModal`
+ * - Сохранению данных заказа до очистки корзины
+ * - Поддержке мультиязычности (ru/en) и мультивалютности (RUB/USD/EUR)
  */
-import { useState} from 'react';
+import { useState } from 'react';
+
+// Компоненты
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Breadcrumb from './components/Breadcrumb';
@@ -30,121 +35,67 @@ import ChatWidget from './components/ChatWidget';
 import OrderModal from './components/OrderModal';
 import AddToCartAnimation from './components/AddToCartAnimation';
 
-// Импорт данных и утилит
-import { products } from './data/products';         // Список всех товаров
-import { categories } from './data/categories';     // Категории товаров
-import { pickupPoints } from './data/pickupPoints'; // Пункты самовывоза
-import { currencies } from './data/currencies';     // Валюты (RUB, USD и т.д.)
+// Данные
+import { products } from './data/products';
+import { categories } from './data/categories';
+import { pickupPoints } from './data/pickupPoints';
+import { currencies } from './data/currencies';
 
-import { formatPrice, getCartTotals } from './utils/helpers'; // Форматирование цен и подсчёт сумм в корзине
+// Утилиты
+import { formatPrice, getCartTotals } from './utils/helpers';
 
 const App = () => {
     // === Состояние приложения ===
 
-    /** @type {string} Текущая страница: 'home', 'product', 'cart', 'checkout', и т.д. */
     const [currentPage, setCurrentPage] = useState('home');
-
-    /** @type {Object|null} Текущий выбранный продукт (для детальной страницы) */
     const [currentProduct, setCurrentProduct] = useState(null);
-
-    /** @type {Array} Корзина: список товаров с количеством и опциями */
     const [cart, setCart] = useState([]);
-
-    /** @type {Array} История заказов пользователя */
     const [orders, setOrders] = useState([]);
-
-    /** @type {string} Выбранная категория ('all' или ID категории) */
     const [selectedCategory, setSelectedCategory] = useState('all');
-
-    /** @type {string} Поисковый запрос */
     const [searchTerm, setSearchTerm] = useState('');
-
-    /** @type {boolean} Отображение модального окна успешного заказа */
     const [showOrderModal, setShowOrderModal] = useState(false);
-
-    /** @type {boolean} Отображение виджета чата */
     const [showChat, setShowChat] = useState(false);
-
-    /** @type {Object|null} Данные авторизованного пользователя */
     const [user, setUser] = useState(null);
-
-    /** @type {Object} Фильтры товаров: диапазон цен, бренд, рейтинг */
     const [filters, setFilters] = useState({
         priceRange: [0, 200000],
         brand: '',
         rating: 0
     });
-
-    /** @type {Array} Последние просмотренные товары (до 5) */
     const [viewedProducts, setViewedProducts] = useState([]);
-
-    /** @type {Array<number>} ID избранных товаров */
     const [favorites, setFavorites] = useState([]);
-
-    /** @type {Array<number>} ID товаров для сравнения */
     const [compareList, setCompareList] = useState([]);
-
-    /** @type {Array<Object>} Уведомления пользователя */
     const [notifications, setNotifications] = useState([
         { id: 1, type: 'sale', message: 'Скидка 20% на электронику!', time: '10 мин назад', read: false },
         { id: 2, type: 'order', message: 'Ваш заказ №12345 отправлен!', time: '1 час назад', read: false }
     ]);
-
-    /** @type {Array<Object>} Сообщения в чате */
     const [chatMessages, setChatMessages] = useState([
         { id: 1, sender: 'bot', text: 'Здравствуйте! Чем могу помочь?', time: '10:30' }
     ]);
-
-    /** @type {string} Текст ввода в чате */
     const [chatInput, setChatInput] = useState('');
-
-    /** @type {boolean} Анимация добавления в корзину */
     const [showAddAnimation, setShowAddAnimation] = useState(false);
-
-    /** @type {boolean} Режим голосового поиска */
     const [showVoiceSearch, setShowVoiceSearch] = useState(false);
-
-    /** @type {Object} Форма оформления заказа (шаг, доставка, оплата) */
     const [orderForm, setOrderForm] = useState({
         step: 1,
-        delivery: {
-            type: 'courier',
-            address: '',
-            city: '',
-            phone: ''
-        },
-        payment: {
-            method: 'card',
-            cardNumber: '',
-            expiry: '',
-            cvv: ''
-        }
+        delivery: { type: 'courier', address: '', city: '', phone: '' },
+        payment: { method: 'card', cardNumber: '', expiry: '', cvv: '' }
     });
-
-    /** @type {Object|null} Применённый промокод */
     const [appliedCoupon, setAppliedCoupon] = useState(null);
-
-    /** @type {Array<Object>} Доступные промокоды */
     const [coupons] = useState([
         { code: 'WELCOME10', discount: 10, valid: true },
         { code: 'SUMMER20', discount: 20, valid: true },
         { code: 'FREESHIP', discount: 0, valid: true, freeShipping: true }
     ]);
-
-    /** @type {string} Текущий язык интерфейса ('ru') */
     const [language, setLanguage] = useState('ru');
-
-    /** @type {string} Текущая валюта ('RUB') */
     const [currency, setCurrency] = useState('RUB');
 
-    // === Логика фильтрации товаров ===
+    // ✅ Новое состояние: данные для модалки (чтобы не зависеть от пустой корзины)
+    const [orderModalData, setOrderModalData] = useState({
+        cart: [],
+        totals: { subtotal: 0, discount: 0, shipping: 500, total: 0 },
+        orderNumber: null
+    });
 
-    /**
-     * Фильтрует товары по категориям, поиску, цене, бренду и рейтингу.
-     * Учитывает мультиязычные названия и описания.
-     *
-     * @returns {Array<Object>} Отфильтрованный список товаров
-     */
+    // === Фильтрация товаров ===
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
 
@@ -162,14 +113,8 @@ const App = () => {
         return matchesCategory && matchesSearch && matchesPrice && matchesBrand && matchesRating;
     });
 
-    // === Функции управления состоянием ===
+    // === Функции ===
 
-    /**
-     * Добавляет товар в корзину. Если товар с такими опциями уже есть — увеличивает количество.
-     *
-     * @param {Object} product - Товар для добавления
-     * @param {Object} selectedOptions - Выбранные опции (цвет, размер и т.д.)
-     */
     const addToCart = (product, selectedOptions = {}) => {
         setCart(prev => {
             const existing = prev.find(item =>
@@ -186,70 +131,25 @@ const App = () => {
                 );
             }
 
-            return [...prev, {
-                ...product,
-                quantity: 1,
-                selectedOptions,
-                finalPrice: product.discount ? product.price * (1 - product.discount / 100) : product.price
-            }];
+            return [
+                ...prev,
+                {
+                    ...product,
+                    quantity: 1,
+                    selectedOptions,
+                    finalPrice: product.discount ? product.price * (1 - product.discount / 100) : product.price
+                }
+            ];
         });
 
-        // Добавить в "недавно просмотренные"
         if (!viewedProducts.some(p => p.id === product.id)) {
             setViewedProducts(prev => [product, ...prev].slice(0, 5));
         }
 
-        // Анимация добавления
         setShowAddAnimation(true);
         setTimeout(() => setShowAddAnimation(false), 1500);
     };
 
-    /**
-     * Удаляет товар из корзины (по ID и опциям).
-     *
-     * @param {number} productId - ID товара
-     * @param {Object|null} selectedOptions - Опции товара (если null — удаляет все варианты)
-     */
-    const removeFromCart = (productId, selectedOptions = null) => {
-        setCart(prev => {
-            if (selectedOptions === null) {
-                return prev.filter(item => item.id !== productId);
-            }
-            return prev.filter(item =>
-                !(item.id === productId &&
-                    JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
-            );
-        });
-    };
-
-    /**
-     * Обновляет количество товара в корзине. Если 0 — удаляет.
-     *
-     * @param {number} productId - ID товара
-     * @param {number} quantity - Новое количество
-     * @param {Object|null} selectedOptions - Опции товара
-     */
-    const updateQuantity = (productId, quantity, selectedOptions = null) => {
-        if (quantity === 0) {
-            removeFromCart(productId, selectedOptions);
-            return;
-        }
-
-        setCart(prev =>
-            prev.map(item =>
-                item.id === productId &&
-                (selectedOptions === null || JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
-                    ? { ...item, quantity }
-                    : item
-            )
-        );
-    };
-
-    /**
-     * Добавляет/удаляет товар из избранного.
-     *
-     * @param {Object} product - Товар
-     */
     const toggleFavorite = (product) => {
         setFavorites(prev =>
             prev.includes(product.id)
@@ -258,11 +158,6 @@ const App = () => {
         );
     };
 
-    /**
-     * Добавляет/удаляет товар из списка сравнения.
-     *
-     * @param {Object} product - Товар
-     */
     const toggleCompare = (product) => {
         setCompareList(prev =>
             prev.includes(product.id)
@@ -271,12 +166,6 @@ const App = () => {
         );
     };
 
-    /**
-     * Применяет промокод.
-     *
-     * @param {string} code - Код промокода
-     * @returns {boolean} Успешно ли применён
-     */
     const applyCouponCode = (code) => {
         const coupon = coupons.find(c => c.code === code && c.valid);
         if (coupon) {
@@ -288,13 +177,6 @@ const App = () => {
         return false;
     };
 
-    /**
-     * Добавляет новое уведомление.
-     *
-     * @param {string} type - Тип уведомления ('sale', 'order', 'coupon', 'error')
-     * @param {string} message - Текст сообщения
-     * @param {string} severity - Уровень важности ('info', 'success', 'error')
-     */
     const addNotification = (type, message, severity = 'info') => {
         const newNotification = {
             id: Date.now(),
@@ -307,9 +189,6 @@ const App = () => {
         setNotifications(prev => [newNotification, ...prev]);
     };
 
-    /**
-     * Отправляет сообщение в чат.
-     */
     const sendChatMessage = () => {
         if (chatInput.trim()) {
             setChatMessages(prev => [
@@ -318,12 +197,11 @@ const App = () => {
                     id: Date.now(),
                     sender: 'user',
                     text: chatInput,
-                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 }
             ]);
             setChatInput('');
 
-            // Имитация ответа бота
             setTimeout(() => {
                 setChatMessages(prev => [
                     ...prev,
@@ -333,16 +211,13 @@ const App = () => {
                         text: language === 'ru'
                             ? 'Спасибо за ваше сообщение! Наш менеджер свяжется с вами в ближайшее время.'
                             : 'Thank you for your message! Our manager will contact you shortly.',
-                        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     }
                 ]);
             }, 1000);
         }
     };
 
-    /**
-     * Запускает голосовой поиск (имитация).
-     */
     const startVoiceSearch = () => {
         setShowVoiceSearch(true);
         setTimeout(() => {
@@ -352,13 +227,18 @@ const App = () => {
     };
 
     /**
-     * Оформляет заказ: сохраняет в историю, очищает корзину, показывает модалку.
+     * Оформляет заказ.
+     * ВАЖНО: сохраняет данные заказа ДО очистки корзины.
      */
     const completeOrder = () => {
-        const totals = getCartTotals(cart, appliedCoupon);
+        // ✅ Сохраняем корзину и итоги ДО очистки
+        const cartAtOrderTime = [...cart];
+        const totals = getCartTotals(cartAtOrderTime, appliedCoupon);
+        const orderId = Date.now();
+
         const newOrder = {
-            id: Date.now(),
-            items: cart,
+            id: orderId,
+            items: cartAtOrderTime,
             totals,
             delivery: orderForm.delivery,
             payment: orderForm.payment,
@@ -367,6 +247,8 @@ const App = () => {
         };
 
         setOrders(prev => [newOrder, ...prev]);
+
+        // ✅ Очищаем корзину ПОСЛЕ сохранения
         setCart([]);
         setAppliedCoupon(null);
         setOrderForm({
@@ -374,21 +256,24 @@ const App = () => {
             delivery: { type: 'courier', address: '', city: '', phone: '' },
             payment: { method: 'card', cardNumber: '', expiry: '', cvv: '' }
         });
+
+        // ✅ Передаём данные в модалку
+        setOrderModalData({
+            cart: cartAtOrderTime,
+            totals,
+            orderNumber: orderId
+        });
+
         setShowOrderModal(true);
+
         addNotification('order',
             language === 'ru'
-                ? `Заказ №${newOrder.id.toString().slice(-6)} оформлен!`
-                : `Order №${newOrder.id.toString().slice(-6)} confirmed!`,
+                ? `Заказ №${orderId.toString().slice(-6)} оформлен!`
+                : `Order №${orderId.toString().slice(-6)} confirmed!`,
             'success'
         );
     };
 
-    /**
-     * Вход пользователя.
-     *
-     * @param {string} email - Email
-     * @param {string} password - Пароль
-     */
     const login = (email, password) => {
         setUser({
             name: language === 'ru' ? 'Иван Петров' : 'Ivan Petrov',
@@ -400,129 +285,133 @@ const App = () => {
         setCurrentPage('home');
     };
 
-    /**
-     * Выход из аккаунта.
-     */
     const logout = () => {
         setUser(null);
         setCurrentPage('home');
     };
 
     // === Рендеринг страницы ===
-
-    /**
-     * Рендерит текущую страницу на основе `currentPage`.
-     * Передаёт необходимые пропсы в зависимости от страницы.
-     *
-     * @returns {JSX.Element} Текущая страница
-     */
     const renderPage = () => {
         switch (currentPage) {
             case 'product':
-                return <ProductPage
-                    currentProduct={currentProduct}
-                    setCurrentPage={setCurrentPage}
-                    addToCart={addToCart}
-                    toggleFavorite={toggleFavorite}
-                    toggleCompare={toggleCompare}
-                    favorites={favorites}
-                    compareList={compareList}
-                    products={products}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                />;
+                return (
+                    <ProductPage
+                        currentProduct={currentProduct}
+                        setCurrentPage={setCurrentPage}
+                        addToCart={addToCart}
+                        toggleFavorite={toggleFavorite}
+                        toggleCompare={toggleCompare}
+                        favorites={favorites}
+                        compareList={compareList}
+                        products={products}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                    />
+                );
             case 'cart':
-                return <CartPage
-                    cart={cart}
-                    setCart={setCart}
-                    appliedCoupon={appliedCoupon}
-                    applyCouponCode={applyCouponCode}
-                    setCurrentPage={setCurrentPage}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                    getCartTotals={getCartTotals}
-                />;
+                return (
+                    <CartPage
+                        cart={cart}
+                        setCart={setCart}
+                        appliedCoupon={appliedCoupon}
+                        applyCouponCode={applyCouponCode}
+                        setCurrentPage={setCurrentPage}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                        getCartTotals={getCartTotals}
+                    />
+                );
             case 'checkout':
-                return <CheckoutPage
-                    cart={cart}
-                    orderForm={orderForm}
-                    setOrderForm={setOrderForm}
-                    appliedCoupon={appliedCoupon}
-                    completeOrder={completeOrder}
-                    setCurrentPage={setCurrentPage}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                    getCartTotals={getCartTotals}
-                />;
+                return (
+                    <CheckoutPage
+                        cart={cart}
+                        orderForm={orderForm}
+                        setOrderForm={setOrderForm}
+                        appliedCoupon={appliedCoupon}
+                        completeOrder={completeOrder}
+                        setCurrentPage={setCurrentPage}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                        getCartTotals={getCartTotals}
+                    />
+                );
             case 'orders':
-                return <OrdersPage
-                    user={user}
-                    orders={orders}
-                    setCurrentPage={setCurrentPage}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                />;
+                return (
+                    <OrdersPage
+                        user={user}
+                        orders={orders}
+                        setCurrentPage={setCurrentPage}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                    />
+                );
             case 'login':
-                return <LoginPage
-                    login={login}
-                    setCurrentPage={setCurrentPage}
-                    language={language}
-                />;
+                return (
+                    <LoginPage
+                        login={login}
+                        setCurrentPage={setCurrentPage}
+                        language={language}
+                    />
+                );
             case 'favorites':
-                return <FavoritesPage
-                    favorites={favorites}
-                    setFavorites={setFavorites}
-                    setCurrentPage={setCurrentPage}
-                    products={products}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                    toggleFavorite={toggleFavorite}
-                />;
+                return (
+                    <FavoritesPage
+                        favorites={favorites}
+                        setFavorites={setFavorites}
+                        setCurrentPage={setCurrentPage}
+                        products={products}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                        toggleFavorite={toggleFavorite}
+                    />
+                );
             case 'compare':
-                return <ComparePage
-                    compareList={compareList}
-                    setCompareList={setCompareList}
-                    setCurrentPage={setCurrentPage}
-                    products={products}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                    toggleCompare={toggleCompare}
-                />;
+                return (
+                    <ComparePage
+                        compareList={compareList}
+                        setCompareList={setCompareList}
+                        setCurrentPage={setCurrentPage}
+                        products={products}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                        toggleCompare={toggleCompare}
+                    />
+                );
             default:
-                return <HomePage
-                    products={filteredProducts}
-                    categories={categories}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    filters={filters}
-                    setFilters={setFilters}
-                    addToCart={addToCart}
-                    toggleFavorite={toggleFavorite}
-                    toggleCompare={toggleCompare}
-                    favorites={favorites}
-                    compareList={compareList}
-                    setCurrentPage={setCurrentPage}
-                    setCurrentProduct={setCurrentProduct}
-                    language={language}
-                    currency={currency}
-                    formatPrice={formatPrice}
-                />;
+                return (
+                    <HomePage
+                        products={filteredProducts}
+                        categories={categories}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        filters={filters}
+                        setFilters={setFilters}
+                        addToCart={addToCart}
+                        toggleFavorite={toggleFavorite}
+                        toggleCompare={toggleCompare}
+                        favorites={favorites}
+                        compareList={compareList}
+                        setCurrentPage={setCurrentPage}
+                        setCurrentProduct={setCurrentProduct}
+                        language={language}
+                        currency={currency}
+                        formatPrice={formatPrice}
+                    />
+                );
         }
     };
 
     // === Рендер UI ===
-
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Шапка сайта */}
             <Header
                 cart={cart}
                 notifications={notifications}
@@ -539,7 +428,6 @@ const App = () => {
                 formatPrice={formatPrice}
             />
 
-            {/* Хлебные крошки */}
             <Breadcrumb
                 currentPage={currentPage}
                 currentProduct={currentProduct}
@@ -547,10 +435,8 @@ const App = () => {
                 language={language}
             />
 
-            {/* Основной контент */}
             {renderPage()}
 
-            {/* Виджет чата */}
             <ChatWidget
                 showChat={showChat}
                 setShowChat={setShowChat}
@@ -562,18 +448,20 @@ const App = () => {
                 language={language}
             />
 
-            {/* Анимация добавления в корзину */}
             <AddToCartAnimation showAddAnimation={showAddAnimation} language={language} />
 
-            {/* Модальное окно подтверждения заказа */}
+            {/* ✅ Передаём сохранённые данные заказа */}
             <OrderModal
                 showOrderModal={showOrderModal}
                 setShowOrderModal={setShowOrderModal}
                 setCurrentPage={setCurrentPage}
                 language={language}
+                cart={orderModalData.cart}
+                totals={orderModalData.totals}
+                orderNumber={orderModalData.orderNumber}
+                formatPrice={formatPrice}
             />
 
-            {/* Футер */}
             <Footer language={language} />
         </div>
     );
