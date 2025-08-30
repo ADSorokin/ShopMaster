@@ -1,15 +1,43 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/CartSidebar.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/CartSidebar.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Боковая панель корзины — модальное окно с товарами, управлением количества и оформлением заказа.
  *
  * @component
  * @param {Object} props - Входные параметры компонента
- * @param {Array<Object>} props.cart - Текущая корзина с товарами и количеством
+ * @param {Array&lt;Object>} props.cart - Текущая корзина с товарами и количеством
  * @param {Function} props.removeFromCart - Функция удаления товара из корзины по ID
  * @param {Function} props.updateQuantity - Функция изменения количества товара
  * @param {Function} props.setShowCart - Функция скрытия/отображения сайдбара
  * @param {Function} props.setCurrentPage - Навигация между страницами (например, переход к "checkout")
  * @param {Function} props.setCurrentProduct - Установка текущего товара (для деталей)
- * @param {Array<Object>} props.products - Полный список товаров (для отображения названий и изображений)
+ * @param {Array&lt;Object>} props.products - Полный список товаров (для отображения названий и изображений)
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
  * @param {string} props.currency - Код валюты ('RUB', 'USD')
  * @param {Function} [props.formatPrice] - Функция форматирования цен (например, "1 999 ₽")
@@ -20,7 +48,7 @@
  * @param {Function} props.getCartTotals - Утилита подсчёта итогов (сумма, скидка, доставка)
  *
  * @example
- * <CartSidebar
+ * &lt;CartSidebar
  *   cart={cart}
  *   removeFromCart={removeFromCart}
  *   updateQuantity={updateQuantity}
@@ -253,7 +281,7 @@ const CartSidebar = ({
      * Применяет введённый промокод.
      */
     const handleApplyCoupon = () => {
-        if (applyCoupon && couponCode) {
+        if (applyCoupon &amp;&amp; couponCode) {
             applyCoupon(couponCode);
         }
     };
@@ -261,64 +289,64 @@ const CartSidebar = ({
     // === Рендер ===
 
     return (
-        <div className="fixed inset-0 z-50 overflow-hidden">
+        &lt;div className="fixed inset-0 z-50 overflow-hidden">
             {/* Фоновая затемнённая подложка */}
-            <div
+            &lt;div
                 className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
                 onClick={() => setShowCart(false)}
-            ></div>
+            >&lt;/div>
 
-            <div className="fixed inset-0 overflow-hidden">
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            &lt;div className="fixed inset-0 overflow-hidden">
+                &lt;div className="absolute inset-0 overflow-hidden">
+                    &lt;div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                         {/* Сам сайдбар */}
-                        <div className="pointer-events-auto w-screen max-w-md">
-                            <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                        &lt;div className="pointer-events-auto w-screen max-w-md">
+                            &lt;div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                 {/* Заголовок */}
-                                <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                                    <div className="flex items-start justify-between">
-                                        <h2 className="text-lg font-medium text-gray-900">{getTranslation('cart')}</h2>
-                                        <button
+                                &lt;div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                                    &lt;div className="flex items-start justify-between">
+                                        &lt;h2 className="text-lg font-medium text-gray-900">{getTranslation('cart')}&lt;/h2>
+                                        &lt;button
                                             onClick={() => setShowCart(false)}
                                             className="ml-3 flex h-7 items-center justify-center rounded-md text-gray-400 hover:text-gray-500"
                                             aria-label={getTranslation('close')}
                                         >
-                                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                            &lt;svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            &lt;/svg>
+                                        &lt;/button>
+                                    &lt;/div>
 
                                     {/* Список товаров или пустое состояние */}
-                                    <div className="mt-8">
-                                        <div className="flow-root">
+                                    &lt;div className="mt-8">
+                                        &lt;div className="flow-root">
                                             {cart.length === 0 ? (
                                                 // Пустая корзина
-                                                <div className="text-center py-12">
-                                                    <svg
+                                                &lt;div className="text-center py-12">
+                                                    &lt;svg
                                                         className="mx-auto h-12 w-12 text-gray-400"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
                                                     >
-                                                        <path
+                                                        &lt;path
                                                             strokeLinecap="round"
                                                             strokeLinejoin="round"
                                                             strokeWidth={2}
                                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9"
                                                         />
-                                                    </svg>
-                                                    <p className="mt-2 text-gray-500">{getTranslation('cartEmpty')}</p>
-                                                    <button
+                                                    &lt;/svg>
+                                                    &lt;p className="mt-2 text-gray-500">{getTranslation('cartEmpty')}&lt;/p>
+                                                    &lt;button
                                                         onClick={() => setShowCart(false)}
                                                         className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                                                     >
                                                         {getTranslation('continueShopping')}
-                                                    </button>
-                                                </div>
+                                                    &lt;/button>
+                                                &lt;/div>
                                             ) : (
                                                 // Список товаров
-                                                <ul className="-my-6 divide-y divide-gray-200">
+                                                &lt;ul className="-my-6 divide-y divide-gray-200">
                                                     {cart.map((item) => {
                                                         const product = products.find(p => p.id === item.id);
                                                         if (!product) return null;
@@ -328,142 +356,142 @@ const CartSidebar = ({
                                                             : product.name;
 
                                                         return (
-                                                            <li key={item.id} className="flex py-6">
+                                                            &lt;li key={item.id} className="flex py-6">
                                                                 {/* Изображение товара */}
-                                                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                    <img
+                                                                &lt;div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                                    &lt;img
                                                                         src={product.images?.[0] || 'https://placehold.co/100x100/ddd/333?text=No+Image'}
                                                                         alt={currentName}
                                                                         className="h-full w-full object-cover object-center"
                                                                     />
-                                                                </div>
+                                                                &lt;/div>
 
                                                                 {/* Информация о товаре */}
-                                                                <div className="ml-4 flex flex-1 flex-col">
-                                                                    <div>
-                                                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                            <h3>{currentName}</h3>
-                                                                            <p className="ml-4">
+                                                                &lt;div className="ml-4 flex flex-1 flex-col">
+                                                                    &lt;div>
+                                                                        &lt;div className="flex justify-between text-base font-medium text-gray-900">
+                                                                            &lt;h3>{currentName}&lt;/h3>
+                                                                            &lt;p className="ml-4">
                                                                                 {formatPrice
                                                                                     ? formatPrice(item.finalPrice * item.quantity)
                                                                                     : `${item.finalPrice * item.quantity} ${currency}`}
-                                                                            </p>
-                                                                        </div>
-                                                                        <p className="mt-1 text-sm text-gray-500">
+                                                                            &lt;/p>
+                                                                        &lt;/div>
+                                                                        &lt;p className="mt-1 text-sm text-gray-500">
                                                                             {getTranslation('quantity')}: {item.quantity}
-                                                                        </p>
-                                                                    </div>
+                                                                        &lt;/p>
+                                                                    &lt;/div>
 
                                                                     {/* Управление количеством и удаление */}
-                                                                    <div className="flex flex-1 items-end justify-between text-sm">
-                                                                        <div className="flex items-center space-x-2">
-                                                                            <button
+                                                                    &lt;div className="flex flex-1 items-end justify-between text-sm">
+                                                                        &lt;div className="flex items-center space-x-2">
+                                                                            &lt;button
                                                                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                                                                                 className="text-gray-500 hover:text-gray-600"
                                                                                 aria-label="Уменьшить количество"
                                                                             >
-                                                                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                                                                                </svg>
-                                                                            </button>
-                                                                            <span className="font-medium">{item.quantity}</span>
-                                                                            <button
+                                                                                &lt;svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                                                                                &lt;/svg>
+                                                                            &lt;/button>
+                                                                            &lt;span className="font-medium">{item.quantity}&lt;/span>
+                                                                            &lt;button
                                                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                                                 className="text-gray-500 hover:text-gray-600"
                                                                                 aria-label="Увеличить количество"
                                                                             >
-                                                                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                                                </svg>
-                                                                            </button>
-                                                                        </div>
+                                                                                &lt;svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                                                &lt;/svg>
+                                                                            &lt;/button>
+                                                                        &lt;/div>
 
-                                                                        <button
+                                                                        &lt;button
                                                                             onClick={() => removeFromCart(item.id)}
                                                                             className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                         >
                                                                             {getTranslation('remove')}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
+                                                                        &lt;/button>
+                                                                    &lt;/div>
+                                                                &lt;/div>
+                                                            &lt;/li>
                                                         );
                                                     })}
-                                                </ul>
+                                                &lt;/ul>
                                             )}
-                                        </div>
-                                    </div>
-                                </div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/div>
 
                                 {/* Итоги и действия (только если есть товары) */}
-                                {cart.length > 0 && (
-                                    <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                                {cart.length > 0 &amp;&amp; (
+                                    &lt;div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                         {/* Сумма товаров */}
-                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                            <p>{getTranslation('subtotal')}</p>
-                                            <p>
+                                        &lt;div className="flex justify-between text-base font-medium text-gray-900">
+                                            &lt;p>{getTranslation('subtotal')}&lt;/p>
+                                            &lt;p>
                                                 {formatPrice
                                                     ? formatPrice(totals.subtotal)
                                                     : `${totals.subtotal} ${currency}`}
-                                            </p>
-                                        </div>
+                                            &lt;/p>
+                                        &lt;/div>
 
                                         {/* Скидка (если применён промокод) */}
-                                        {appliedCoupon && (
-                                            <div className="flex justify-between text-base font-medium text-green-600 mt-2">
-                                                <p>{getTranslation('discount')}</p>
-                                                <p>
+                                        {appliedCoupon &amp;&amp; (
+                                            &lt;div className="flex justify-between text-base font-medium text-green-600 mt-2">
+                                                &lt;p>{getTranslation('discount')}&lt;/p>
+                                                &lt;p>
                                                     -{formatPrice
                                                     ? formatPrice(totals.discount)
                                                     : `${totals.discount} ${currency}`}
-                                                </p>
-                                            </div>
+                                                &lt;/p>
+                                            &lt;/div>
                                         )}
 
                                         {/* Доставка */}
-                                        <div className="flex justify-between text-base font-medium text-gray-900 mt-2">
-                                            <p>{getTranslation('shipping')}</p>
-                                            <p>
+                                        &lt;div className="flex justify-between text-base font-medium text-gray-900 mt-2">
+                                            &lt;p>{getTranslation('shipping')}&lt;/p>
+                                            &lt;p>
                                                 {totals.shipping === 0
                                                     ? getTranslation('free')
                                                     : formatPrice
                                                         ? formatPrice(totals.shipping)
                                                         : `${totals.shipping} ${currency}`}
-                                            </p>
-                                        </div>
+                                            &lt;/p>
+                                        &lt;/div>
 
                                         {/* Итоговая сумма */}
-                                        <div className="flex justify-between text-base font-bold text-gray-900 mt-2">
-                                            <p>{getTranslation('total')}</p>
-                                            <p>
+                                        &lt;div className="flex justify-between text-base font-bold text-gray-900 mt-2">
+                                            &lt;p>{getTranslation('total')}&lt;/p>
+                                            &lt;p>
                                                 {formatPrice
                                                     ? formatPrice(totals.grandTotal)
                                                     : `${totals.grandTotal} ${currency}`}
-                                            </p>
-                                        </div>
+                                            &lt;/p>
+                                        &lt;/div>
 
                                         {/* Применение промокода */}
-                                        <div className="mt-6">
-                                            <div className="flex">
-                                                <input
+                                        &lt;div className="mt-6">
+                                            &lt;div className="flex">
+                                                &lt;input
                                                     type="text"
                                                     value={couponCode}
                                                     onChange={(e) => setCouponCode(e.target.value)}
                                                     className="w-full rounded-l-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                                                     placeholder={getTranslation('coupon')}
                                                 />
-                                                <button
+                                                &lt;button
                                                     onClick={handleApplyCoupon}
                                                     className="rounded-r-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                                                 >
                                                     {getTranslation('apply')}
-                                                </button>
-                                            </div>
-                                        </div>
+                                                &lt;/button>
+                                            &lt;/div>
+                                        &lt;/div>
 
                                         {/* Кнопка оформления заказа */}
-                                        <div className="mt-6">
-                                            <button
+                                        &lt;div className="mt-6">
+                                            &lt;button
                                                 onClick={() => {
                                                     setShowCart(false);
                                                     setCurrentPage('checkout');
@@ -471,31 +499,53 @@ const CartSidebar = ({
                                                 className="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                                             >
                                                 {getTranslation('completeOrder')}
-                                            </button>
-                                        </div>
+                                            &lt;/button>
+                                        &lt;/div>
 
                                         {/* Ссылка на продолжение покупок */}
-                                        <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
-                                            <p>
+                                        &lt;div className="mt-6 flex justify-center text-sm text-center text-gray-500">
+                                            &lt;p>
                                                 {getTranslation('continueShopping')}{' '}
-                                                <button
+                                                &lt;button
                                                     type="button"
                                                     className="text-indigo-600 font-medium hover:text-indigo-500"
                                                     onClick={() => setShowCart(false)}
                                                 >
                                                     {getTranslation('continueShopping')}
-                                                </button>
-                                            </p>
-                                        </div>
-                                    </div>
+                                                &lt;/button>
+                                            &lt;/p>
+                                        &lt;/div>
+                                    &lt;/div>
                                 )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            &lt;/div>
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
     );
 };
 
-export default CartSidebar;
+export default CartSidebar;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

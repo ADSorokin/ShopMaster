@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: pages/LoginPage.jsx</title>
+    <title>JSDoc: Source: components/Breadcrumb.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: pages/LoginPage.jsx</h1>
+    <h1 class="page-title">Source: components/Breadcrumb.jsx</h1>
 
     
 
@@ -26,58 +26,33 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {useState} from "react";
-
-/**
- * Страница входа и регистрации пользователя.
+            <pre class="prettyprint source linenums"><code>/**
+ * Компонент "Хлебные крошки" — отображает навигационную цепочку.
  *
  * @component
- * @param {Object} props - Свойства компонента
- * @param {Function} props.login - Функция для входа пользователя. Вызывается с email и паролем.
- * @param {Function} props.setCurrentPage - Функция для навигации (например, переход на главную).
- * @param {string} props.language - Текущий язык интерфейса ('ru' или 'en').
+ * @param {Object} props - Входные параметры компонента
+ * @param {string} props.currentPage - Текущая страница приложения (например, 'home', 'cart', 'product')
+ * @param {Object|null} props.currentProduct - Текущий выбранный товар (если на странице товара)
+ * @param {Function} props.setCurrentPage - Функция для навигации между страницами
+ * @param {string} props.language - Язык интерфейса ('ru' или 'en')
  *
  * @example
- * &lt;LoginPage
- *   login={(email, password) => console.log(email, password)}
+ * &lt;Breadcrumb
+ *   currentPage="product"
+ *   currentProduct={product}
  *   setCurrentPage={setCurrentPage}
  *   language="ru"
  * />
  *
  * @description
- * Страница поддерживает:
- * - Вход по email и паролю
- * - Переключение между формами "Вход" и "Регистрация"
- * - Мультиязычный интерфейс
- * - Простую валидацию полей
- *
- * Примечание: функционал регистрации пока не реализован — только UI.
+ * Поведение:
+ * - Формирует цепочку навигации в зависимости от текущей страницы.
+ * - Поддерживает мультиязычные метки.
+ * - Отображает стрелки между пунктами.
+ * - Активный элемент (последний) выделен стилем.
+ * - Все пункты — кликабельные кнопки для навигации.
  */
-const LoginPage = ({ login, setCurrentPage, language }) => {
-    // === Состояние формы ===
-
-    /** @type {string} Email пользователя */
-    const [email, setEmail] = useState('');
-
-    /** @type {string} Пароль пользователя */
-    const [password, setPassword] = useState('');
-
-    /** @type {boolean} Режим: true — регистрация, false — вход */
-    const [isRegister, setIsRegister] = useState(false);
-
-    // === Обработчики ===
-
-    /**
-     * Обрабатывает отправку формы.
-     * Вызывает функцию входа и перенаправляет на главную.
-     *
-     * @param {React.FormEvent} e - Событие отправки формы
-     */
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        login(email, password);
-    };
-
+const Breadcrumb = ({ currentPage, currentProduct, setCurrentPage, language }) => {
     // === Локализация ===
 
     /**
@@ -152,7 +127,12 @@ const LoginPage = ({ login, setCurrentPage, language }) => {
             social: 'Мы в социальных сетях',
             hours: 'Часы работы',
             monFri: 'Пн-Пт: 9:00 - 21:00',
-            satSun: 'Сб-Вс: 10:00 - 18:00'
+            satSun: 'Сб-Вс: 10:00 - 18:00',
+            favorites: 'Избранное',
+            compare: 'Сравнение',
+            electronics: 'Электроника',
+            clothing: 'Одежда',
+            accessories: 'Аксессуары'
         },
         en: {
             home: 'Home',
@@ -221,7 +201,12 @@ const LoginPage = ({ login, setCurrentPage, language }) => {
             social: 'Follow us',
             hours: 'Working hours',
             monFri: 'Mon-Fri: 9:00 - 21:00',
-            satSun: 'Sat-Sun: 10:00 - 18:00'
+            satSun: 'Sat-Sun: 10:00 - 18:00',
+            favorites: 'Favorites',
+            compare: 'Comparison',
+            electronics: 'Electronics',
+            clothing: 'Clothing',
+            accessories: 'Accessories'
         }
     };
 
@@ -229,105 +214,123 @@ const LoginPage = ({ login, setCurrentPage, language }) => {
      * Возвращает перевод строки по ключу.
      * Если перевод отсутствует — возвращает ключ.
      *
-     * @param {string} key - Ключ локализации (например, 'login', 'cart')
+     * @param {string} key - Ключ локализации (например, 'home', 'cart')
      * @returns {string} Переведённая строка
      */
     const getTranslation = (key) => {
         return translations[language]?.[key] || key;
     };
 
+    // === Генерация хлебных крошек ===
+
+    /**
+     * Формирует массив хлебных крошек на основе текущего состояния.
+     *
+     * @returns {Array&lt;{label: string, path: string}>} Массив объектов с меткой и путём
+     */
+    const getBreadcrumbs = () => {
+        const breadcrumbs = [{ label: getTranslation('home'), path: 'home' }];
+
+        if (currentPage === 'product' &amp;&amp; currentProduct) {
+            // Продукт: Главная → Категория → Название товара
+            breadcrumbs.push({
+                label: currentProduct.category === 'electronics' ? getTranslation('electronics') :
+                    currentProduct.category === 'clothing' ? getTranslation('clothing') :
+                        currentProduct.category === 'accessories' ? getTranslation('accessories') :
+                            getTranslation('home'),
+                path: currentProduct.category
+            });
+            breadcrumbs.push({
+                label: typeof currentProduct.name === 'object'
+                    ? currentProduct.name[language]
+                    : currentProduct.name,
+                path: 'product'
+            });
+        }
+        else if (['electronics', 'clothing', 'accessories', 'home'].includes(currentPage)) {
+            // Категория: Главная → Название категории
+            breadcrumbs.push({
+                label: currentPage === 'electronics' ? getTranslation('electronics') :
+                    currentPage === 'clothing' ? getTranslation('clothing') :
+                        currentPage === 'accessories' ? getTranslation('accessories') :
+                            getTranslation('home'),
+                path: currentPage
+            });
+        }
+        else if (currentPage === 'cart') {
+            breadcrumbs.push({ label: getTranslation('cart'), path: 'cart' });
+        }
+        else if (currentPage === 'checkout') {
+            breadcrumbs.push({ label: getTranslation('cart'), path: 'cart' });
+            breadcrumbs.push({ label: getTranslation('confirm'), path: 'checkout' });
+        }
+        else if (currentPage === 'orders') {
+            breadcrumbs.push({ label: getTranslation('orders'), path: 'orders' });
+        }
+        else if (currentPage === 'login') {
+            breadcrumbs.push({ label: getTranslation('login'), path: 'login' });
+        }
+        else if (currentPage === 'favorites') {
+            breadcrumbs.push({ label: getTranslation('favorites'), path: 'favorites' });
+        }
+        else if (currentPage === 'compare') {
+            breadcrumbs.push({ label: getTranslation('compare'), path: 'compare' });
+        }
+
+        return breadcrumbs;
+    };
+
+    const breadcrumbs = getBreadcrumbs();
+
     // === Рендер ===
 
     return (
-        &lt;div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Основной блок формы */}
-            &lt;div className="bg-white rounded-lg shadow-md p-8">
-                &lt;h1 className="text-2xl font-bold mb-6 text-center">
-                    {/* Заголовок: зависит от режима */}
-                    {isRegister
-                        ? (language === 'ru' ? 'Регистрация' : 'Registration')
-                        : getTranslation('login')}
-                &lt;/h1>
-
-                {/* Форма входа/регистрации */}
-                &lt;form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Поле Email */}
-                    &lt;div>
-                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
-                            Email
-                        &lt;/label>
-                        &lt;input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                            placeholder="email@example.com"
-                            required
-                        />
-                    &lt;/div>
-
-                    {/* Поле Пароль */}
-                    &lt;div>
-                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
-                            {language === 'ru' ? 'Пароль' : 'Password'}
-                        &lt;/label>
-                        &lt;input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                            placeholder="••••••••"
-                            required
-                        />
-                    &lt;/div>
-
-                    {/* Поле подтверждения пароля (только при регистрации) */}
-                    {isRegister &amp;&amp; (
-                        &lt;div>
-                            &lt;label className="block text-sm font-medium text-gray-700 mb-2">
-                                {language === 'ru' ? 'Подтверждение пароля' : 'Confirm password'}
-                            &lt;/label>
-                            &lt;input
-                                type="password"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                                placeholder="••••••••"
-                                required
-                            />
-                        &lt;/div>
-                    )}
-
-                    {/* Кнопка отправки */}
-                    &lt;button
-                        type="submit"
-                        className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
-                    >
-                        {isRegister
-                            ? (language === 'ru' ? 'Зарегистрироваться' : 'Register')
-                            : getTranslation('login')}
-                    &lt;/button>
-                &lt;/form>
-
-                {/* Ссылка для переключения режима */}
-                &lt;div className="mt-6 text-center">
-                    &lt;button
-                        onClick={() => setIsRegister(!isRegister)}
-                        className="text-indigo-600 hover:text-indigo-800 font-medium"
-                    >
-                        {isRegister
-                            ? (language === 'ru'
-                                ? 'Уже есть аккаунт? Войти'
-                                : 'Already have an account? Login')
-                            : (language === 'ru'
-                                ? 'Нет аккаунта? Зарегистрироваться'
-                                : 'Don\'t have an account? Register')}
-                    &lt;/button>
-                &lt;/div>
-            &lt;/div>
-        &lt;/div>
+        &lt;nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            {/* Список крошек */}
+            &lt;ol className="flex items-center space-x-2 text-sm text-gray-500">
+                {breadcrumbs.map((crumb, index) => (
+                    &lt;li key={crumb.path} className="flex items-center">
+                        {/* Стрелка между крошками */}
+                        {index > 0 &amp;&amp; (
+                            &lt;svg
+                                className="h-4 w-4 mx-2 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                &lt;path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 5l7 7-7 7"
+                                />
+                            &lt;/svg>
+                        )}
+                        {/* Кликабельная крошка */}
+                        &lt;button
+                            onClick={() => {
+                                if (crumb.path === 'home') setCurrentPage('home');
+                                else if (['electronics', 'clothing', 'accessories', 'home'].includes(crumb.path)) {
+                                    setCurrentPage(crumb.path);
+                                }
+                                else setCurrentPage(crumb.path);
+                            }}
+                            className={`hover:text-indigo-600 transition-colors ${
+                                index === breadcrumbs.length - 1
+                                    ? 'text-indigo-600 font-medium'  // Последний элемент — активный
+                                    : ''
+                            }`}
+                        >
+                            {crumb.label}
+                        &lt;/button>
+                    &lt;/li>
+                ))}
+            &lt;/ol>
+        &lt;/nav>
     );
 };
 
-export default LoginPage;</code></pre>
+export default Breadcrumb;</code></pre>
         </article>
     </section>
 

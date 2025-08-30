@@ -1,9 +1,37 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/CartPage.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/CartPage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Страница корзины — отображает товары, управление количеством, применение промокодов и итоги.
  *
  * @component
  * @param {Object} props - Входные параметры компонента
- * @param {Array<Object>} props.cart - Текущая корзина с товарами, количеством и опциями
+ * @param {Array&lt;Object>} props.cart - Текущая корзина с товарами, количеством и опциями
  * @param {Function} props.setCart - Функция обновления состояния корзины
  * @param {Object|null} props.appliedCoupon - Применённый промокод (с кодом, скидкой и т.д.)
  * @param {Function} props.applyCouponCode - Функция применения промокода по коду
@@ -14,7 +42,7 @@
  * @param {Function} props.getCartTotals - Утилита подсчёта итогов (сумма, скидка, доставка)
  *
  * @example
- * <CartPage
+ * &lt;CartPage
  *   cart={cart}
  *   setCart={setCart}
  *   appliedCoupon={appliedCoupon}
@@ -230,7 +258,7 @@ const CartPage = ({
                 return prev.filter(item => item.id !== productId);
             }
             return prev.filter(item =>
-                !(item.id === productId &&
+                !(item.id === productId &amp;&amp;
                     JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
             );
         });
@@ -252,7 +280,7 @@ const CartPage = ({
 
         setCart(prev =>
             prev.map(item =>
-                item.id === productId &&
+                item.id === productId &amp;&amp;
                 (selectedOptions === null || JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
                     ? { ...item, quantity }
                     : item
@@ -263,154 +291,154 @@ const CartPage = ({
     // === Рендер ===
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        &lt;div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Заголовок */}
-            <h1 className="text-3xl font-bold mb-8">{getTranslation('cart')}</h1>
+            &lt;h1 className="text-3xl font-bold mb-8">{getTranslation('cart')}&lt;/h1>
 
             {/* Пустое состояние */}
             {cart.length === 0 ? (
-                <div className="text-center py-12">
-                    <svg
+                &lt;div className="text-center py-12">
+                    &lt;svg
                         className="mx-auto h-12 w-12 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                     >
-                        <path
+                        &lt;path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9"
                         />
-                    </svg>
-                    <p className="mt-2 text-gray-500">
+                    &lt;/svg>
+                    &lt;p className="mt-2 text-gray-500">
                         {language === 'ru' ? 'Корзина пуста' : 'Cart is empty'}
-                    </p>
-                    <button
+                    &lt;/p>
+                    &lt;button
                         onClick={() => setCurrentPage('home')}
                         className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
                         {language === 'ru' ? 'Перейти к покупкам' : 'Go shopping'}
-                    </button>
-                </div>
+                    &lt;/button>
+                &lt;/div>
             ) : (
                 // Основной контент: товары + итоги
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                &lt;div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                     {/* Список товаров */}
-                    <div className="lg:col-span-2 space-y-4">
+                    &lt;div className="lg:col-span-2 space-y-4">
                         {cart.map((item) => (
-                            <div
+                            &lt;div
                                 key={`${item.id}-${JSON.stringify(item.selectedOptions)}`}
                                 className="flex items-center space-x-4 p-4 border rounded-lg"
                             >
                                 {/* Изображение товара */}
-                                <img
+                                &lt;img
                                     src={item.images?.[0] || 'https://placehold.co/80x80/ddd/333?text=No+Image'}
                                     alt={typeof item.name === 'object' ? item.name[language] : item.name}
                                     className="w-20 h-20 object-cover rounded"
                                 />
 
                                 {/* Информация о товаре */}
-                                <div className="flex-1">
-                                    <h3 className="font-medium">
+                                &lt;div className="flex-1">
+                                    &lt;h3 className="font-medium">
                                         {typeof item.name === 'object' ? item.name[language] : item.name}
-                                    </h3>
+                                    &lt;/h3>
                                     {/* Опции (цвет, размер и т.д.) */}
-                                    {item.selectedOptions && Object.keys(item.selectedOptions).length > 0 && (
-                                        <div className="text-sm text-gray-600">
+                                    {item.selectedOptions &amp;&amp; Object.keys(item.selectedOptions).length > 0 &amp;&amp; (
+                                        &lt;div className="text-sm text-gray-600">
                                             {Object.entries(item.selectedOptions).map(([key, value]) => (
-                                                <span key={key}>{key}: {value} </span>
+                                                &lt;span key={key}>{key}: {value} &lt;/span>
                                             ))}
-                                        </div>
+                                        &lt;/div>
                                     )}
                                     {/* Итоговая цена */}
-                                    <p className="text-indigo-600 font-semibold">
+                                    &lt;p className="text-indigo-600 font-semibold">
                                         {formatPrice(item.finalPrice * item.quantity)}
-                                    </p>
-                                </div>
+                                    &lt;/p>
+                                &lt;/div>
 
                                 {/* Управление количеством */}
-                                <div className="flex items-center space-x-2">
-                                    <button
+                                &lt;div className="flex items-center space-x-2">
+                                    &lt;button
                                         onClick={() => updateQuantity(item.id, item.quantity - 1, item.selectedOptions)}
                                         className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                                         aria-label={`Уменьшить количество ${item.name}`}
                                     >
                                         -
-                                    </button>
-                                    <span className="w-8 text-center">{item.quantity}</span>
-                                    <button
+                                    &lt;/button>
+                                    &lt;span className="w-8 text-center">{item.quantity}&lt;/span>
+                                    &lt;button
                                         onClick={() => updateQuantity(item.id, item.quantity + 1, item.selectedOptions)}
                                         className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                                         aria-label={`Увеличить количество ${item.name}`}
                                     >
                                         +
-                                    </button>
-                                </div>
+                                    &lt;/button>
+                                &lt;/div>
 
                                 {/* Удаление товара */}
-                                <button
+                                &lt;button
                                     onClick={() => removeFromCart(item.id, item.selectedOptions)}
                                     className="text-red-500 hover:text-red-700"
                                     aria-label={`Удалить ${item.name} из корзины`}
                                 >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
+                                    &lt;svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    &lt;/svg>
+                                &lt;/button>
+                            &lt;/div>
                         ))}
-                    </div>
+                    &lt;/div>
 
                     {/* Блок итогов и действий */}
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                        <h3 className="text-xl font-bold mb-4">{getTranslation('total')}</h3>
+                    &lt;div className="bg-white p-6 rounded-lg shadow-md">
+                        &lt;h3 className="text-xl font-bold mb-4">{getTranslation('total')}&lt;/h3>
 
-                        <div className="space-y-2 mb-4">
+                        &lt;div className="space-y-2 mb-4">
                             {/* Сумма товаров */}
-                            <div className="flex justify-between">
-                <span>
+                            &lt;div className="flex justify-between">
+                &lt;span>
                   {getTranslation('subtotal')} ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-                </span>
-                                <span>{formatPrice(totals.subtotal)}</span>
-                            </div>
+                &lt;/span>
+                                &lt;span>{formatPrice(totals.subtotal)}&lt;/span>
+                            &lt;/div>
 
                             {/* Скидка (если применён промокод) */}
-                            {appliedCoupon && (
-                                <div className="flex justify-between text-green-600">
-                                    <span>{getTranslation('discount')} ({appliedCoupon.code})</span>
-                                    <span>-{formatPrice(totals.discount)}</span>
-                                </div>
+                            {appliedCoupon &amp;&amp; (
+                                &lt;div className="flex justify-between text-green-600">
+                                    &lt;span>{getTranslation('discount')} ({appliedCoupon.code})&lt;/span>
+                                    &lt;span>-{formatPrice(totals.discount)}&lt;/span>
+                                &lt;/div>
                             )}
 
                             {/* Доставка */}
-                            <div className="flex justify-between">
-                                <span>{getTranslation('shipping')}</span>
-                                <span>
+                            &lt;div className="flex justify-between">
+                                &lt;span>{getTranslation('shipping')}&lt;/span>
+                                &lt;span>
                   {totals.shipping === 0
                       ? getTranslation('free')
                       : formatPrice(totals.shipping)}
-                </span>
-                            </div>
+                &lt;/span>
+                            &lt;/div>
 
                             {/* Итоговая сумма */}
-                            <div className="border-t pt-2 font-bold">
-                                <div className="flex justify-between">
-                                    <span>{getTranslation('total')}</span>
-                                    <span>{formatPrice(totals.grandTotal)}</span>
-                                </div>
-                            </div>
-                        </div>
+                            &lt;div className="border-t pt-2 font-bold">
+                                &lt;div className="flex justify-between">
+                                    &lt;span>{getTranslation('total')}&lt;/span>
+                                    &lt;span>{formatPrice(totals.grandTotal)}&lt;/span>
+                                &lt;/div>
+                            &lt;/div>
+                        &lt;/div>
 
                         {/* Применение промокода */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                        &lt;div className="mb-4">
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                 {getTranslation('coupon')}
-                            </label>
-                            <div className="flex space-x-2">
-                                <input
+                            &lt;/label>
+                            &lt;div className="flex space-x-2">
+                                &lt;input
                                     type="text"
                                     placeholder={language === 'ru' ? 'Введите промокод' : 'Enter coupon code'}
                                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
@@ -422,7 +450,7 @@ const CartPage = ({
                                     }}
                                     aria-label={getTranslation('coupon')}
                                 />
-                                <button
+                                &lt;button
                                     onClick={() => {
                                         const input = document.querySelector('input[placeholder="Введите промокод"]');
                                         if (input?.value) {
@@ -433,30 +461,52 @@ const CartPage = ({
                                     className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
                                 >
                                     {getTranslation('apply')}
-                                </button>
-                            </div>
+                                &lt;/button>
+                            &lt;/div>
                             {/* Уведомление о применении */}
-                            {appliedCoupon && (
-                                <p className="text-green-600 text-sm mt-2">
+                            {appliedCoupon &amp;&amp; (
+                                &lt;p className="text-green-600 text-sm mt-2">
                                     {language === 'ru'
                                         ? `Промокод ${appliedCoupon.code} применен!`
                                         : `Coupon ${appliedCoupon.code} applied!`}
-                                </p>
+                                &lt;/p>
                             )}
-                        </div>
+                        &lt;/div>
 
                         {/* Кнопка оформления заказа */}
-                        <button
+                        &lt;button
                             onClick={() => setCurrentPage('checkout')}
                             className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
                         >
                             {getTranslation('completeOrder')}
-                        </button>
-                    </div>
-                </div>
+                        &lt;/button>
+                    &lt;/div>
+                &lt;/div>
             )}
-        </div>
+        &lt;/div>
     );
 };
 
-export default CartPage;
+export default CartPage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

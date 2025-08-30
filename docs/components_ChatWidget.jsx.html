@@ -1,4 +1,32 @@
-import {useEffect, useRef} from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/ChatWidget.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/ChatWidget.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {useEffect, useRef} from "react";
 
 /**
  * Виджет чата с поддержкой — плавающая кнопка и модальное окно с перепиской.
@@ -7,7 +35,7 @@ import {useEffect, useRef} from "react";
  * @param {Object} props - Входные параметры компонента
  * @param {boolean} props.showChat - Отображать ли чат
  * @param {Function} props.setShowChat - Функция для открытия/закрытия чата
- * @param {Array<Object>} props.chatMessages - Массив сообщений (с текстом, отправителем, временем)
+ * @param {Array&lt;Object>} props.chatMessages - Массив сообщений (с текстом, отправителем, временем)
  * @param {Function} props.setChatMessages - Функция обновления списка сообщений
  * @param {string} props.chatInput - Текущий ввод пользователя
  * @param {Function} props.setChatInput - Функция обновления поля ввода
@@ -15,7 +43,7 @@ import {useEffect, useRef} from "react";
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
  *
  * @example
- * <ChatWidget
+ * &lt;ChatWidget
  *   showChat={showChat}
  *   setShowChat={setShowChat}
  *   chatMessages={chatMessages}
@@ -228,95 +256,117 @@ const ChatWidget = ({
     // === Рендер ===
 
     return (
-        <>
+        &lt;>
             {/* === Кнопка чата (плавающая) === */}
-            <div className="fixed bottom-6 right-6 z-40">
-                <button
+            &lt;div className="fixed bottom-6 right-6 z-40">
+                &lt;button
                     onClick={() => setShowChat(!showChat)}
                     className="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors flex items-center justify-center"
                     aria-label={getTranslation('support')}
                 >
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
+                    &lt;svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    &lt;/svg>
                     {/* Индикатор новых сообщений от бота */}
-                    {chatMessages.some(m => m.sender === 'bot' && !m.read) && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" aria-label="Новое сообщение">
+                    {chatMessages.some(m => m.sender === 'bot' &amp;&amp; !m.read) &amp;&amp; (
+                        &lt;span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" aria-label="Новое сообщение">
               !
-            </span>
+            &lt;/span>
                     )}
-                </button>
-            </div>
+                &lt;/button>
+            &lt;/div>
 
             {/* === Модальное окно чата === */}
-            {showChat && (
-                <div className="fixed bottom-20 right-6 w-80 bg-white rounded-lg shadow-xl z-40">
+            {showChat &amp;&amp; (
+                &lt;div className="fixed bottom-20 right-6 w-80 bg-white rounded-lg shadow-xl z-40">
                     {/* Заголовок */}
-                    <div className="p-4 border-b flex items-center justify-between">
-                        <h3 className="font-semibold">
+                    &lt;div className="p-4 border-b flex items-center justify-between">
+                        &lt;h3 className="font-semibold">
                             {getTranslation('support')}
-                        </h3>
-                        <button
+                        &lt;/h3>
+                        &lt;button
                             onClick={() => setShowChat(false)}
                             className="text-gray-500 hover:text-gray-700"
                             aria-label="Закрыть чат"
                         >
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                            &lt;svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            &lt;/svg>
+                        &lt;/button>
+                    &lt;/div>
 
                     {/* Окно сообщений с прокруткой */}
-                    <div className="h-64 p-4 overflow-y-auto" ref={chatEndRef}>
+                    &lt;div className="h-64 p-4 overflow-y-auto" ref={chatEndRef}>
                         {chatMessages.map(message => (
-                            <div
+                            &lt;div
                                 key={message.id}
                                 className={`mb-3 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}
                             >
-                                <div
+                                &lt;div
                                     className={`inline-block p-3 rounded-lg max-w-[80%] break-words ${
                                         message.sender === 'user'
                                             ? 'bg-indigo-600 text-white'
                                             : 'bg-gray-200 text-gray-800'
                                     }`}
                                 >
-                                    <p className="text-sm">{message.text}</p>
-                                    <p className="text-xs opacity-75 mt-1">{message.time}</p>
-                                </div>
-                            </div>
+                                    &lt;p className="text-sm">{message.text}&lt;/p>
+                                    &lt;p className="text-xs opacity-75 mt-1">{message.time}&lt;/p>
+                                &lt;/div>
+                            &lt;/div>
                         ))}
                         {/* Пустое место для прокрутки */}
-                        <div ref={chatEndRef} />
-                    </div>
+                        &lt;div ref={chatEndRef} />
+                    &lt;/div>
 
                     {/* Поле ввода */}
-                    <div className="p-4 border-t">
-                        <div className="flex space-x-2">
-                            <input
+                    &lt;div className="p-4 border-t">
+                        &lt;div className="flex space-x-2">
+                            &lt;input
                                 type="text"
                                 value={chatInput}
                                 onChange={(e) => setChatInput(e.target.value)}
                                 placeholder={language === 'ru' ? 'Напишите сообщение...' : 'Type a message...'}
                                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                onKeyPress={(e) => e.key === 'Enter' && sendChatMessage()}
+                                onKeyPress={(e) => e.key === 'Enter' &amp;&amp; sendChatMessage()}
                                 aria-label={getTranslation('sendMessage')}
                             />
-                            <button
+                            &lt;button
                                 onClick={sendChatMessage}
                                 className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition-colors"
                                 aria-label={getTranslation('sendMessage')}
                             >
-                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                                &lt;svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                &lt;/svg>
+                            &lt;/button>
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
             )}
-        </>
+        &lt;/>
     );
 };
 
-export default ChatWidget;
+export default ChatWidget;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

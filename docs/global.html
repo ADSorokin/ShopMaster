@@ -104,6 +104,2966 @@
     
 
     
+    <h4 class="name" id="AddToCartAnimation"><span class="type-signature"></span>AddToCartAnimation<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Поведение:</p>
+<ul>
+<li>Отображается как всплывающее уведомление в правом верхнем углу</li>
+<li>Появляется при добавлении товара в корзину</li>
+<li>Имеет анимацию скрытия (через CSS-класс <code>animate-fade-out</code>)</li>
+<li>Автоматически исчезает через 1.5 секунды (управляется извне)</li>
+<li>Поддерживает мультиязычный текст</li>
+</ul>
+<p>Примечание: для работы анимации требуется CSS-анимация <code>animate-fade-out</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>showAddAnimation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Управляет видимостью анимации</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_AddToCartAnimation.jsx.html">components/AddToCartAnimation.jsx</a>, <a href="components_AddToCartAnimation.jsx.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;AddToCartAnimation showAddAnimation={true} language="ru" /></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="Breadcrumb"><span class="type-signature"></span>Breadcrumb<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Поведение:</p>
+<ul>
+<li>Формирует цепочку навигации в зависимости от текущей страницы.</li>
+<li>Поддерживает мультиязычные метки.</li>
+<li>Отображает стрелки между пунктами.</li>
+<li>Активный элемент (последний) выделен стилем.</li>
+<li>Все пункты — кликабельные кнопки для навигации.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>currentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Текущая страница приложения (например, 'home', 'cart', 'product')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currentProduct</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Текущий выбранный товар (если на странице товара)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция для навигации между страницами</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru' или 'en')</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_Breadcrumb.jsx.html">components/Breadcrumb.jsx</a>, <a href="components_Breadcrumb.jsx.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;Breadcrumb  currentPage="product"  currentProduct={product}  setCurrentPage={setCurrentPage}  language="ru"/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="CartPage"><span class="type-signature"></span>CartPage<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Особенности:</p>
+<ul>
+<li>Отображает список товаров с изображением, названием, опциями и ценой</li>
+<li>Поддерживает изменение количества (с кнопками + и -)</li>
+<li>Удаление товара из корзины</li>
+<li>Применение промокода</li>
+<li>Показ итоговой суммы с учётом скидки и доставки</li>
+<li>Адаптивная сетка: товары слева, итоги справа на десктопе</li>
+<li>Поддержка мультиязычного интерфейса</li>
+<li>Пустое состояние при пустой корзине</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Текущая корзина с товарами, количеством и опциями</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция обновления состояния корзины</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>appliedCoupon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Применённый промокод (с кодом, скидкой и т.д.)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>applyCouponCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция применения промокода по коду</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция навигации (например, переход к &quot;checkout&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Код валюты ('RUB', 'USD')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>formatPrice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция форматирования цен (например, &quot;1 999 ₽&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getCartTotals</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Утилита подсчёта итогов (сумма, скидка, доставка)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages_CartPage.jsx.html">pages/CartPage.jsx</a>, <a href="pages_CartPage.jsx.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;CartPage  cart={cart}  setCart={setCart}  appliedCoupon={appliedCoupon}  applyCouponCode={applyCouponCode}  setCurrentPage={setCurrentPage}  language="ru"  currency="RUB"  formatPrice={formatPrice}  getCartTotals={getCartTotals}/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="CartSidebar"><span class="type-signature"></span>CartSidebar<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Особенности:</p>
+<ul>
+<li>Отображается как модальное окно справа (slide-in)</li>
+<li>Поддерживает мультиязычный интерфейс</li>
+<li>Позволяет изменять количество, удалять товары</li>
+<li>Применение промокодов</li>
+<li>Показывает итоговую сумму с учётом скидок и доставки</li>
+<li>Клик вне области — закрывает сайдбар</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Текущая корзина с товарами и количеством</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>removeFromCart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция удаления товара из корзины по ID</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateQuantity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция изменения количества товара</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setShowCart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция скрытия/отображения сайдбара</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Навигация между страницами (например, переход к &quot;checkout&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentProduct</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Установка текущего товара (для деталей)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>products</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Полный список товаров (для отображения названий и изображений)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Код валюты ('RUB', 'USD')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>formatPrice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция форматирования цен (например, &quot;1 999 ₽&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>appliedCoupon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Применённый промокод</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>couponCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Введённый код промокода</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCouponCode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция обновления поля ввода промокода</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>applyCoupon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Функция применения промокода</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getCartTotals</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Утилита подсчёта итогов (сумма, скидка, доставка)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_CartSidebar.jsx.html">components/CartSidebar.jsx</a>, <a href="components_CartSidebar.jsx.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;CartSidebar  cart={cart}  removeFromCart={removeFromCart}  updateQuantity={updateQuantity}  setShowCart={setShowCart}  setCurrentPage={setCurrentPage}  products={products}  language="ru"  currency="RUB"  formatPrice={formatPrice}  appliedCoupon={appliedCoupon}  couponCode={couponCode}  setCouponCode={setCouponCode}  applyCoupon={applyCoupon}  getCartTotals={getCartTotals}/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="ChatWidget"><span class="type-signature"></span>ChatWidget<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Особенности:</p>
+<ul>
+<li>Плавающая кнопка в правом нижнем углу с индикатором новых сообщений</li>
+<li>Автопрокрутка к последнему сообщению при обновлении</li>
+<li>Поддержка мультиязычного интерфейса</li>
+<li>Отправка по Enter или кнопке</li>
+<li>Стилизованные сообщения: пользователь (справа, синие), бот (слева, серые)</li>
+<li>Кнопка закрытия в заголовке</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>showChat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Отображать ли чат</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setShowChat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция для открытия/закрытия чата</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>chatMessages</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Массив сообщений (с текстом, отправителем, временем)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setChatMessages</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция обновления списка сообщений</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>chatInput</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Текущий ввод пользователя</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setChatInput</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция обновления поля ввода</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sendChatMessage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Обработчик отправки сообщения</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_ChatWidget.jsx.html">components/ChatWidget.jsx</a>, <a href="components_ChatWidget.jsx.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;ChatWidget  showChat={showChat}  setShowChat={setShowChat}  chatMessages={chatMessages}  setChatMessages={setChatMessages}  chatInput={chatInput}  setChatInput={setChatInput}  sendChatMessage={sendChatMessage}  language="ru"/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="CheckoutPage"><span class="type-signature"></span>CheckoutPage<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Особенности:</p>
+<ul>
+<li>Пошаговая форма: доставка → оплата → подтверждение</li>
+<li>Прогресс-бар с индикатором шагов</li>
+<li>Поддержка двух способов доставки: курьер и самовывоз</li>
+<li>Два способа оплаты: карта и наличные</li>
+<li>Отображение итогов и применённого промокода</li>
+<li>Мультиязычный интерфейс</li>
+<li>Адаптивная сетка: форма слева, сводка справа</li>
+</ul>
+<p>Использует данные из <code>pickupPoints.js</code> для пунктов самовывоза.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Текущая корзина с товарами</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>orderForm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Состояние формы заказа (шаг, доставка, оплата)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setOrderForm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция обновления формы заказа</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>appliedCoupon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Применённый промокод</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>completeOrder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция завершения заказа</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция навигации (например, переход к &quot;orders&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Код валюты ('RUB', 'USD')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>formatPrice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция форматирования цен</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getCartTotals</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Утилита подсчёта итогов (сумма, скидка, доставка)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages_CheckoutPage.jsx.html">pages/CheckoutPage.jsx</a>, <a href="pages_CheckoutPage.jsx.html#line45">line 45</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;CheckoutPage  cart={cart}  orderForm={orderForm}  setOrderForm={setOrderForm}  appliedCoupon={appliedCoupon}  completeOrder={completeOrder}  setCurrentPage={setCurrentPage}  language="ru"  currency="RUB"  formatPrice={formatPrice}  getCartTotals={getCartTotals}/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="FavoritesPage"><span class="type-signature"></span>FavoritesPage<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Особенности:</p>
+<ul>
+<li>Отображает карточки избранных товаров</li>
+<li>Поддерживает удаление товара из избранного (крестик на карточке)</li>
+<li>Кнопка &quot;Очистить всё&quot;</li>
+<li>Пустое состояние при отсутствии товаров</li>
+<li>Адаптивная сетка: 1–3 колонки в зависимости от ширины экрана</li>
+<li>Поддержка мультиязычного интерфейса</li>
+<li>Полная интеграция с <code>ProductCard</code></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>favorites</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Список ID избранных товаров</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setFavorites</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция обновления списка избранного</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция навигации (например, переход к &quot;home&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentProduct</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Установка текущего товара (для деталей)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>products</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Полный список товаров</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Код валюты ('RUB', 'USD')</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>formatPrice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция форматирования цен (например, &quot;1 999 ₽&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>addToCart</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция добавления товара в корзину</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toggleFavorite</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция переключения избранного</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toggleCompare</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция переключения сравнения</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>compareList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Список ID товаров для сравнения</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages_FavoritesPage.jsx.html">pages/FavoritesPage.jsx</a>, <a href="pages_FavoritesPage.jsx.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;FavoritesPage  favorites={[1, 3]}  setFavorites={setFavorites}  setCurrentPage={setCurrentPage}  setCurrentProduct={setCurrentProduct}  products={products}  language="ru"  currency="RUB"  formatPrice={formatPrice}  addToCart={addToCart}  toggleFavorite={toggleFavorite}  toggleCompare={toggleCompare}  compareList={compareList}/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="Footer"><span class="type-signature"></span>Footer<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Структура:</p>
+<ul>
+<li>Логотип и краткое описание компании</li>
+<li>Быстрые ссылки (о нас, контакты, поддержка)</li>
+<li>Контактная информация (адрес, телефон, email)</li>
+<li>Подписка на рассылку</li>
+<li>Копирайт и иконки способов оплаты</li>
+</ul>
+<p>Поддерживает мультиязычный интерфейс через объект <code>translations</code>.
+Адаптивная сетка: 1 колонка на мобильных, 4 — на десктопе.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_Footer.jsx.html">components/Footer.jsx</a>, <a href="components_Footer.jsx.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;Footer language="ru" /></code></pre>
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="Header"><span class="type-signature"></span>Header<span class="signature">(props)</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
     
 
@@ -1670,6 +4630,274 @@
     
 
     
+    <h4 class="name" id="OrderModal"><span class="type-signature"></span>OrderModal<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Поведение:</p>
+<ul>
+<li>Отображается как модальное всплывающее окно с анимацией фона</li>
+<li>Показывает иконку успеха, текст подтверждения и номер заказа</li>
+<li>Содержит два действия: &quot;Мои заказы&quot; и &quot;Продолжить покупки&quot;</li>
+<li>Закрывается по клику на подложку или кнопку</li>
+<li>Поддерживает мультиязычный интерфейс</li>
+</ul>
+<p>Примечание: номер заказа генерируется как последние 6 цифр <code>Date.now()</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Входные параметры компонента</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>showOrderModal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Управляет видимостью модального окна</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setShowOrderModal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция для скрытия модального окна</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>setCurrentPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Функция навигации (например, переход к &quot;orders&quot; или &quot;home&quot;)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>language</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Язык интерфейса ('ru', 'en')</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_OrderModal.jsx.html">components/OrderModal.jsx</a>, <a href="components_OrderModal.jsx.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>&lt;OrderModal  showOrderModal={true}  setShowOrderModal={setShowOrderModal}  setCurrentPage={setCurrentPage}  language="ru"/></code></pre>
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="OrdersPage"><span class="type-signature"></span>OrdersPage<span class="signature">(props)</span><span class="type-signature"></span></h4>
     
 
@@ -2899,13 +6127,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Aug 24 2025 19:21:18 GMT+0300 (Москва, стандартное время)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:08:00 GMT+0300 (Москва, стандартное время)
 </footer>
 
 <script> prettyPrint(); </script>

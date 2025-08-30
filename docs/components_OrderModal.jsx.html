@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/OrderModal.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/OrderModal.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Модальное окно подтверждения заказа — отображается после оформления.
  *
  * @component
@@ -9,7 +37,7 @@
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
  *
  * @example
- * <OrderModal
+ * &lt;OrderModal
  *   showOrderModal={true}
  *   setShowOrderModal={setShowOrderModal}
  *   setCurrentPage={setCurrentPage}
@@ -192,68 +220,68 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
     // === Рендер ===
 
     return (
-        <div
+        &lt;div
             className="fixed inset-0 z-50 overflow-y-auto"
             aria-modal="true"
             role="dialog"
             aria-labelledby="order-modal-title"
         >
-            <div className="flex items-center justify-center min-h-screen p-4">
+            &lt;div className="flex items-center justify-center min-h-screen p-4">
                 {/* Подложка (фон затемнён) */}
-                <div
+                &lt;div
                     className="fixed inset-0 bg-black bg-opacity-50"
                     onClick={() => setShowOrderModal(false)}
                     aria-hidden="true"
                 />
 
                 {/* Модальное окно */}
-                <div className="relative bg-white rounded-lg max-w-lg w-full p-6">
-                    <div className="text-center">
+                &lt;div className="relative bg-white rounded-lg max-w-lg w-full p-6">
+                    &lt;div className="text-center">
                         {/* Иконка успеха */}
-                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg
+                        &lt;div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            &lt;svg
                                 className="w-8 h-8 text-green-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                                 aria-hidden="true"
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
+                                &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            &lt;/svg>
+                        &lt;/div>
 
                         {/* Заголовок */}
-                        <h3
+                        &lt;h3
                             id="order-modal-title"
                             className="text-2xl font-bold mb-2"
                         >
                             {getTranslation('orderConfirmed')}
-                        </h3>
+                        &lt;/h3>
 
                         {/* Основной текст */}
-                        <p className="text-gray-600 mb-6">
+                        &lt;p className="text-gray-600 mb-6">
                             {getTranslation('thankYou')}{' '}
                             {language === 'ru'
                                 ? 'Номер вашего заказа:'
                                 : 'Your order number:'}{' '}
-                            <strong>#{Date.now().toString().slice(-6)}</strong>
-                        </p>
+                            &lt;strong>#{Date.now().toString().slice(-6)}&lt;/strong>
+                        &lt;/p>
 
                         {/* Блок с информацией о заказе (заглушка) */}
-                        <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                            <div className="flex justify-between mb-2">
-                                <span>{language === 'ru' ? 'Сумма заказа:' : 'Order amount:'}</span>
-                                <span className="font-semibold">0 ₽</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-gray-600">
-                                <span>{language === 'ru' ? 'Товаров:' : 'Products:'}</span>
-                                <span>0 шт.</span>
-                            </div>
-                        </div>
+                        &lt;div className="bg-gray-50 rounded-lg p-4 mb-6">
+                            &lt;div className="flex justify-between mb-2">
+                                &lt;span>{language === 'ru' ? 'Сумма заказа:' : 'Order amount:'}&lt;/span>
+                                &lt;span className="font-semibold">0 ₽&lt;/span>
+                            &lt;/div>
+                            &lt;div className="flex justify-between text-sm text-gray-600">
+                                &lt;span>{language === 'ru' ? 'Товаров:' : 'Products:'}&lt;/span>
+                                &lt;span>0 шт.&lt;/span>
+                            &lt;/div>
+                        &lt;/div>
 
                         {/* Кнопки действий */}
-                        <div className="flex space-x-4">
-                            <button
+                        &lt;div className="flex space-x-4">
+                            &lt;button
                                 onClick={() => {
                                     setShowOrderModal(false);
                                     setCurrentPage('orders');
@@ -261,8 +289,8 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
                                 className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors"
                             >
                                 {getTranslation('myOrders')}
-                            </button>
-                            <button
+                            &lt;/button>
+                            &lt;button
                                 onClick={() => {
                                     setShowOrderModal(false);
                                     setCurrentPage('home');
@@ -270,13 +298,35 @@ const OrderModal = ({ showOrderModal, setShowOrderModal, setCurrentPage, languag
                                 className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors"
                             >
                                 {getTranslation('continueShopping')}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            &lt;/button>
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
     );
 };
 
-export default OrderModal;
+export default OrderModal;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

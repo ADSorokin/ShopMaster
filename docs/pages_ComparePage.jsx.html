@@ -1,16 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/ComparePage.jsx</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/ComparePage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 
 /**
  * Страница сравнения товаров — позволяет сравнивать характеристики и описания нескольких товаров.
  *
  * @component
  * @param {Object} props - Входные параметры компонента
- * @param {Array<number>} props.compareList - Список ID товаров, добавленных к сравнению
- * @param {Array<Object>} props.products - Полный список товаров
+ * @param {Array&lt;number>} props.compareList - Список ID товаров, добавленных к сравнению
+ * @param {Array&lt;Object>} props.products - Полный список товаров
  * @param {Function} props.toggleCompare - Функция для добавления/удаления товара из списка сравнения
  * @param {Function} props.addToCart - Функция добавления товара в корзину
  * @param {Function} props.toggleFavorite - Функция переключения избранного
- * @param {Array<number>} props.favorites - Список ID избранных товаров
+ * @param {Array&lt;number>} props.favorites - Список ID избранных товаров
  * @param {Function} props.setCurrentPage - Функция навигации между страницами
  * @param {Function} props.setCurrentProduct - Установка текущего товара (для деталей)
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
@@ -18,7 +46,7 @@
  * @param {Function} props.formatPrice - Функция форматирования цен (например, "1 999 ₽")
  *
  * @example
- * <ComparePage
+ * &lt;ComparePage
  *   compareList={[1, 2]}
  *   products={products}
  *   toggleCompare={toggleCompare}
@@ -263,7 +291,7 @@ const ComparePage = ({
 
     /**
      * Товары, добавленные пользователем в сравнение.
-     * @type {Array<Object>}
+     * @type {Array&lt;Object>}
      */
     const comparedProducts = products.filter(p => compareList.includes(p.id));
 
@@ -294,7 +322,7 @@ const ComparePage = ({
     /**
      * Получает все уникальные ключи характеристик из всех сравниваемых товаров.
      * Исключает базовые поля (артикул, цвет и т.д.).
-     * @returns {Array<string>} Массив ключей характеристик
+     * @returns {Array&lt;string>} Массив ключей характеристик
      */
     const getAllSpecifications = () => {
         const allSpecs = new Set();
@@ -312,60 +340,60 @@ const ComparePage = ({
     // === Рендер ===
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Заголовок и действия */}
-            <div className="flex items-center justify-between mb-8">
-                <h1 className="text-3xl font-bold">{getTranslation('compare')}</h1>
-                <div className="flex space-x-4">
-                    <button
+            &lt;div className="flex items-center justify-between mb-8">
+                &lt;h1 className="text-3xl font-bold">{getTranslation('compare')}&lt;/h1>
+                &lt;div className="flex space-x-4">
+                    &lt;button
                         onClick={clearComparison}
                         className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
                         aria-label={getTranslation('clearComparison')}
                     >
                         {getTranslation('clearComparison')}
-                    </button>
-                    <button
+                    &lt;/button>
+                    &lt;button
                         onClick={() => setCurrentPage('home')}
                         className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
                         {getTranslation('continueShopping')}
-                    </button>
-                </div>
-            </div>
+                    &lt;/button>
+                &lt;/div>
+            &lt;/div>
 
             {/* Пустое состояние */}
             {comparedProducts.length === 0 ? (
-                <div className="text-center py-12">
-                    <svg
+                &lt;div className="text-center py-12">
+                    &lt;svg
                         className="mx-auto h-12 w-12 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                     >
-                        <path
+                        &lt;path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                         />
-                    </svg>
-                    <p className="mt-2 text-gray-500">{getTranslation('noCompare')}</p>
-                    <button
+                    &lt;/svg>
+                    &lt;p className="mt-2 text-gray-500">{getTranslation('noCompare')}&lt;/p>
+                    &lt;button
                         onClick={() => setCurrentPage('home')}
                         className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
                         {getTranslation('continueShopping')}
-                    </button>
-                </div>
+                    &lt;/button>
+                &lt;/div>
             ) : (
-                <div>
+                &lt;div>
                     {/* Карточки товаров */}
-                    <div className="mb-8">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    &lt;div className="mb-8">
+                        &lt;div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {comparedProducts.map(product => (
-                                <div key={product.id} className="relative">
-                                    <ProductCard
+                                &lt;div key={product.id} className="relative">
+                                    &lt;ProductCard
                                         product={product}
                                         addToCart={addToCart}
                                         toggleFavorite={toggleFavorite}
@@ -379,7 +407,7 @@ const ComparePage = ({
                                         setCurrentProduct={setCurrentProduct}
                                     />
                                     {/* Кнопка удаления из сравнения */}
-                                    <button
+                                    &lt;button
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             if (toggleCompare) {
@@ -389,21 +417,21 @@ const ComparePage = ({
                                         className="absolute top-2 right-2 text-red-500 bg-white rounded-full p-1 shadow-md"
                                         aria-label={`${getTranslation('remove')} ${typeof product.name === 'object' ? product.name[language] : product.name}`}
                                     >
-                                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </div>
+                                        &lt;svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                            &lt;path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                        &lt;/svg>
+                                    &lt;/button>
+                                &lt;/div>
                             ))}
-                        </div>
-                    </div>
+                        &lt;/div>
+                    &lt;/div>
 
                     {/* Таблица сравнения */}
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                    &lt;div className="bg-white rounded-lg shadow-md overflow-hidden">
                         {/* Табы */}
-                        <div className="border-b">
-                            <nav className="flex space-x-8">
-                                <button
+                        &lt;div className="border-b">
+                            &lt;nav className="flex space-x-8">
+                                &lt;button
                                     onClick={() => setActiveTab('specifications')}
                                     className={`py-4 px-1 border-b-2 font-medium text-sm ${
                                         activeTab === 'specifications'
@@ -412,8 +440,8 @@ const ComparePage = ({
                                     }`}
                                 >
                                     {getTranslation('specifications')}
-                                </button>
-                                <button
+                                &lt;/button>
+                                &lt;button
                                     onClick={() => setActiveTab('description')}
                                     className={`py-4 px-1 border-b-2 font-medium text-sm ${
                                         activeTab === 'description'
@@ -422,72 +450,94 @@ const ComparePage = ({
                                     }`}
                                 >
                                     {getTranslation('description')}
-                                </button>
-                            </nav>
-                        </div>
+                                &lt;/button>
+                            &lt;/nav>
+                        &lt;/div>
 
                         {/* Вкладка: Характеристики */}
-                        {activeTab === 'specifications' && (
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {activeTab === 'specifications' &amp;&amp; (
+                            &lt;div className="overflow-x-auto">
+                                &lt;table className="min-w-full divide-y divide-gray-200">
+                                    &lt;thead className="bg-gray-50">
+                                    &lt;tr>
+                                        &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {getTranslation('specification')}
-                                        </th>
+                                        &lt;/th>
                                         {comparedProducts.map(product => (
-                                            <th key={product.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            &lt;th key={product.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 {typeof product.name === 'object' ? product.name[language] : product.name}
-                                            </th>
+                                            &lt;/th>
                                         ))}
-                                    </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    &lt;/tr>
+                                    &lt;/thead>
+                                    &lt;tbody className="bg-white divide-y divide-gray-200">
                                     {getAllSpecifications().map(specKey => (
-                                        <tr key={specKey}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        &lt;tr key={specKey}>
+                                            &lt;td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {specKey}
-                                            </td>
+                                            &lt;/td>
                                             {comparedProducts.map(product => {
                                                 const specs = getSpecifications(product);
                                                 return (
-                                                    <td key={product.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    &lt;td key={product.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {specs[specKey] || '-'}
-                                                    </td>
+                                                    &lt;/td>
                                                 );
                                             })}
-                                        </tr>
+                                        &lt;/tr>
                                     ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    &lt;/tbody>
+                                &lt;/table>
+                            &lt;/div>
                         )}
 
                         {/* Вкладка: Описание */}
-                        {activeTab === 'description' && (
-                            <div className="p-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {activeTab === 'description' &amp;&amp; (
+                            &lt;div className="p-6">
+                                &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {comparedProducts.map(product => {
                                         const currentDescription = typeof product.description === 'object'
                                             ? product.description[language]
                                             : product.description;
                                         return (
-                                            <div key={product.id} className="p-4 border rounded-lg">
-                                                <h3 className="font-semibold mb-2">
+                                            &lt;div key={product.id} className="p-4 border rounded-lg">
+                                                &lt;h3 className="font-semibold mb-2">
                                                     {typeof product.name === 'object' ? product.name[language] : product.name}
-                                                </h3>
-                                                <p className="text-gray-700">{currentDescription}</p>
-                                            </div>
+                                                &lt;/h3>
+                                                &lt;p className="text-gray-700">{currentDescription}&lt;/p>
+                                            &lt;/div>
                                         );
                                     })}
-                                </div>
-                            </div>
+                                &lt;/div>
+                            &lt;/div>
                         )}
-                    </div>
-                </div>
+                    &lt;/div>
+                &lt;/div>
             )}
-        </div>
+        &lt;/div>
     );
 };
 
-export default ComparePage;
+export default ComparePage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

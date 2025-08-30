@@ -14,11 +14,10 @@
  *
  * Поддерживает мультиязычность (ru) и мультивалютность (RUB).
  */
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Breadcrumb from './components/Breadcrumb';
-import ProductCard from './components/ProductCard';
 import ProductPage from './pages/ProductPage';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';

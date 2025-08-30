@@ -1,11 +1,39 @@
-import {pickupPoints} from "../data/pickupPoints";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/CheckoutPage.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/CheckoutPage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {pickupPoints} from "../data/pickupPoints";
 
 /**
  * Страница оформления заказа — пошаговая форма с доставкой, оплатой и подтверждением.
  *
  * @component
  * @param {Object} props - Входные параметры компонента
- * @param {Array<Object>} props.cart - Текущая корзина с товарами
+ * @param {Array&lt;Object>} props.cart - Текущая корзина с товарами
  * @param {Object} props.orderForm - Состояние формы заказа (шаг, доставка, оплата)
  * @param {Function} props.setOrderForm - Функция обновления формы заказа
  * @param {Object|null} props.appliedCoupon - Применённый промокод
@@ -17,7 +45,7 @@ import {pickupPoints} from "../data/pickupPoints";
  * @param {Function} props.getCartTotals - Утилита подсчёта итогов (сумма, скидка, доставка)
  *
  * @example
- * <CheckoutPage
+ * &lt;CheckoutPage
  *   cart={cart}
  *   orderForm={orderForm}
  *   setOrderForm={setOrderForm}
@@ -228,7 +256,7 @@ const CheckoutPage = ({
      * Переходит к следующему шагу или завершает заказ.
      */
     const handleNextStep = () => {
-        if (orderForm.step < 3) {
+        if (orderForm.step &lt; 3) {
             setOrderForm(prev => ({ ...prev, step: prev.step + 1 }));
         } else {
             completeOrder();
@@ -247,24 +275,24 @@ const CheckoutPage = ({
     // === Рендер ===
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        &lt;div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Заголовок */}
-            <h1 className="text-3xl font-bold mb-8">
+            &lt;h1 className="text-3xl font-bold mb-8">
                 {language === 'ru' ? 'Оформление заказа' : 'Checkout'}
-            </h1>
+            &lt;/h1>
 
             {/* Прогресс-бар шагов */}
-            <div className="flex items-center justify-between mb-8">
+            &lt;div className="flex items-center justify-between mb-8">
                 {[1, 2, 3].map((step) => (
-                    <div key={step} className="flex items-center">
+                    &lt;div key={step} className="flex items-center">
                         {/* Круг с номером шага */}
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        &lt;div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                             orderForm.step >= step ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600'
                         }`}>
                             {step}
-                        </div>
+                        &lt;/div>
                         {/* Название шага */}
-                        <span className={`ml-2 font-medium ${
+                        &lt;span className={`ml-2 font-medium ${
                             orderForm.step >= step ? 'text-indigo-600' : 'text-gray-500'
                         }`}>
               {step === 1
@@ -272,31 +300,31 @@ const CheckoutPage = ({
                   : step === 2
                       ? getTranslation('payment')
                       : getTranslation('confirm')}
-            </span>
+            &lt;/span>
                         {/* Линия между шагами */}
-                        {step < 3 && (
-                            <div className={`w-16 h-1 mx-4 ${
+                        {step &lt; 3 &amp;&amp; (
+                            &lt;div className={`w-16 h-1 mx-4 ${
                                 orderForm.step > step ? 'bg-indigo-600' : 'bg-gray-200'
                             }`} />
                         )}
-                    </div>
+                    &lt;/div>
                 ))}
-            </div>
+            &lt;/div>
 
             {/* Основной контент: форма + сводка */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            &lt;div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 {/* Основная форма (3 шага) */}
-                <div className="lg:col-span-2">
+                &lt;div className="lg:col-span-2">
                     {/* Шаг 1: Доставка */}
-                    {orderForm.step === 1 && (
-                        <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h2 className="text-xl font-bold mb-6">{getTranslation('delivery')}</h2>
+                    {orderForm.step === 1 &amp;&amp; (
+                        &lt;div className="bg-white p-6 rounded-lg shadow-md">
+                            &lt;h2 className="text-xl font-bold mb-6">{getTranslation('delivery')}&lt;/h2>
 
-                            <div className="space-y-4">
+                            &lt;div className="space-y-4">
                                 {/* Курьерская доставка */}
-                                <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
-                                    <input
+                                &lt;label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
+                                    &lt;input
                                         type="radio"
                                         name="delivery"
                                         value="courier"
@@ -308,19 +336,19 @@ const CheckoutPage = ({
                                         className="text-indigo-600"
                                         aria-label={language === 'ru' ? 'Курьерская доставка' : 'Courier delivery'}
                                     />
-                                    <div>
-                                        <div className="font-medium">
+                                    &lt;div>
+                                        &lt;div className="font-medium">
                                             {language === 'ru' ? 'Курьерская доставка' : 'Courier delivery'}
-                                        </div>
-                                        <div className="text-sm text-gray-600">
+                                        &lt;/div>
+                                        &lt;div className="text-sm text-gray-600">
                                             {language === 'ru' ? '1-3 дня, 500 ₽' : '1-3 days, 500 ₽'}
-                                        </div>
-                                    </div>
-                                </label>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/label>
 
                                 {/* Самовывоз */}
-                                <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
-                                    <input
+                                &lt;label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
+                                    &lt;input
                                         type="radio"
                                         name="delivery"
                                         value="pickup"
@@ -332,25 +360,25 @@ const CheckoutPage = ({
                                         className="text-indigo-600"
                                         aria-label={language === 'ru' ? 'Самовывоз' : 'Pickup'}
                                     />
-                                    <div>
-                                        <div className="font-medium">
+                                    &lt;div>
+                                        &lt;div className="font-medium">
                                             {language === 'ru' ? 'Самовывоз' : 'Pickup'}
-                                        </div>
-                                        <div className="text-sm text-gray-600">
+                                        &lt;/div>
+                                        &lt;div className="text-sm text-gray-600">
                                             {language === 'ru' ? 'Бесплатно, сегодня' : 'Free, today'}
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/label>
+                            &lt;/div>
 
                             {/* Поля для курьерской доставки */}
-                            {orderForm.delivery.type === 'courier' && (
-                                <div className="mt-6 space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {orderForm.delivery.type === 'courier' &amp;&amp; (
+                                &lt;div className="mt-6 space-y-4">
+                                    &lt;div>
+                                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                             {language === 'ru' ? 'Город' : 'City'}
-                                        </label>
-                                        <input
+                                        &lt;/label>
+                                        &lt;input
                                             type="text"
                                             value={orderForm.delivery.city}
                                             onChange={(e) => setOrderForm(prev => ({
@@ -360,12 +388,12 @@ const CheckoutPage = ({
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                             placeholder={language === 'ru' ? 'Москва' : 'Moscow'}
                                         />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    &lt;/div>
+                                    &lt;div>
+                                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                             {language === 'ru' ? 'Адрес' : 'Address'}
-                                        </label>
-                                        <input
+                                        &lt;/label>
+                                        &lt;input
                                             type="text"
                                             value={orderForm.delivery.address}
                                             onChange={(e) => setOrderForm(prev => ({
@@ -375,12 +403,12 @@ const CheckoutPage = ({
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                             placeholder={language === 'ru' ? 'Улица, дом, квартира' : 'Street, building, apartment'}
                                         />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    &lt;/div>
+                                    &lt;div>
+                                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                             {language === 'ru' ? 'Телефон' : 'Phone'}
-                                        </label>
-                                        <input
+                                        &lt;/label>
+                                        &lt;input
                                             type="tel"
                                             value={orderForm.delivery.phone}
                                             onChange={(e) => setOrderForm(prev => ({
@@ -390,46 +418,46 @@ const CheckoutPage = ({
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                             placeholder="+7 (999) 999-99-99"
                                         />
-                                    </div>
-                                </div>
+                                    &lt;/div>
+                                &lt;/div>
                             )}
 
                             {/* Выбор пункта самовывоза */}
-                            {orderForm.delivery.type === 'pickup' && (
-                                <div className="mt-6">
-                                    <h3 className="font-semibold mb-4">
+                            {orderForm.delivery.type === 'pickup' &amp;&amp; (
+                                &lt;div className="mt-6">
+                                    &lt;h3 className="font-semibold mb-4">
                                         {language === 'ru' ? 'Выберите пункт самовывоза' : 'Select pickup point'}
-                                    </h3>
-                                    <div className="space-y-4">
+                                    &lt;/h3>
+                                    &lt;div className="space-y-4">
                                         {pickupPoints.map(point => (
-                                            <div key={point.id} className="flex items-center justify-between p-4 border rounded-lg">
-                                                <div>
-                                                    <div className="font-medium">{point.name[language]}</div>
-                                                    <div className="text-sm text-gray-600">{point.address}</div>
-                                                    <div className="text-sm text-green-600">
+                                            &lt;div key={point.id} className="flex items-center justify-between p-4 border rounded-lg">
+                                                &lt;div>
+                                                    &lt;div className="font-medium">{point.name[language]}&lt;/div>
+                                                    &lt;div className="text-sm text-gray-600">{point.address}&lt;/div>
+                                                    &lt;div className="text-sm text-green-600">
                                                         {language === 'ru' ? 'Открыто до' : 'Open until'} {point.closingTime}
-                                                    </div>
-                                                </div>
-                                                <button className="text-indigo-600 text-sm">
+                                                    &lt;/div>
+                                                &lt;/div>
+                                                &lt;button className="text-indigo-600 text-sm">
                                                     {language === 'ru' ? 'Выбрать' : 'Select'}
-                                                </button>
-                                            </div>
+                                                &lt;/button>
+                                            &lt;/div>
                                         ))}
-                                    </div>
-                                </div>
+                                    &lt;/div>
+                                &lt;/div>
                             )}
-                        </div>
+                        &lt;/div>
                     )}
 
                     {/* Шаг 2: Оплата */}
-                    {orderForm.step === 2 && (
-                        <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h2 className="text-xl font-bold mb-6">{getTranslation('payment')}</h2>
+                    {orderForm.step === 2 &amp;&amp; (
+                        &lt;div className="bg-white p-6 rounded-lg shadow-md">
+                            &lt;h2 className="text-xl font-bold mb-6">{getTranslation('payment')}&lt;/h2>
 
-                            <div className="space-y-4">
+                            &lt;div className="space-y-4">
                                 {/* Оплата картой */}
-                                <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
-                                    <input
+                                &lt;label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
+                                    &lt;input
                                         type="radio"
                                         name="payment"
                                         value="card"
@@ -441,19 +469,19 @@ const CheckoutPage = ({
                                         className="text-indigo-600"
                                         aria-label={language === 'ru' ? 'Оплата картой' : 'Pay by card'}
                                     />
-                                    <div>
-                                        <div className="font-medium">
+                                    &lt;div>
+                                        &lt;div className="font-medium">
                                             {language === 'ru' ? 'Банковской картой' : 'By card'}
-                                        </div>
-                                        <div className="text-sm text-gray-600">
+                                        &lt;/div>
+                                        &lt;div className="text-sm text-gray-600">
                                             {language === 'ru' ? 'Безопасная оплата' : 'Secure payment'}
-                                        </div>
-                                    </div>
-                                </label>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/label>
 
                                 {/* Оплата наличными */}
-                                <label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
-                                    <input
+                                &lt;label className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer">
+                                    &lt;input
                                         type="radio"
                                         name="payment"
                                         value="cash"
@@ -465,25 +493,25 @@ const CheckoutPage = ({
                                         className="text-indigo-600"
                                         aria-label={language === 'ru' ? 'Оплата наличными' : 'Cash on delivery'}
                                     />
-                                    <div>
-                                        <div className="font-medium">
+                                    &lt;div>
+                                        &lt;div className="font-medium">
                                             {language === 'ru' ? 'Наличными' : 'Cash'}
-                                        </div>
-                                        <div className="text-sm text-gray-600">
+                                        &lt;/div>
+                                        &lt;div className="text-sm text-gray-600">
                                             {language === 'ru' ? 'При получении' : 'Upon delivery'}
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/label>
+                            &lt;/div>
 
                             {/* Поля для оплаты картой */}
-                            {orderForm.payment.method === 'card' && (
-                                <div className="mt-6 space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            {orderForm.payment.method === 'card' &amp;&amp; (
+                                &lt;div className="mt-6 space-y-4">
+                                    &lt;div>
+                                        &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                             {language === 'ru' ? 'Номер карты' : 'Card number'}
-                                        </label>
-                                        <input
+                                        &lt;/label>
+                                        &lt;input
                                             type="text"
                                             value={orderForm.payment.cardNumber}
                                             onChange={(e) => setOrderForm(prev => ({
@@ -493,13 +521,13 @@ const CheckoutPage = ({
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                             placeholder="1234 5678 9012 3456"
                                         />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    &lt;/div>
+                                    &lt;div className="grid grid-cols-2 gap-4">
+                                        &lt;div>
+                                            &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                                 {language === 'ru' ? 'Срок действия' : 'Expiry date'}
-                                            </label>
-                                            <input
+                                            &lt;/label>
+                                            &lt;input
                                                 type="text"
                                                 value={orderForm.payment.expiry}
                                                 onChange={(e) => setOrderForm(prev => ({
@@ -509,12 +537,12 @@ const CheckoutPage = ({
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                                 placeholder="MM/YY"
                                             />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        &lt;/div>
+                                        &lt;div>
+                                            &lt;label className="block text-sm font-medium text-gray-700 mb-2">
                                                 CVV
-                                            </label>
-                                            <input
+                                            &lt;/label>
+                                            &lt;input
                                                 type="text"
                                                 value={orderForm.payment.cvv}
                                                 onChange={(e) => setOrderForm(prev => ({
@@ -524,183 +552,205 @@ const CheckoutPage = ({
                                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                                                 placeholder="123"
                                             />
-                                        </div>
-                                    </div>
-                                </div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/div>
                             )}
-                        </div>
+                        &lt;/div>
                     )}
 
                     {/* Шаг 3: Подтверждение */}
-                    {orderForm.step === 3 && (
-                        <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h2 className="text-xl font-bold mb-6">{getTranslation('confirm')}</h2>
+                    {orderForm.step === 3 &amp;&amp; (
+                        &lt;div className="bg-white p-6 rounded-lg shadow-md">
+                            &lt;h2 className="text-xl font-bold mb-6">{getTranslation('confirm')}&lt;/h2>
 
-                            <div className="space-y-4">
+                            &lt;div className="space-y-4">
                                 {/* Доставка */}
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <h3 className="font-semibold mb-2">{getTranslation('delivery')}</h3>
-                                    <p>
+                                &lt;div className="p-4 bg-gray-50 rounded-lg">
+                                    &lt;h3 className="font-semibold mb-2">{getTranslation('delivery')}&lt;/h3>
+                                    &lt;p>
                                         {orderForm.delivery.type === 'courier'
                                             ? (language === 'ru' ? 'Курьерская доставка' : 'Courier delivery')
                                             : (language === 'ru' ? 'Самовывоз' : 'Pickup')}
-                                    </p>
-                                    {orderForm.delivery.type === 'courier' && (
-                                        <>
-                                            <p>{orderForm.delivery.city}</p>
-                                            <p>{orderForm.delivery.address}</p>
-                                            <p>{orderForm.delivery.phone}</p>
-                                        </>
+                                    &lt;/p>
+                                    {orderForm.delivery.type === 'courier' &amp;&amp; (
+                                        &lt;>
+                                            &lt;p>{orderForm.delivery.city}&lt;/p>
+                                            &lt;p>{orderForm.delivery.address}&lt;/p>
+                                            &lt;p>{orderForm.delivery.phone}&lt;/p>
+                                        &lt;/>
                                     )}
-                                </div>
+                                &lt;/div>
 
                                 {/* Оплата */}
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <h3 className="font-semibold mb-2">{getTranslation('payment')}</h3>
-                                    <p>
+                                &lt;div className="p-4 bg-gray-50 rounded-lg">
+                                    &lt;h3 className="font-semibold mb-2">{getTranslation('payment')}&lt;/h3>
+                                    &lt;p>
                                         {orderForm.payment.method === 'card'
                                             ? (language === 'ru' ? 'Банковской картой' : 'By card')
                                             : (language === 'ru' ? 'Наличными' : 'Cash')}
-                                    </p>
-                                    {orderForm.payment.method === 'card' && (
-                                        <p>
+                                    &lt;/p>
+                                    {orderForm.payment.method === 'card' &amp;&amp; (
+                                        &lt;p>
                                             {language === 'ru' ? 'Карта:' : 'Card:'} **** **** **** {orderForm.payment.cardNumber.slice(-4)}
-                                        </p>
+                                        &lt;/p>
                                     )}
-                                </div>
+                                &lt;/div>
 
                                 {/* Товары */}
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <h3 className="font-semibold mb-2">
+                                &lt;div className="p-4 bg-gray-50 rounded-lg">
+                                    &lt;h3 className="font-semibold mb-2">
                                         {language === 'ru' ? 'Товары' : 'Products'}
-                                    </h3>
+                                    &lt;/h3>
                                     {cart.map((item) => (
-                                        <div key={item.id} className="flex justify-between text-sm">
-                      <span>
+                                        &lt;div key={item.id} className="flex justify-between text-sm">
+                      &lt;span>
                         {typeof item.name === 'object' ? item.name[language] : item.name} x{item.quantity}
-                      </span>
-                                            <span>{formatPrice(item.finalPrice * item.quantity)}</span>
-                                        </div>
+                      &lt;/span>
+                                            &lt;span>{formatPrice(item.finalPrice * item.quantity)}&lt;/span>
+                                        &lt;/div>
                                     ))}
-                                </div>
+                                &lt;/div>
 
                                 {/* Итоги */}
-                                <div className="p-4 bg-gray-50 rounded-lg">
-                                    <h3 className="font-semibold mb-2">{getTranslation('total')}</h3>
-                                    <div className="space-y-1">
-                                        <div className="flex justify-between">
-                                            <span>{getTranslation('subtotal')}</span>
-                                            <span>{formatPrice(totals.subtotal)}</span>
-                                        </div>
-                                        {appliedCoupon && (
-                                            <div className="flex justify-between text-green-600">
-                                                <span>{getTranslation('discount')}</span>
-                                                <span>-{formatPrice(totals.discount)}</span>
-                                            </div>
+                                &lt;div className="p-4 bg-gray-50 rounded-lg">
+                                    &lt;h3 className="font-semibold mb-2">{getTranslation('total')}&lt;/h3>
+                                    &lt;div className="space-y-1">
+                                        &lt;div className="flex justify-between">
+                                            &lt;span>{getTranslation('subtotal')}&lt;/span>
+                                            &lt;span>{formatPrice(totals.subtotal)}&lt;/span>
+                                        &lt;/div>
+                                        {appliedCoupon &amp;&amp; (
+                                            &lt;div className="flex justify-between text-green-600">
+                                                &lt;span>{getTranslation('discount')}&lt;/span>
+                                                &lt;span>-{formatPrice(totals.discount)}&lt;/span>
+                                            &lt;/div>
                                         )}
-                                        <div className="flex justify-between">
-                                            <span>{getTranslation('shipping')}</span>
-                                            <span>
+                                        &lt;div className="flex justify-between">
+                                            &lt;span>{getTranslation('shipping')}&lt;/span>
+                                            &lt;span>
                         {totals.shipping === 0
                             ? getTranslation('free')
                             : formatPrice(totals.shipping)}
-                      </span>
-                                        </div>
-                                        <div className="border-t pt-2 font-bold">
-                                            <div className="flex justify-between">
-                                                <span>{language === 'ru' ? 'Итого к оплате' : 'Total to pay'}</span>
-                                                <span>{formatPrice(totals.grandTotal)}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      &lt;/span>
+                                        &lt;/div>
+                                        &lt;div className="border-t pt-2 font-bold">
+                                            &lt;div className="flex justify-between">
+                                                &lt;span>{language === 'ru' ? 'Итого к оплате' : 'Total to pay'}&lt;/span>
+                                                &lt;span>{formatPrice(totals.grandTotal)}&lt;/span>
+                                            &lt;/div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                &lt;/div>
+                            &lt;/div>
+                        &lt;/div>
                     )}
-                </div>
+                &lt;/div>
 
                 {/* Сводка заказа (справа) */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-lg font-bold mb-4">
+                &lt;div className="bg-white p-6 rounded-lg shadow-md">
+                    &lt;h3 className="text-lg font-bold mb-4">
                         {language === 'ru' ? 'Ваш заказ' : 'Your order'}
-                    </h3>
+                    &lt;/h3>
 
-                    <div className="space-y-4 mb-4">
+                    &lt;div className="space-y-4 mb-4">
                         {cart.map((item) => (
-                            <div key={item.id} className="flex items-center space-x-3">
-                                <img
+                            &lt;div key={item.id} className="flex items-center space-x-3">
+                                &lt;img
                                     src={item.images?.[0] || 'https://placehold.co/40x40/ddd/333?text=No+Image'}
                                     alt={typeof item.name === 'object' ? item.name[language] : item.name}
                                     className="w-12 h-12 object-cover rounded"
                                 />
-                                <div className="flex-1">
-                                    <h4 className="text-sm font-medium">
+                                &lt;div className="flex-1">
+                                    &lt;h4 className="text-sm font-medium">
                                         {typeof item.name === 'object' ? item.name[language] : item.name}
-                                    </h4>
-                                    <p className="text-sm text-gray-600">{item.quantity} шт.</p>
-                                </div>
-                                <p className="text-sm font-semibold">
+                                    &lt;/h4>
+                                    &lt;p className="text-sm text-gray-600">{item.quantity} шт.&lt;/p>
+                                &lt;/div>
+                                &lt;p className="text-sm font-semibold">
                                     {formatPrice(item.finalPrice * item.quantity)}
-                                </p>
-                            </div>
+                                &lt;/p>
+                            &lt;/div>
                         ))}
-                    </div>
+                    &lt;/div>
 
                     {/* Итоги */}
-                    <div className="border-t pt-4">
-                        <div className="space-y-2">
-                            <div className="flex justify-between">
-                                <span>{getTranslation('subtotal')}</span>
-                                <span>{formatPrice(totals.subtotal)}</span>
-                            </div>
-                            {appliedCoupon && (
-                                <div className="flex justify-between text-green-600">
-                                    <span>{getTranslation('discount')}</span>
-                                    <span>-{formatPrice(totals.discount)}</span>
-                                </div>
+                    &lt;div className="border-t pt-4">
+                        &lt;div className="space-y-2">
+                            &lt;div className="flex justify-between">
+                                &lt;span>{getTranslation('subtotal')}&lt;/span>
+                                &lt;span>{formatPrice(totals.subtotal)}&lt;/span>
+                            &lt;/div>
+                            {appliedCoupon &amp;&amp; (
+                                &lt;div className="flex justify-between text-green-600">
+                                    &lt;span>{getTranslation('discount')}&lt;/span>
+                                    &lt;span>-{formatPrice(totals.discount)}&lt;/span>
+                                &lt;/div>
                             )}
-                            <div className="flex justify-between">
-                                <span>{getTranslation('shipping')}</span>
-                                <span>
+                            &lt;div className="flex justify-between">
+                                &lt;span>{getTranslation('shipping')}&lt;/span>
+                                &lt;span>
                   {totals.shipping === 0
                       ? getTranslation('free')
                       : formatPrice(totals.shipping)}
-                </span>
-                            </div>
-                            <div className="border-t pt-2 font-bold">
-                                <div className="flex justify-between">
-                                    <span>{getTranslation('total')}</span>
-                                    <span>{formatPrice(totals.grandTotal)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                &lt;/span>
+                            &lt;/div>
+                            &lt;div className="border-t pt-2 font-bold">
+                                &lt;div className="flex justify-between">
+                                    &lt;span>{getTranslation('total')}&lt;/span>
+                                    &lt;span>{formatPrice(totals.grandTotal)}&lt;/span>
+                                &lt;/div>
+                            &lt;/div>
+                        &lt;/div>
+                    &lt;/div>
 
                     {/* Кнопки навигации */}
-                    <div className="flex space-x-4 mt-6">
+                    &lt;div className="flex space-x-4 mt-6">
                         {/* Назад */}
-                        {orderForm.step > 1 && (
-                            <button
+                        {orderForm.step > 1 &amp;&amp; (
+                            &lt;button
                                 onClick={handlePrevStep}
                                 className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors"
                             >
                                 {getTranslation('back')}
-                            </button>
+                            &lt;/button>
                         )}
                         {/* Далее / Оформить */}
-                        <button
+                        &lt;button
                             onClick={handleNextStep}
                             className="flex-1 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors"
                         >
-                            {orderForm.step < 3
+                            {orderForm.step &lt; 3
                                 ? getTranslation('next')
                                 : getTranslation('completeOrder')}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        &lt;/button>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        &lt;/div>
     );
 };
 
-export default CheckoutPage;
+export default CheckoutPage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 17:07:59 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
