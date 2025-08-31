@@ -339,7 +339,7 @@ const OrdersPage = ({ user, orders, setCurrentPage, language, currency, formatPr
                                 {/* Итого */}
                                 <div>
                                     <h4 className="font-medium mb-2">{getTranslation('total')}</h4>
-                                    <p className="text-sm font-semibold">{formatPrice(order.totals.grandTotal)}</p>
+                                    <p className="text-sm font-semibold">{formatPrice(order.totals.total)}</p>
                                 </div>
                             </div>
 
