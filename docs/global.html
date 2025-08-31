@@ -4638,16 +4638,14 @@
 
 
 <div class="description">
-    <p>Поведение:</p>
+    <p>Особенности:</p>
 <ul>
-<li>Отображается как модальное всплывающее окно с анимацией фона</li>
-<li>Показывает иконку успеха, текст подтверждения, номер заказа</li>
-<li>Отображает <strong>итоговую сумму</strong> и <strong>количество товаров</strong></li>
-<li>Содержит два действия: &quot;Мои заказы&quot; и &quot;Продолжить покупки&quot;</li>
-<li>Закрывается по клику на подложку или кнопку</li>
+<li>Отображает итоговую сумму и количество товаров из сохранённых данных</li>
+<li>Не зависит от текущего состояния корзины (которая уже может быть пустой)</li>
+<li>Показывает номер заказа (последние 6 цифр)</li>
 <li>Поддерживает мультиязычный интерфейс</li>
+<li>Закрывается по клику на фон или кнопку</li>
 </ul>
-<p>Примечание: номер заказа генерируется как последние 6 цифр <code>Date.now()</code>.</p>
 </div>
 
 
@@ -4699,7 +4697,7 @@
 
             
 
-            <td class="description last"><p>Входные параметры компонента</p>
+            <td class="description last"><p>Входные параметры</p>
                 <h6>Properties</h6>
                 
 
@@ -4764,7 +4762,7 @@
 
             
 
-            <td class="description last"><p>Функция для скрытия модального окна</p></td>
+            <td class="description last"><p>Функция закрытия модального окна</p></td>
         </tr>
 
     
@@ -4787,7 +4785,7 @@
 
             
 
-            <td class="description last"><p>Функция навигации (например, переход к &quot;orders&quot; или &quot;home&quot;)</p></td>
+            <td class="description last"><p>Функция навигации (например, переход к &quot;orders&quot;)</p></td>
         </tr>
 
     
@@ -4833,20 +4831,20 @@
 
             
 
-            <td class="description last"><p>Текущая корзина с товарами</p></td>
+            <td class="description last"><p>Товары, включённые в заказ (сохранённая копия)</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>getCartTotals</code></td>
+                <td class="name"><code>totals</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Object</span>
 
 
             
@@ -4856,7 +4854,30 @@
 
             
 
-            <td class="description last"><p>Утилита подсчёта итогов (сумма, скидка, доставка)</p></td>
+            <td class="description last"><p>Предварительно посчитанные итоги: subtotal, discount, shipping, total</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>orderNumber</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID заказа (используется для отображения номера)</p></td>
         </tr>
 
     
@@ -4927,7 +4948,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_OrderModal.jsx.html">components/OrderModal.jsx</a>, <a href="components_OrderModal.jsx.html#line36">line 36</a>
+        <a href="components_OrderModal.jsx.html">components/OrderModal.jsx</a>, <a href="components_OrderModal.jsx.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -4958,7 +4979,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>&lt;OrderModal  showOrderModal={true}  setShowOrderModal={setShowOrderModal}  setCurrentPage={setCurrentPage}  language="ru"  cart={cart}  getCartTotals={getCartTotals}  formatPrice={formatPrice}/></code></pre>
+    <pre class="prettyprint"><code>&lt;OrderModal  showOrderModal={true}  setShowOrderModal={setShowOrderModal}  setCurrentPage={setCurrentPage}  language="ru"  cart={orderCart}  totals={orderTotals}  orderNumber={123456}  formatPrice={formatPrice}/></code></pre>
 
 
 
@@ -6197,13 +6218,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 18:54:16 GMT+0300 (Москва, стандартное время)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Aug 31 2025 14:39:39 GMT+0300 (Москва, стандартное время)
 </footer>
 
 <script> prettyPrint(); </script>

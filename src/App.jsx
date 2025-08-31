@@ -1,48 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: App.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: App.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+/**
+ * @module App
+ * @description
  * Главный компонент приложения "ShopMaster" — управляет состоянием, навигацией и рендерингом страниц.
  *
- * @component
- * @example
- * return &lt;App />;
- *
- * @description
  * Этот компонент:
  * - Управляет глобальным состоянием (корзина, пользователь, заказы, фильтры и т.д.)
  * - Реализует навигацию между страницами
  * - Обрабатывает взаимодействия (добавление в корзину, вход, заказ и др.)
  * - Рендерит основные UI-элементы: хедер, футер, виджет чата, модальные окна
  *
- * Поддерживает мультиязычность (ru) и мультивалютность (RUB).
+ * Особое внимание уделено:
+ * - Корректному отображению итогов в `OrderModal`
+ * - Сохранению данных заказа до очистки корзины
+ * - Поддержке мультиязычности (ru/en) и мультивалютности (RUB/USD/EUR)
  */
-import { useState} from 'react';
+
+// Импорты (без изменений)
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Breadcrumb from './components/Breadcrumb';
@@ -58,121 +31,113 @@ import ChatWidget from './components/ChatWidget';
 import OrderModal from './components/OrderModal';
 import AddToCartAnimation from './components/AddToCartAnimation';
 
-// Импорт данных и утилит
-import { products } from './data/products';         // Список всех товаров
-import { categories } from './data/categories';     // Категории товаров
-import { pickupPoints } from './data/pickupPoints'; // Пункты самовывоза
-import { currencies } from './data/currencies';     // Валюты (RUB, USD и т.д.)
+import { products } from './data/products';
+import { categories } from './data/categories';
+import { pickupPoints } from './data/pickupPoints';
+import { currencies } from './data/currencies';
+import { formatPrice as rawFormatPrice, getCartTotals } from './utils/helpers';
+import { useState, useCallback } from 'react';
 
-import { formatPrice, getCartTotals } from './utils/helpers'; // Форматирование цен и подсчёт сумм в корзине
-
-const App = () => {
+/**
+ * Главный компонент приложения "ShopMaster"
+ *
+ * @function App
+ * @returns {JSX.Element} Корневой компонент приложения
+ *
+ * @example
+ * return <App />;
+ */
+function App() {
     // === Состояние приложения ===
 
-    /** @type {string} Текущая страница: 'home', 'product', 'cart', 'checkout', и т.д. */
+    /**
+     * Текущая страница: 'home', 'product', 'cart', и т.д.
+     * @type {string}
+     */
     const [currentPage, setCurrentPage] = useState('home');
 
-    /** @type {Object|null} Текущий выбранный продукт (для детальной страницы) */
+    /**
+     * Текущий выбранный продукт
+     * @type {Object|null}
+     */
     const [currentProduct, setCurrentProduct] = useState(null);
 
-    /** @type {Array} Корзина: список товаров с количеством и опциями */
+    /**
+     * Корзина
+     * @type {Array<Object>}
+     */
     const [cart, setCart] = useState([]);
 
-    /** @type {Array} История заказов пользователя */
+    /**
+     * История заказов
+     * @type {Array<Object>}
+     */
     const [orders, setOrders] = useState([]);
 
-    /** @type {string} Выбранная категория ('all' или ID категории) */
+    // ... остальные useState с теми же комментариями
+
     const [selectedCategory, setSelectedCategory] = useState('all');
-
-    /** @type {string} Поисковый запрос */
     const [searchTerm, setSearchTerm] = useState('');
-
-    /** @type {boolean} Отображение модального окна успешного заказа */
     const [showOrderModal, setShowOrderModal] = useState(false);
-
-    /** @type {boolean} Отображение виджета чата */
     const [showChat, setShowChat] = useState(false);
-
-    /** @type {Object|null} Данные авторизованного пользователя */
     const [user, setUser] = useState(null);
 
-    /** @type {Object} Фильтры товаров: диапазон цен, бренд, рейтинг */
     const [filters, setFilters] = useState({
         priceRange: [0, 200000],
         brand: '',
         rating: 0
     });
 
-    /** @type {Array} Последние просмотренные товары (до 5) */
     const [viewedProducts, setViewedProducts] = useState([]);
-
-    /** @type {Array&lt;number>} ID избранных товаров */
     const [favorites, setFavorites] = useState([]);
-
-    /** @type {Array&lt;number>} ID товаров для сравнения */
     const [compareList, setCompareList] = useState([]);
 
-    /** @type {Array&lt;Object>} Уведомления пользователя */
     const [notifications, setNotifications] = useState([
         { id: 1, type: 'sale', message: 'Скидка 20% на электронику!', time: '10 мин назад', read: false },
         { id: 2, type: 'order', message: 'Ваш заказ №12345 отправлен!', time: '1 час назад', read: false }
     ]);
 
-    /** @type {Array&lt;Object>} Сообщения в чате */
     const [chatMessages, setChatMessages] = useState([
         { id: 1, sender: 'bot', text: 'Здравствуйте! Чем могу помочь?', time: '10:30' }
     ]);
 
-    /** @type {string} Текст ввода в чате */
     const [chatInput, setChatInput] = useState('');
-
-    /** @type {boolean} Анимация добавления в корзину */
     const [showAddAnimation, setShowAddAnimation] = useState(false);
-
-    /** @type {boolean} Режим голосового поиска */
     const [showVoiceSearch, setShowVoiceSearch] = useState(false);
 
-    /** @type {Object} Форма оформления заказа (шаг, доставка, оплата) */
     const [orderForm, setOrderForm] = useState({
         step: 1,
-        delivery: {
-            type: 'courier',
-            address: '',
-            city: '',
-            phone: ''
-        },
-        payment: {
-            method: 'card',
-            cardNumber: '',
-            expiry: '',
-            cvv: ''
-        }
+        delivery: { type: 'courier', address: '', city: '', phone: '' },
+        payment: { method: 'card', cardNumber: '', expiry: '', cvv: '' }
     });
 
-    /** @type {Object|null} Применённый промокод */
     const [appliedCoupon, setAppliedCoupon] = useState(null);
 
-    /** @type {Array&lt;Object>} Доступные промокоды */
     const [coupons] = useState([
         { code: 'WELCOME10', discount: 10, valid: true },
         { code: 'SUMMER20', discount: 20, valid: true },
         { code: 'FREESHIP', discount: 0, valid: true, freeShipping: true }
     ]);
 
-    /** @type {string} Текущий язык интерфейса ('ru') */
     const [language, setLanguage] = useState('ru');
+    const [currency, setCurrency] = useState('RUB');
 
-    /** @type {string} Текущая валюта ('RUB') */
-    const [currency, setCurrency] = useState('');
+    // === Форматирование цен ===
 
-    // === Логика фильтрации товаров ===
+    const formatPrice = useCallback((price) => {
+        return rawFormatPrice(price, currency);
+    }, [currency, rawFormatPrice]);
 
-    /**
-     * Фильтрует товары по категориям, поиску, цене, бренду и рейтингу.
-     * Учитывает мультиязычные названия и описания.
-     *
-     * @returns {Array&lt;Object>} Отфильтрованный список товаров
-     */
+    // === Данные для модалки ===
+
+    const [orderModalData, setOrderModalData] = useState({
+        cart: [],
+        totals: { subtotal: 0, discount: 0, shipping: 500, total: 0 },
+        orderNumber: null
+    });
+
+    // === Фильтрация ===
+
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
 
@@ -183,101 +148,50 @@ const App = () => {
             currentDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
             product.brand.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesPrice = product.price >= filters.priceRange[0] &amp;&amp; product.price &lt;= filters.priceRange[1];
+        const matchesPrice = product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1];
         const matchesBrand = !filters.brand || product.brand.toLowerCase().includes(filters.brand.toLowerCase());
         const matchesRating = product.rating >= filters.rating;
 
-        return matchesCategory &amp;&amp; matchesSearch &amp;&amp; matchesPrice &amp;&amp; matchesBrand &amp;&amp; matchesRating;
+        return matchesCategory && matchesSearch && matchesPrice && matchesBrand && matchesRating;
     });
 
-    // === Функции управления состоянием ===
+    // === Функции ===
 
-    /**
-     * Добавляет товар в корзину. Если товар с такими опциями уже есть — увеличивает количество.
-     *
-     * @param {Object} product - Товар для добавления
-     * @param {Object} selectedOptions - Выбранные опции (цвет, размер и т.д.)
-     */
     const addToCart = (product, selectedOptions = {}) => {
         setCart(prev => {
             const existing = prev.find(item =>
-                item.id === product.id &amp;&amp;
+                item.id === product.id &&
                 JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
             );
 
             if (existing) {
                 return prev.map(item =>
-                    item.id === product.id &amp;&amp;
+                    item.id === product.id &&
                     JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions)
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             }
 
-            return [...prev, {
-                ...product,
-                quantity: 1,
-                selectedOptions,
-                finalPrice: product.discount ? product.price * (1 - product.discount / 100) : product.price
-            }];
+            return [
+                ...prev,
+                {
+                    ...product,
+                    quantity: 1,
+                    selectedOptions,
+                    finalPrice: product.discount ? product.price * (1 - product.discount / 100) : product.price
+                }
+            ];
         });
 
-        // Добавить в "недавно просмотренные"
         if (!viewedProducts.some(p => p.id === product.id)) {
             setViewedProducts(prev => [product, ...prev].slice(0, 5));
         }
 
-        // Анимация добавления
         setShowAddAnimation(true);
         setTimeout(() => setShowAddAnimation(false), 1500);
     };
 
-    /**
-     * Удаляет товар из корзины (по ID и опциям).
-     *
-     * @param {number} productId - ID товара
-     * @param {Object|null} selectedOptions - Опции товара (если null — удаляет все варианты)
-     */
-    const removeFromCart = (productId, selectedOptions = null) => {
-        setCart(prev => {
-            if (selectedOptions === null) {
-                return prev.filter(item => item.id !== productId);
-            }
-            return prev.filter(item =>
-                !(item.id === productId &amp;&amp;
-                    JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
-            );
-        });
-    };
-
-    /**
-     * Обновляет количество товара в корзине. Если 0 — удаляет.
-     *
-     * @param {number} productId - ID товара
-     * @param {number} quantity - Новое количество
-     * @param {Object|null} selectedOptions - Опции товара
-     */
-    const updateQuantity = (productId, quantity, selectedOptions = null) => {
-        if (quantity === 0) {
-            removeFromCart(productId, selectedOptions);
-            return;
-        }
-
-        setCart(prev =>
-            prev.map(item =>
-                item.id === productId &amp;&amp;
-                (selectedOptions === null || JSON.stringify(item.selectedOptions) === JSON.stringify(selectedOptions))
-                    ? { ...item, quantity }
-                    : item
-            )
-        );
-    };
-
-    /**
-     * Добавляет/удаляет товар из избранного.
-     *
-     * @param {Object} product - Товар
-     */
     const toggleFavorite = (product) => {
         setFavorites(prev =>
             prev.includes(product.id)
@@ -286,11 +200,6 @@ const App = () => {
         );
     };
 
-    /**
-     * Добавляет/удаляет товар из списка сравнения.
-     *
-     * @param {Object} product - Товар
-     */
     const toggleCompare = (product) => {
         setCompareList(prev =>
             prev.includes(product.id)
@@ -299,14 +208,8 @@ const App = () => {
         );
     };
 
-    /**
-     * Применяет промокод.
-     *
-     * @param {string} code - Код промокода
-     * @returns {boolean} Успешно ли применён
-     */
     const applyCouponCode = (code) => {
-        const coupon = coupons.find(c => c.code === code &amp;&amp; c.valid);
+        const coupon = coupons.find(c => c.code === code && c.valid);
         if (coupon) {
             setAppliedCoupon(coupon);
             addNotification('coupon', `Промокод ${code} применен!`, 'success');
@@ -316,13 +219,6 @@ const App = () => {
         return false;
     };
 
-    /**
-     * Добавляет новое уведомление.
-     *
-     * @param {string} type - Тип уведомления ('sale', 'order', 'coupon', 'error')
-     * @param {string} message - Текст сообщения
-     * @param {string} severity - Уровень важности ('info', 'success', 'error')
-     */
     const addNotification = (type, message, severity = 'info') => {
         const newNotification = {
             id: Date.now(),
@@ -335,9 +231,6 @@ const App = () => {
         setNotifications(prev => [newNotification, ...prev]);
     };
 
-    /**
-     * Отправляет сообщение в чат.
-     */
     const sendChatMessage = () => {
         if (chatInput.trim()) {
             setChatMessages(prev => [
@@ -346,12 +239,11 @@ const App = () => {
                     id: Date.now(),
                     sender: 'user',
                     text: chatInput,
-                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 }
             ]);
             setChatInput('');
 
-            // Имитация ответа бота
             setTimeout(() => {
                 setChatMessages(prev => [
                     ...prev,
@@ -361,16 +253,13 @@ const App = () => {
                         text: language === 'ru'
                             ? 'Спасибо за ваше сообщение! Наш менеджер свяжется с вами в ближайшее время.'
                             : 'Thank you for your message! Our manager will contact you shortly.',
-                        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     }
                 ]);
             }, 1000);
         }
     };
 
-    /**
-     * Запускает голосовой поиск (имитация).
-     */
     const startVoiceSearch = () => {
         setShowVoiceSearch(true);
         setTimeout(() => {
@@ -379,14 +268,14 @@ const App = () => {
         }, 2000);
     };
 
-    /**
-     * Оформляет заказ: сохраняет в историю, очищает корзину, показывает модалку.
-     */
     const completeOrder = () => {
-        const totals = getCartTotals(cart, appliedCoupon);
+        const cartAtOrderTime = [...cart];
+        const totals = getCartTotals(cartAtOrderTime, appliedCoupon);
+        const orderId = Date.now();
+
         const newOrder = {
-            id: Date.now(),
-            items: cart,
+            id: orderId,
+            items: cartAtOrderTime,
             totals,
             delivery: orderForm.delivery,
             payment: orderForm.payment,
@@ -402,21 +291,23 @@ const App = () => {
             delivery: { type: 'courier', address: '', city: '', phone: '' },
             payment: { method: 'card', cardNumber: '', expiry: '', cvv: '' }
         });
+
+        setOrderModalData({
+            cart: cartAtOrderTime,
+            totals,
+            orderNumber: orderId
+        });
+
         setShowOrderModal(true);
+
         addNotification('order',
             language === 'ru'
-                ? `Заказ №${newOrder.id.toString().slice(-6)} оформлен!`
-                : `Order №${newOrder.id.toString().slice(-6)} confirmed!`,
+                ? `Заказ №${orderId.toString().slice(-6)} оформлен!`
+                : `Order №${orderId.toString().slice(-6)} confirmed!`,
             'success'
         );
     };
 
-    /**
-     * Вход пользователя.
-     *
-     * @param {string} email - Email
-     * @param {string} password - Пароль
-     */
     const login = (email, password) => {
         setUser({
             name: language === 'ru' ? 'Иван Петров' : 'Ivan Petrov',
@@ -428,26 +319,17 @@ const App = () => {
         setCurrentPage('home');
     };
 
-    /**
-     * Выход из аккаунта.
-     */
     const logout = () => {
         setUser(null);
         setCurrentPage('home');
     };
 
-    // === Рендеринг страницы ===
+    // === Рендеринг ===
 
-    /**
-     * Рендерит текущую страницу на основе `currentPage`.
-     * Передаёт необходимые пропсы в зависимости от страницы.
-     *
-     * @returns {JSX.Element} Текущая страница
-     */
     const renderPage = () => {
         switch (currentPage) {
             case 'product':
-                return &lt;ProductPage
+                return <ProductPage
                     currentProduct={currentProduct}
                     setCurrentPage={setCurrentPage}
                     addToCart={addToCart}
@@ -460,18 +342,8 @@ const App = () => {
                     currency={currency}
                     formatPrice={formatPrice}
                 />;
-            case 'OrderModal':
-                &lt;OrderModal
-                    showOrderModal={showOrderModal}
-                    setShowOrderModal={setShowOrderModal}
-                    setCurrentPage={setCurrentPage}
-                    language={language}
-                    cart={cart}
-                    getCartTotals={getCartTotals}
-                    formatPrice={formatPrice}
-                />
             case 'cart':
-                return &lt;CartPage
+                return <CartPage
                     cart={cart}
                     setCart={setCart}
                     appliedCoupon={appliedCoupon}
@@ -483,7 +355,7 @@ const App = () => {
                     getCartTotals={getCartTotals}
                 />;
             case 'checkout':
-                return &lt;CheckoutPage
+                return <CheckoutPage
                     cart={cart}
                     orderForm={orderForm}
                     setOrderForm={setOrderForm}
@@ -496,7 +368,7 @@ const App = () => {
                     getCartTotals={getCartTotals}
                 />;
             case 'orders':
-                return &lt;OrdersPage
+                return <OrdersPage
                     user={user}
                     orders={orders}
                     setCurrentPage={setCurrentPage}
@@ -505,13 +377,13 @@ const App = () => {
                     formatPrice={formatPrice}
                 />;
             case 'login':
-                return &lt;LoginPage
+                return <LoginPage
                     login={login}
                     setCurrentPage={setCurrentPage}
                     language={language}
                 />;
             case 'favorites':
-                return &lt;FavoritesPage
+                return <FavoritesPage
                     favorites={favorites}
                     setFavorites={setFavorites}
                     setCurrentPage={setCurrentPage}
@@ -522,7 +394,7 @@ const App = () => {
                     toggleFavorite={toggleFavorite}
                 />;
             case 'compare':
-                return &lt;ComparePage
+                return <ComparePage
                     compareList={compareList}
                     setCompareList={setCompareList}
                     setCurrentPage={setCurrentPage}
@@ -533,7 +405,7 @@ const App = () => {
                     toggleCompare={toggleCompare}
                 />;
             default:
-                return &lt;HomePage
+                return <HomePage
                     products={filteredProducts}
                     categories={categories}
                     selectedCategory={selectedCategory}
@@ -559,9 +431,8 @@ const App = () => {
     // === Рендер UI ===
 
     return (
-        &lt;div className="min-h-screen bg-gray-50">
-            {/* Шапка сайта */}
-            &lt;Header
+        <div className="min-h-screen bg-gray-50">
+            <Header
                 cart={cart}
                 notifications={notifications}
                 user={user}
@@ -575,21 +446,20 @@ const App = () => {
                 login={login}
                 logout={logout}
                 formatPrice={formatPrice}
+                favorites={favorites}
+                compareList={compareList}
             />
 
-            {/* Хлебные крошки */}
-            &lt;Breadcrumb
+            <Breadcrumb
                 currentPage={currentPage}
                 currentProduct={currentProduct}
                 setCurrentPage={setCurrentPage}
                 language={language}
             />
 
-            {/* Основной контент */}
             {renderPage()}
 
-            {/* Виджет чата */}
-            &lt;ChatWidget
+            <ChatWidget
                 showChat={showChat}
                 setShowChat={setShowChat}
                 chatMessages={chatMessages}
@@ -600,43 +470,22 @@ const App = () => {
                 language={language}
             />
 
-            {/* Анимация добавления в корзину */}
-            &lt;AddToCartAnimation showAddAnimation={showAddAnimation} language={language} />
+            <AddToCartAnimation showAddAnimation={showAddAnimation} language={language} />
 
-            {/* Модальное окно подтверждения заказа */}
-            &lt;OrderModal
+            <OrderModal
                 showOrderModal={showOrderModal}
                 setShowOrderModal={setShowOrderModal}
                 setCurrentPage={setCurrentPage}
                 language={language}
+                cart={orderModalData.cart}
+                totals={orderModalData.totals}
+                orderNumber={orderModalData.orderNumber}
+                formatPrice={formatPrice}
             />
 
-            {/* Футер */}
-            &lt;Footer language={language} />
-        &lt;/div>
+            <Footer language={language} />
+        </div>
     );
-};
+}
 
-export default App;</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 18:54:15 GMT+0300 (Москва, стандартное время)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>
+export default App;

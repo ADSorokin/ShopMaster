@@ -15,7 +15,7 @@
     "destination": "docs/",
     "recurse": true,
     "templates": {
-      "cleverLinks": false,
+      "cleverLinks": true,
       "monospaceLinks": true
     },
     "readme": "README.md"

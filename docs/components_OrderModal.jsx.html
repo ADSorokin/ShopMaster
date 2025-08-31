@@ -27,16 +27,17 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Модальное окно подтверждения заказа — отображается после оформления.
+ * Модальное окно подтверждения заказа — отображает детали оформленного заказа.
  *
  * @component
- * @param {Object} props - Входные параметры компонента
+ * @param {Object} props - Входные параметры
  * @param {boolean} props.showOrderModal - Управляет видимостью модального окна
- * @param {Function} props.setShowOrderModal - Функция для скрытия модального окна
- * @param {Function} props.setCurrentPage - Функция навигации (например, переход к "orders" или "home")
+ * @param {Function} props.setShowOrderModal - Функция закрытия модального окна
+ * @param {Function} props.setCurrentPage - Функция навигации (например, переход к "orders")
  * @param {string} props.language - Язык интерфейса ('ru', 'en')
- * @param {Array&lt;Object>} props.cart - Текущая корзина с товарами
- * @param {Function} props.getCartTotals - Утилита подсчёта итогов (сумма, скидка, доставка)
+ * @param {Array&lt;Object>} props.cart - Товары, включённые в заказ (сохранённая копия)
+ * @param {Object} props.totals - Предварительно посчитанные итоги: subtotal, discount, shipping, total
+ * @param {number} props.orderNumber - ID заказа (используется для отображения номера)
  * @param {Function} props.formatPrice - Функция форматирования цен (например, "1 999 ₽")
  *
  * @example
@@ -45,21 +46,19 @@
  *   setShowOrderModal={setShowOrderModal}
  *   setCurrentPage={setCurrentPage}
  *   language="ru"
- *   cart={cart}
- *   getCartTotals={getCartTotals}
+ *   cart={orderCart}
+ *   totals={orderTotals}
+ *   orderNumber={123456}
  *   formatPrice={formatPrice}
  * />
  *
  * @description
- * Поведение:
- * - Отображается как модальное всплывающее окно с анимацией фона
- * - Показывает иконку успеха, текст подтверждения, номер заказа
- * - Отображает **итоговую сумму** и **количество товаров**
- * - Содержит два действия: "Мои заказы" и "Продолжить покупки"
- * - Закрывается по клику на подложку или кнопку
+ * Особенности:
+ * - Отображает итоговую сумму и количество товаров из сохранённых данных
+ * - Не зависит от текущего состояния корзины (которая уже может быть пустой)
+ * - Показывает номер заказа (последние 6 цифр)
  * - Поддерживает мультиязычный интерфейс
- *
- * Примечание: номер заказа генерируется как последние 6 цифр `Date.now()`.
+ * - Закрывается по клику на фон или кнопку
  */
 const OrderModal = ({
                         showOrderModal,
@@ -67,7 +66,8 @@ const OrderModal = ({
                         setCurrentPage,
                         language,
                         cart,
-                        getCartTotals,
+                        totals,
+                        orderNumber,
                         formatPrice
                     }) => {
     // === Локализация ===
@@ -219,21 +219,18 @@ const OrderModal = ({
 
     /**
      * Возвращает перевод строки по ключу.
-     * Если перевод отсутствует — возвращает ключ.
-     *
-     * @param {string} key - Ключ локализации (например, 'orderConfirmed', 'myOrders')
+     * @param {string} key - Ключ локализации
      * @returns {string} Переведённая строка
      */
     const getTranslation = (key) => {
         return translations[language]?.[key] || key;
     };
 
-    // === Условный рендер: не отображать, если модальное окно скрыто ===
+    // === Условный рендер: не показывать, если скрыто ===
     if (!showOrderModal) return null;
 
-    // === Подсчёт итогов и количества товаров ===
-    const totals = getCartTotals(cart); // ← Получаем итоги
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); // ← Общее количество
+    // === Вычисление количества товаров ===
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     // === Рендер ===
     return (
@@ -275,17 +272,15 @@ const OrderModal = ({
                         {/* Номер заказа */}
                         &lt;p className="text-gray-600 mb-6">
                             {getTranslation('thankYou')}{' '}
-                            {language === 'ru'
-                                ? 'Номер вашего заказа:'
-                                : 'Your order number:'}{' '}
-                            &lt;strong>#{Date.now().toString().slice(-6)}&lt;/strong>
+                            {language === 'ru' ? 'Номер вашего заказа:' : 'Your order number:'}{' '}
+                            &lt;strong>#{orderNumber?.toString().slice(-6) || '—'}&lt;/strong>
                         &lt;/p>
 
-                        {/* Блок с информацией о заказе — теперь с реальными данными */}
+                        {/* Блок с итогами */}
                         &lt;div className="bg-gray-50 rounded-lg p-4 mb-6">
                             &lt;div className="flex justify-between mb-2">
                                 &lt;span>{language === 'ru' ? 'Сумма заказа:' : 'Order amount:'}&lt;/span>
-                                &lt;span className="font-semibold">{formatPrice(totals.total)}&lt;/span>
+                                &lt;span className="font-semibold">{formatPrice(totals?.total || 0)}&lt;/span>
                             &lt;/div>
                             &lt;div className="flex justify-between text-sm text-gray-600">
                                 &lt;span>{language === 'ru' ? 'Товаров:' : 'Products:'}&lt;/span>
@@ -331,13 +326,13 @@ export default OrderModal;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-helpers.html">helpers</a></li><li><a href="module-seo.html">seo</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AddToCartAnimation">AddToCartAnimation</a></li><li><a href="global.html#Breadcrumb">Breadcrumb</a></li><li><a href="global.html#CartPage">CartPage</a></li><li><a href="global.html#CartSidebar">CartSidebar</a></li><li><a href="global.html#ChatWidget">ChatWidget</a></li><li><a href="global.html#CheckoutPage">CheckoutPage</a></li><li><a href="global.html#FavoritesPage">FavoritesPage</a></li><li><a href="global.html#Footer">Footer</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#HomePage">HomePage</a></li><li><a href="global.html#LoginPage">LoginPage</a></li><li><a href="global.html#OrderModal">OrderModal</a></li><li><a href="global.html#OrdersPage">OrdersPage</a></li><li><a href="global.html#ProductCard">ProductCard</a></li><li><a href="global.html#ProductPage">ProductPage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Aug 30 2025 18:54:15 GMT+0300 (Москва, стандартное время)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Aug 31 2025 14:39:39 GMT+0300 (Москва, стандартное время)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -236,25 +236,17 @@ const Header = ({
    * Обработчик клика по иконке корзины
    */
   const handleCartClick = (e) => {
-    console.log('=== CART CLICK DEBUG ===');
-    console.log('Event:', e);
-    console.log('setShowCart:', setShowCart);
-    console.log('Current cart:', cart);
-    console.log('Cart count:', cartCount);
+
     
     // Попробуем вызвать функцию напрямую
     try {
       if (typeof setShowCart === 'function') {
-        console.log('Calling setShowCart(true)');
         setShowCart(true);
-        console.log('setShowCart called successfully');
-        
         // Добавим небольшую задержку для проверки
         setTimeout(() => {
-          console.log('State should be updated by now');
+
         }, 100);
       } else {
-        console.log('setShowCart is not a function, navigating to cart page');
         setCurrentPage('cart');
       }
     } catch (error) {
