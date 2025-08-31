@@ -87,6 +87,7 @@ const App = () => {
     ]);
     const [language, setLanguage] = useState('ru');
     const [currency, setCurrency] = useState('RUB');
+    console.log('Current currency:', currency);
 
     // ✅ Новое состояние: данные для модалки (чтобы не зависеть от пустой корзины)
     const [orderModalData, setOrderModalData] = useState({
@@ -426,6 +427,8 @@ const App = () => {
                 login={login}
                 logout={logout}
                 formatPrice={formatPrice}
+                favorites={favorites}
+                compareList={compareList}
             />
 
             <Breadcrumb
